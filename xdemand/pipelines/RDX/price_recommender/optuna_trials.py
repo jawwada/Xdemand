@@ -69,16 +69,16 @@ def optune_run_trials(df_price_recommender,df_sku_info,n_trials):
             print('Best objective value:', study.best_trial.value)
             # compute revenue before and after
             # q_prime is the adjusted demand after we change the price ['q_prime']= ['yhat'] * (price_prime / p0) ** r
-            group['q_prime'] = group['yhat'] * (study.best_trial.params['price']/ p0) ** r
+            group['q_prime'] = group['yhat'] * (price_rec/ p0) ** r
             group = calculate_adjusted_price_stock(group)
             group['y_hat_adj'] = group['yhat'].where(group['yhat'] < group['running_stock_after_forecast'], 0)
             group['q_prime_adj'] = group['q_prime'].where(group['q_prime'] < group['running_stock_after_forecast_adj'], 0)
 
             revenue_before = group['y_hat_adj'].sum() * p0
-            revenue_after = group['q_prime_adj'].sum() * study.best_trial.params['price']
+            revenue_after = group['q_prime_adj'].sum() * price_rec
             df_sku_info.loc[name, 'revenue_before'] = revenue_before
             df_sku_info.loc[name, 'revenue_after'] = revenue_after
-            df_sku_info.loc[name, 'price_new'] = study.best_trial.params['price']
+            df_sku_info.loc[name, 'price_new'] = price_rec
             df_sku_info.loc[name, 'price_old'] = p0
             df_sku_info.loc[name, 's_opt'] = s_opt
             df_sku_info.loc[name, 'r'] = r

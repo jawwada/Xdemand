@@ -1,15 +1,13 @@
 import os
 
 from dash import dcc
-from xiom_optimized.caching import df_fc_qp,  \
+from xiom_optimized.caching import df_fc_qp, \
     df_running_stock, \
     df_price_rec_summary, \
-    df_price_sensing_tab,  \
-    ph_data,  \
+    df_price_sensing_tab, \
+    ph_data, \
     df_price_reference, \
     df_agg_monthly_3years
-
-
 
 from langchain_openai import ChatOpenAI
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
@@ -42,8 +40,8 @@ You have access to the following dataframes:
     - `status_date`: The date when the status was recorded.
 
 2. **df_agg_monthly_3years**:
-    - `sku`: Stock Keeping Unit.
-    - `warehouse_code`: Code representing the warehouse where the product is stored.
+    - `sku`: 
+    - `warehouse_code`:
     - `date`: The date of the record.
     - `quantity`: Total quantity sold.
     - `revenue`: Revenue generated.
@@ -66,20 +64,30 @@ Key context for the data analysis:
 - A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when analyzing a product.
 - Provide detailed explanations and insights based on the data.
 
+Example questions to consider:
+- What are the top-selling products? Answer with respect to quantity and revenue for past 12 months from df_agg_monthly_3years.
+- What is the optimal stock level for each product? How does it compare to the current stock level? Answer with respect to df_price_rec_summary and df_running_stock.
+- How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
+- What is the demand trend for each product? Answer with respect to df_running_stock.
+- Give me a report on a a product . Ans: group by sku, warehouse_code over data frames.
+            - Sum Past 12 month quantity from df_agg_monthly_3years
+            - Sum Past 12 month revenue from df_agg_monthly_3years
+            - Sum is_understock from df_running_stock for next 6 months to get number of understock days during next 6 months.
+            - Sum of yhat from df_running_stock for next 6 months to get expected demand.
+            - Sum is_overstock from df_running_stock for next 6 months to get number of overstock days during next 6 months.
+
+- Question about holiday season stock levels. Ans: look at df_running_stock sku, warehouse_code combinations from October to Jan.
+- What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
 
 Let's get started!
-
 """
-
 # create agent
 dataframes = [
     df_running_stock,  # df1
     df_agg_monthly_3years,  # df2
     df_price_rec_summary,  # df3
 
-
 ]
-
 agent_running_stock = create_pandas_dataframe_agent(
     ChatOpenAI(temperature=0.3, model="gpt-3.5-turbo"),
     dataframes,
