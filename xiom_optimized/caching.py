@@ -184,7 +184,6 @@ df_price_reference = pd.read_json(query_price_reference(), convert_dates=['date'
 df_price_reference['warehouse_code'] = df_price_reference['region'].map(region_warehouse_codes)
 df_price_reference = df_price_reference.drop(columns=['region'])
 
-
 df_price_sensing_tab = pd.read_json(query_price_sensing_tab(), convert_dates=['date'], orient='split')
 df_price_regression_tab = pd.read_json(query_price_regression_tab(), convert_dates=['date'], orient='split')
 
