@@ -13,6 +13,7 @@ from xiom_optimized.pages.price_sensing import layout as price_sensing_layout
 from xiom_optimized.pages.profile import layout as profile_layout
 from xiom_optimized.pages.stock_sensing import layout as stockout_prediction_layout
 from xiom_optimized.pages.progress_bar import progress_bar_layout
+from xiom_optimized.pages.product_research import layout as product_research_layout
 
 # Define a dictionary for mapping the pathname to the layout of the corresponding page
 page_layouts = {
