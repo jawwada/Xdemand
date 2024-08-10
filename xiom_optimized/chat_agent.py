@@ -28,7 +28,7 @@ You have access to the following dataframes:
 
 1. **df_running_stock**:
     - `ds`: The date of the record.
-    - `sku`: Stock Keeping Unit, a unique identifier for each product.
+    - `sku`: Stock Keeping Unit, a unique identifier .
     - `warehouse_code`: Code representing the warehouse region where the product is stored. [UK,DE,US,CA]
     - `yhat`: Forecasted quantity for the product demand.
     - `trend`: The trend component of the forecast.
@@ -42,16 +42,16 @@ You have access to the following dataframes:
     - `status_date`: The date when the status was recorded.
 
 2. **df_agg_monthly_3years**:
-    - `sku`: Stock Keeping Unit, a unique identifier for each product.
+    - `sku`: Stock Keeping Unit.
     - `warehouse_code`: Code representing the warehouse where the product is stored.
     - `date`: The date of the record.
     - `quantity`: Total quantity sold.
     - `revenue`: Revenue generated.
 
 3. **df_price_rec_summary**:
-    - `sku`: Stock Keeping Unit, a unique identifier for each product.
-    - `warehouse_code`: Code representing the warehouse where the product is stored.
-    - `yhat`: Forecasted quantity for the product demand.
+    - `sku`: .
+    - `warehouse_code`:.
+    - `yhat`: average Forecasted quantity for the product demand.
     - `ref_price`: Reference price for the product.
     - `price_elasticity`: Measure of how the quantity demanded of a product responds to a change in price.
     - `opt_stock_level`: Optimal stock level for the product.
@@ -61,7 +61,7 @@ You have access to the following dataframes:
     - `price_old`: Old price of the product.
     - `s_opt`: Optimal stock level after the price recommendation.
     - `avg_yhat`: Average forecasted quantity for the product demand.
-data frames are numbered as follows: df1, df2, df3 and are available in the environment.
+data frames are numbered as follows: df1, df2, df3 and are available to you, dont read.
 Key context for the data analysis:
 - A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when analyzing a product.
 - Provide detailed explanations and insights based on the data.
@@ -81,7 +81,7 @@ dataframes = [
 ]
 
 agent_running_stock = create_pandas_dataframe_agent(
-    ChatOpenAI(temperature=0.1, model="gpt-4-1106-preview"),
+    ChatOpenAI(temperature=0.3, model="gpt-3.5-turbo"),
     dataframes,
     verbose=True,
     agent_type=AgentType.OPENAI_FUNCTIONS,
