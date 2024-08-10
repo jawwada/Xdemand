@@ -2,14 +2,15 @@ import holidays
 import pandas as pd
 from prophet import Prophet
 from sqlalchemy import text
+import logging
 
 from common.db_connection import engine
 from common.local_constants import region_warehouse_codes
-from common.logger_ import logger
 from config import forecast_settings as cf
-
 periods = cf.forecast_periods
 freq = cf.forecast_period_freq
+
+logger = logging.getLogger(__name__)
 
 
 def forecast_sku(sku_data, sku, target_variable, region):
@@ -44,7 +45,8 @@ def forecast_sku(sku_data, sku, target_variable, region):
 
 
 def get_daily_sales_proecessed():
-    query = f"""select * from agg_im_sku_daily_sales where sku in (select im_sku from look_product_hierarchy)"""
+    query = f"""select * from agg_im_sku_daily_sales_wh_oos where sku in 
+    (select im_sku from look_product_hierarchy)"""
 
     with engine.connect() as con:
         sales_df = pd.read_sql(text(query), con)

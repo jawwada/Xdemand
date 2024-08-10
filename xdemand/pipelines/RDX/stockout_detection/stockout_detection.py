@@ -1,5 +1,5 @@
 import warnings
-
+import platform
 import pandas as pd
 
 from common.db_connection import engine
@@ -8,13 +8,12 @@ from xdemand.pipelines.RDX.stockout_detection.stockout_detection_utils import ge
 
 warnings.filterwarnings('ignore')
 
-def stockout_detection():
+def run_stockout_detection():
     """
     Main function to execute the stockout detection process.
     """
     # Fetch daily sales data
     df = get_daily_sales(engine)
-    df['warehouse_code'] = df['region'].str[0:2]
     df = df.groupby(['channel', 'sku', 'warehouse_code', 'date'])[['quantity']].sum().reset_index()
 
     # Fill missing dates for each SKU and warehouse combination
@@ -35,10 +34,10 @@ def stockout_detection():
     numeric_columns = ['quantity', 'gaps', 'gap_days', 'gap_e', 'sale_prob', 'gap_e_log10']
     grid_df[numeric_columns] = grid_df[numeric_columns].apply(pd.to_numeric, errors='coerce')
 
-    # Add stockout column
-    grid_df['out_of_stock'] = grid_df['gap_e_log10'] >= 2
     grid_df = grid_df[
         ['sku', 'warehouse_code', 'date', 'quantity', 'gaps', 'gap_days', 'gap_e', 'sale_prob', 'gap_e_log10']]
+    # Add stockout column
+    grid_df['out_of_stock'] = grid_df['gap_e_log10'] >= 2
 
     # Preprocess DataFrame to handle inf values
     grid_df = preprocess_dataframe(grid_df)
@@ -47,9 +46,6 @@ def stockout_detection():
     grid_df.to_sql('stat_stock_out_past', engine, if_exists='replace', index=False)
 
     # Visualization
-    visualize_stockout(grid_df)
-    return grid_df
-
-
-if __name__ == "__main__":
-    stockout_detection()
+    if platform.system() == 'Windows' or platform.system() == 'Darwin':
+        visualize_stockout(grid_df)
+    return
