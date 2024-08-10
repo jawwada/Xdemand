@@ -1,14 +1,9 @@
 import warnings
-from datetime import datetime, timedelta
 
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
-import seaborn as sns  # data visualization library
-from tqdm import tqdm
 
 from common.db_connection import engine
-from xdemand.pipelines.RDX.stockout_detections.stockout_detection_utils import get_daily_sales, fill_missing_dates, \
+from xdemand.pipelines.RDX.stockout_detection.stockout_detection_utils import get_daily_sales, fill_missing_dates, \
     process_sku_warehouse_combinations, visualize_stockout, preprocess_dataframe, get_total_days_dict
 
 warnings.filterwarnings('ignore')
