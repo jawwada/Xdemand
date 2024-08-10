@@ -3,7 +3,6 @@ import sys
 import warnings
 
 from common.db_connection import write_replace_db
-from common.logger_ import logger
 from config import forecast_settings as pf_cf
 from config import price_sensing_settings as ps_cf
 from xdemand.pipelines.RDX.price_sensing.elasticity_log_ST_adjusted import get_price_elasticity
@@ -13,7 +12,7 @@ from xdemand.pipelines.RDX.sales_forecast.forecast_utils import add_holidays
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import forecast_sales
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import get_daily_sales_proecessed
 from xdemand.preprocessing.RDX.sql.execute_preprocessing_sql import preprocess_marketplace_sales_to_im_sales
-
+from xdemand.pipelines.RDX.stockout_detection.stockout_detection import run_stockout_detection
 sys.path.append('/opt/homebrew/lib')
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -73,4 +72,5 @@ if __name__ == '__main__':
     logger.info("Starting RDX Pipeline")
     preprocess_marketplace_sales_to_im_sales()
     run_prophet_training_pipeline()
+    run_stockout_detection()
     run_price_sensing_direct()

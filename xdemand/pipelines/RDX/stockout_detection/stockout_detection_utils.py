@@ -22,7 +22,7 @@ def get_daily_sales(engine) -> pd.DataFrame:
     """
     query = """
     SELECT * FROM agg_im_sku_daily_sales 
-    WHERE sku IN (SELECT DISTINCT sku FROM stat_forecast_data_quantity) 
+    WHERE sku IN (SELECT DISTINCT sku FROM look_product_hierarchy) 
     AND date > DATEADD(year, -3, GETDATE()) 
     ORDER BY sku, region, date;
     """
@@ -34,6 +34,7 @@ def get_daily_sales(engine) -> pd.DataFrame:
     daily_sales['month'] = daily_sales['date'].dt.month
     daily_sales['year_month'] = daily_sales['date'].dt.to_period('M')
     daily_sales['revenue'] = daily_sales['revenue'].astype(float)
+    daily_sales['warehouse_code'] = daily_sales['region'].str[0:2]
     return daily_sales
 
 def fill_missing_dates(df_sku: pd.DataFrame) -> pd.DataFrame:

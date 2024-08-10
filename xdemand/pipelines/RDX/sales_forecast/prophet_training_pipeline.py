@@ -4,6 +4,8 @@ from config import forecast_settings as cf
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import add_holidays
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import forecast_sales
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import get_daily_sales_proecessed
+from xdemand.pipelines.RDX.stockout_detection.stockout_detection import stockout_detection
+
 
 logger.info("Starting Sales Forecasting Pipeline")
 daily_sales = get_daily_sales_proecessed()

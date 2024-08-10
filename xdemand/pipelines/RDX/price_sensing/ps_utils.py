@@ -1,6 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
-
+import logging
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -10,7 +10,6 @@ from sqlalchemy import text
 
 from common.db_connection import engine
 from common.local_constants import region_warehouse_codes
-from common.logger_ import logger
 from config import price_sensing_settings as cf
 
 target = cf.target
@@ -19,6 +18,8 @@ top_n = cf.top_n
 days_before = cf.days_before
 log_normal_regression = cf.log_normal_regression
 plot = cf.plot
+
+logger = logging.getLogger(__name__)
 
 
 def get_daily_sales_price_sensing():
