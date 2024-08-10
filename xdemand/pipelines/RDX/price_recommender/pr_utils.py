@@ -55,8 +55,29 @@ def get_data_price_recommender():
         df_price_elasticity = pd.read_sql(text(query),con)
     df_running_stock = pd.merge(df_running_stock, df_price_reference, how='left', on=['sku', 'warehouse_code'])
     df_price_recommender = pd.merge(df_running_stock, df_price_elasticity, how='left', on=['sku', 'warehouse_code'])
-    df_sku_info = df_price_recommender.groupby(['sku', 'warehouse_code']).agg(
-        {'yhat': 'mean', 'ref_price': 'mean', 'price_elasticity': 'mean'}).reset_index()
-    df_sku_info['opt_stock_level'] = df_sku_info['yhat'] * cf.forecast_stock_level
+    return df_price_recommender
 
-    return df_price_recommender, df_sku_info
+def calculate_adjusted_price_stock( df):
+    df['running_stock_after_forecast_adj'] = 0.0
+    running_stock = 0.0
+
+     # Loop through the DataFrame
+    for index, row in df.iterrows():
+        # Update running stock
+        if index == df.first_valid_index():
+            running_stock = row['running_stock_after_forecast'] + row['InTransit_Quantity']
+        else:
+            running_stock += row['InTransit_Quantity']
+
+        predicted_sales = row['q_prime']
+
+        if running_stock < predicted_sales:
+            # If total stock is less than predicted sales, no sales occur
+            df.at[index, 'running_stock_after_forecast_adj'] = 0.0
+            running_stock = 0.0
+        else:
+            # Sales occur as predicted
+            df.at[index, 'running_stock_after_forecast_adj'] = running_stock - predicted_sales
+            running_stock -= predicted_sales
+
+    return df

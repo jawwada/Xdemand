@@ -45,3 +45,4 @@ data/
 /cache_directory/
 .idea/
 *.pyc
+/cache-price-recommender/

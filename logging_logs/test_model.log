@@ -2699,3 +2699,71 @@ for in transit skus, stocks status and forecasted sales to calculate stock statu
 2024-08-10 06:42:26,463 - common.logger_ - INFO - Xdemand app starting
 2024-08-10 06:42:55,277 - common.logger_ - INFO - Xdemand app starting
 2024-08-10 06:42:55,277 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:43:07,173 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:43:07,173 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:44:27,952 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:44:27,952 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:44:40,068 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:44:40,068 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:46:57,208 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:46:57,208 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:53:54,405 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:53:54,405 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:54:49,561 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:54:49,561 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:54:53,122 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 17:54:53,122 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:02:58,311 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:02:58,311 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:03:20,072 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:03:20,072 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:03:44,044 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:03:44,044 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:03:55,517 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-10 18:03:55,517 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-10 18:04:10,058 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:04:10,058 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:04:54,542 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:04:54,542 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:05:10,969 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:05:10,969 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:05:16,029 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:05:16,029 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:05:17,379 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-10 18:05:17,379 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-10 18:05:32,465 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:05:32,465 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:05:33,797 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-10 18:05:33,797 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-10 18:05:33,797 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-10 18:05:33,797 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-10 18:05:33,797 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-10 18:05:33,797 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-10 18:05:53,168 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-10 18:05:53,168 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-10 18:05:53,172 - common.logger_ - INFO - 135 distinct SKUs present in Forecast Quantity
+2024-08-10 18:05:53,172 - common.logger_ - INFO - 135 distinct SKUs present in Forecast Quantity
+2024-08-10 18:05:53,172 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-10 18:05:53,172 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-10 18:05:53,267 - common.logger_ - INFO - 135 distinct SKUs present in Latest Stock Status
+2024-08-10 18:05:53,267 - common.logger_ - INFO - 135 distinct SKUs present in Latest Stock Status
+2024-08-10 18:05:53,267 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-10 18:05:53,267 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-10 18:05:53,402 - common.logger_ - INFO - 127 distinct SKUs present in Shipments
+2024-08-10 18:05:53,402 - common.logger_ - INFO - 127 distinct SKUs present in Shipments
+2024-08-10 18:05:53,402 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-10 18:05:53,402 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-10 18:06:19,225 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-10 18:06:19,225 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-10 18:06:19,225 - common.logger_ - INFO - Write to the database
+2024-08-10 18:06:19,225 - common.logger_ - INFO - Write to the database
+2024-08-10 18:06:59,827 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-10 18:06:59,827 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-10 18:06:59,828 - common.logger_ - INFO - Saved stock status to database with status 148
+2024-08-10 18:06:59,828 - common.logger_ - INFO - Saved stock status to database with status 148
+2024-08-10 18:12:27,559 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:12:27,559 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:13:20,554 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:13:20,554 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:13:27,502 - common.logger_ - INFO - Xdemand app starting
+2024-08-10 18:13:27,502 - common.logger_ - INFO - Xdemand app starting

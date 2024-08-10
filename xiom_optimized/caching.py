@@ -123,9 +123,9 @@ def query_price_reference():
 @cache.memoize(timeout=TIMEOUT)
 def query_price_recommender_summary():
     query = f"""SELECT 
-      [sku]
+      [sku],
+      mean_demand as yhat
       ,[warehouse_code]
-      ,[yhat]
       ,[price_elasticity]
       ,[opt_stock_level]
       ,[revenue_before]

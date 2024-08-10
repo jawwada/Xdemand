@@ -1,7 +1,7 @@
 from common.db_connection import engine
 from common.logger_ import logger
 from config import price_recommendation_settings as pr_cf
-from xdemand.pipelines.RDX.price_recommender.optuna_trials import optune_run_trials
+from xdemand.pipelines.RDX.price_recommender.price_optimizer import price_optimizer
 from xdemand.pipelines.RDX.price_recommender.pr_utils import get_data_price_recommender
 from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import get_forecast_stocks_shipments
 from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import merge_shiptment_stocks_forecast
@@ -26,36 +26,16 @@ def run_price_recommender():
     n_trials = pr_cf.n_trials
 
     # Get the data
-    df_price_recommender, df_sku_info = get_data_price_recommender()
+    df_price_recommender= get_data_price_recommender()
 
     # Clip the price_elasticity to -1 and -5
-    df_sku_info['price_elasticity'] = df_sku_info['price_elasticity'].clip(-5, -1)
     df_price_recommender['price_elasticity'] = df_price_recommender['price_elasticity'].clip(-5, -1)
 
     # Run the Optuna trials
-    all_adjustments, df_new = optune_run_trials(df_price_recommender,
-                                                df_sku_info.set_index(['sku', 'warehouse_code']),
-                                                n_trials)
+    price_adjustments, df_sku_warehouse_pr = price_optimizer(df_price_recommender, pr_cf)
 
-    # Save the results to the database
-    try:
-        all_adjustments.reset_index().to_sql('stat_price_recommender',
-                                             con=engine,
-                                             if_exists='replace')
-
-        df_new.reset_index().to_sql('stat_price_recommender_summary',
-                                    con=engine,
-                                    if_exists='replace')
-    except Exception as e:
-        logger.error(f"Error saving df to database: {e} , trying with connection")
-        with engine.connect() as con:
-            all_adjustments.reset_index().to_sql('stat_price_recommender',
-                                                 con=con,
-                                                 if_exists='replace')
-
-            df_new.reset_index().to_sql('stat_price_recommender_summary',
-                                        con=con,
-                                        if_exists='replace')
+    price_adjustments.reset_index().to_sql('stat_price_recommender',con=engine,if_exists='replace')
+    df_sku_warehouse_pr.reset_index().to_sql('stat_price_recommender_summary',con=engine,if_exists='replace')
 
     print("Price Recommendation Tables Done")
     return
