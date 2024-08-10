@@ -1,0 +1,41 @@
+# Use the official Python image from the Docker Hub
+FROM --platform=linux/amd64 python:3.9.11-bullseye
+
+# Install necessary packages
+RUN apt-get update && apt-get install -y \
+    curl \
+    unixodbc-dev \
+    gcc \
+    g++ \
+    build-essential \
+    python-dev \
+    python3-dev
+
+# Install Microsoft SQL Server tools
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/debian/11/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+    && apt-get update \
+    && ACCEPT_EULA=Y apt-get install -y msodbcsql18 mssql-tools18 \
+    && echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc \
+    && /bin/bash -c "source ~/.bashrc"
+
+# Install Python packages
+RUN pip install --upgrade pip \
+    && pip install pyodbc==5.0.1 \
+    && pip install python-dotenv==1.0.1
+
+# Copy the requirements file and install dependencies
+COPY ../requirements.txt .
+RUN pip install -r requirements.txt
+
+# Create the app directory and set it as the working directory
+WORKDIR /app
+
+# Copy the rest of the application code
+COPY ../.. /app
+
+# set the environment variable
+ENV PYTHONPATH "${PYTHONPATH}:/app"
+
+# Set the default command to run the sales_pipeline.py script
+CMD ["python", "xdemand/pipelines/RDX/sales_pipelines.py"]

@@ -1,0 +1,11 @@
+version: '3'
+services:
+  myapp:
+    build:
+      context: ..
+      dockerfile: docker_files/Dockerfile-xiom  # Assuming your Dockerfile-sales is named "Dockerfile-sales"
+    image: xiomacr.azurecr.io/dash-azure:dc-3.0
+    ports:
+      - "8000:8000"
+    env_file: [../xiom_optimized/env_file.env]
+

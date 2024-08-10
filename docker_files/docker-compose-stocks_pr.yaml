@@ -1,0 +1,8 @@
+version: '3'
+services:
+  myapp:
+    build:
+      context: ..
+      dockerfile: docker_files/Dockerfile-stocks-pr
+      tags: ["rdx-azure:stocks-pr-pipeline"]
+    image: xiomacr.azurecr.io/rdx-azure:stocks-pr-pipeline

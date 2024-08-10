@@ -1,0 +1,7 @@
+version: '3'
+services:
+  myapp:
+    build:
+      context: ..
+      dockerfile: docker_files/Dockerfile-sales
+    image: xiomacr.azurecr.io/rdx-azure:sales-pipeline

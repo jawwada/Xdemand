@@ -1,0 +1,47 @@
+# Data files
+*.csv
+*.pkl
+*.parquet
+*.zip
+*.rar
+*.xlsx
+*.db
+*.py{c,o,d}
+*.xml
+
+# Logs
+*.log
+**logs/**
+logging_logs/**
+
+# Temporary files
+*tmpfile*
+tmp*
+**tmp**
+temp/*
+**temp**
+
+# Images
+*.png
+*.jpg
+*.jpeg
+
+
+# Project-specific directories
+data/**
+plots*/**
+nbeats*/**
+cache-dataframes/
+data/
+.history/
+
+# Exceptions
+!.py
+!.ipynb
+!logging_logs/test_model.log
+!xdemand/machine_learning/ModelCache.py
+!xiom_optimized/assets/home_img.png
+
+/cache_directory/
+.idea/
+*.pyc

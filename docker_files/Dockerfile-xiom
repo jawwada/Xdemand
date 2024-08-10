@@ -1,0 +1,46 @@
+FROM --platform=linux/amd64 python:3.9.11-bullseye
+
+RUN apt install curl
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/debian/11/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN exit
+RUN apt-get update
+RUN echo msodbcsql18 msodbcsql/ACCEPT_EULA boolean true | debconf-set-selections
+RUN ACCEPT_EULA=Y apt-get install -y mssql-tools18
+RUN echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc \
+    && /bin/bash -c "source ~/.bashrc"
+
+# devtools is required for installing prophet
+RUN apt-get install -y unixodbc-dev  \
+    gcc  \
+    g++ \
+    build-essential  \
+    python-dev \
+    python3-dev
+
+# install pyodbc
+RUN pip3 install pyodbc==5.0.1
+RUN pip3 install --upgrade pip
+
+# Copy the requirements file and install dependencies
+Copy ../requirements.txt .
+# Create the app directory and set it as the working directory
+WORKDIR /app
+# Expose the port the application will run on
+EXPOSE 8000
+# first: install all required packages for pystan
+RUN pip install --upgrade pip
+RUN pip install --upgrade cython numpy
+
+COPY ../requirements.txt .
+RUN pip install -r requirements.txt
+RUN pip install openai --upgrade
+RUN pip install langchain_openai --upgrade
+# Copy the rest of the application code
+COPY xiom_optimized xiom_optimized
+copy common common
+copy config config
+copy logging_logs logging_logs
+
+# Set the default command to run the application with Gunicorn
+CMD ["gunicorn", "xiom_optimized.index:server", "--bind", "0.0.0.0:8000" , "--timeout", "600"]
