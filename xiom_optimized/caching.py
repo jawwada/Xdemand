@@ -202,4 +202,6 @@ df_running_stock['ds']=pd.to_datetime(df_running_stock['ds'])
 df_running_stock = pd.merge(df_running_stock, df_price_reference[['sku','warehouse_code','price']], how='left', on=['sku','warehouse_code'])
 
 df_agg_daily_3months= df_daily_sales_da.groupby(['sku', 'region', 'date'])[['quantity','revenue']].sum().reset_index()
-df_agg_monthly_3years = df_sales.groupby(['sku', 'region', pd.Grouper(key='date', freq='M')])[['quantity','revenue']].sum().reset_index()
+# transform the daily sales data to monthly and change region to warehouse_code
+df_daily_sales_da['warehouse_code'] = df_daily_sales_da['region'].map(region_warehouse_codes)
+df_agg_monthly_3years = df_sales.groupby(['sku', 'warehouse_code', pd.Grouper(key='date', freq='M')])[['quantity','revenue']].sum().reset_index()
