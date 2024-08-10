@@ -1,0 +1,5 @@
+default:
+  sku: BGR-F6MB-12OZ
+  write_to_db: true
+  plot: false
+  amazon_shopify_factor: 1.25

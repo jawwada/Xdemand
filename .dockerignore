@@ -1,0 +1,59 @@
+# Ignore data files
+data/
+*.csv
+*.xlsx
+*.pkl
+*.h5
+*.pth
+*.pt
+*.parquet
+*.json
+*.zip
+*.bin
+*.rar
+
+# Ignore image files
+*.png
+*.jpg
+*.jpeg
+
+# Ignore cache and log directories
+cache_directory/
+cache-dataframes/
+logs/
+**cache**
+**logs**
+.run/
+
+# Ignore Jupyter notebook checkpoints
+**.ipynb_checkpoints/
+**.ipynb_c*
+**.ipynb_aml*
+*.ipynb
+
+# Ignore IDE and virtual environment files
+.idea*
+.venv/
+venv/
+**venv**
+.idea/**
+
+# Ignore temporary files
+*tmpfile*
+temp/*
+tmp*
+**tmp**
+**temp**
+**tempCodeRunnerFile.python
+
+# Ignore AML files
+.aml*
+
+# Ignore specific directories
+plots*/**
+nbeats*/**
+
+# Allow specific files
+!.py
+!.*ignore
+!logging_logs/test_model.log
