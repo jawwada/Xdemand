@@ -23,6 +23,7 @@ page_layouts = {
     "/inventory-planning": inventory_planning_layout,
     "/profile": profile_layout,
     "/data-upload": data_upload_layout,
+    "product-research": product_research_layout,
      "/":  home_layout,
 }
 
@@ -82,6 +83,7 @@ layout = html.Div(id='page_container',
                                 dcc.Tab(label=" Demand Forecasting ", value="/demand-forecasting"),
                                 dcc.Tab(label=" Price Sensing ", value="/price-sensing"),
                                 dcc.Tab(label=" Stock Sensing ", value="/stockout-prediction"),
+                                dcc.Tab(label=" Product Research ", value="/product-research"),
                                 dcc.Tab(label=" Ask AI ", value="/inventory-planning")
                             ]),
                         ], className="row", style={'width': 'auto'}),
@@ -137,4 +139,6 @@ def toggle_dropdown_visibility(selected_tab):
         channel_style = region_style = dim_style = time_style = hidden_style
     elif selected_tab == '/inventory-planning':
         data_chooser_style = hidden_style
+    elif selected_tab == '/product-research':
+        data_chooser_style= default_style
     return sku_style, warehouse_style, region_style, channel_style, dim_style, time_style, data_chooser_style
