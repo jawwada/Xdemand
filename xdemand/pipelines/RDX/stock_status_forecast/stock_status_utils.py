@@ -227,7 +227,7 @@ def merge_shiptment_stocks_forecast(shipments,stocks,forecast_filtered):
     # merged_df['running_stock_after_forecast']= merged_df.groupby(['sku', 'warehouse_code']).apply(compute_stock_status)
     merged_df['running_stock_after_forecast'] = merged_df['stock_status']
     merged_df['is_understock'] = merged_df['running_stock_after_forecast'] < merged_df['yhat']
-    merged_df['is_overstock'] = merged_df['running_stock_after_forecast'] > (merged_df['yhat'] * pr_cf.forecast_stock_level)
+    merged_df['is_overstock'] = merged_df['running_stock_after_forecast'] > ((merged_df['yhat'] * pr_cf.forecast_stock_level)) + 60
     merged_df = merged_df[
         ['ds', 'sku', 'warehouse_code', 'yhat', 'trend', 'yearly_seasonality', 'revenue',
          'running_stock_after_forecast', 'is_understock', 'is_overstock','Expected_Arrival_Date',
