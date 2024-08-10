@@ -18,7 +18,7 @@ import logging
     Input('stockout-tabs', 'value'),
     State('filter-data', 'data'))
 def update_stockout_container(graph_data_tab,filter_data):
-    top_n = 100
+    top_n = 50
 
     # find the top 10 SKUs with the highest stockout loss
     df_running_stock_us = df_running_stock[df_running_stock.is_understock == True]. \
