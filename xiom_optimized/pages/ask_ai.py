@@ -32,7 +32,9 @@ controls = dbc.InputGroup(
     ]
 )
 
-layout = dbc.Container(
+layout = [
+    dcc.Store(id="store-it", data=[]),
+    dbc.Container(
     fluid=False,
     children=[
         Header("Inventory Assistant", app),
@@ -42,6 +44,6 @@ layout = dbc.Container(
         controls,
         dbc.Spinner(html.Div(id="loading-component")),
     ],
-)
+)]
 
 
