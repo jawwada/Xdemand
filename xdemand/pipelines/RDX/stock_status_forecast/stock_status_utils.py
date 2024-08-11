@@ -5,8 +5,8 @@ import seaborn as sns
 from sqlalchemy import text
 from common.logger_ import get_logger
 from common.local_constants import region_warehouse_codes
-from config import stock_status_settings as cf
 from config import price_recommendation_settings as pr_cf
+from config import stock_status_settings as ss_cf
 
 logger=get_logger()
 
@@ -92,7 +92,7 @@ def compute_stock_status(df):
 def get_forecast_quantity_warhouse(sku=None):
     # Perform queries and load the result directly into pandas DataFrames
     if sku is not None:
-        query_fc = f"SELECT * FROM stat_forecast_data_quantity where sku in ('{sku}')"
+        query_fc = f"SELECT * FROM stat_forecast_data_quantity where sku = '{sku}'"
     else:
         query_fc = f"SELECT * FROM stat_forecast_data_quantity"
     with engine.connect() as con:
@@ -107,9 +107,9 @@ def get_forecast_quantity_warhouse(sku=None):
     # Group by the specified columns and sum numerical columns
     forecast_warehouse = forecast_data.drop(columns=['region','yhat_lower','yhat_upper','trend_lower','trend_upper']).\
         groupby(group_by_columns).sum().reset_index()
-    forecast_warehouse['yhat'] = forecast_warehouse['yhat'] * cf.amazon_shopify_factor
-    forecast_warehouse['trend'] = forecast_warehouse['trend'] * cf.amazon_shopify_factor
-    forecast_warehouse['yearly_seasonality'] = forecast_warehouse['yearly'] * cf.amazon_shopify_factor
+    forecast_warehouse['yhat'] = forecast_warehouse['yhat'] * ss_cf.amazon_shopify_factor
+    forecast_warehouse['trend'] = forecast_warehouse['trend'] * ss_cf.amazon_shopify_factor
+    forecast_warehouse['yearly_seasonality'] = forecast_warehouse['yearly'] * ss_cf.amazon_shopify_factor
     # Convert the 'ds' column to datetime
     forecast_warehouse['ds'] = pd.to_datetime(forecast_warehouse['ds'])
     return forecast_warehouse
@@ -117,7 +117,7 @@ def get_forecast_quantity_warhouse(sku=None):
 def get_forecast_revenue_warhouse(sku=None):
     # Perform queries and load the result directly into pandas DataFrames
     if sku is not None:
-        query_fc = f"SELECT * FROM stat_forecast_data_revenue where sku in ('{sku}')"
+        query_fc = f"SELECT * FROM stat_forecast_data_revenue where sku = '{sku}'"
     else:
         query_fc = f"SELECT * FROM stat_forecast_data_revenue"
     with engine.connect() as con:
@@ -132,9 +132,9 @@ def get_forecast_revenue_warhouse(sku=None):
     # Group by the specified columns and sum numerical columns
     forecast_warehouse = forecast_data.drop(columns=['region','yhat_lower','yhat_upper','trend_lower','trend_upper']).\
         groupby(group_by_columns).sum().reset_index()
-    forecast_warehouse['yhat'] = forecast_warehouse['yhat'] * cf.amazon_shopify_factor
-    forecast_warehouse['trend'] = forecast_warehouse['trend'] * cf.amazon_shopify_factor
-    forecast_warehouse['yearly_seasonality'] = forecast_warehouse['yearly'] * cf.amazon_shopify_factor
+    forecast_warehouse['yhat'] = forecast_warehouse['yhat'] * ss_cf.amazon_shopify_factor
+    forecast_warehouse['trend'] = forecast_warehouse['trend'] * ss_cf.amazon_shopify_factor
+    forecast_warehouse['yearly_seasonality'] = forecast_warehouse['yearly'] * ss_cf.amazon_shopify_factor
     # Convert the 'ds' column to datetime
     forecast_warehouse['ds'] = pd.to_datetime(forecast_warehouse['ds'])
     return forecast_warehouse
@@ -176,8 +176,8 @@ def get_forecast_stocks_shipments(sku=None):
     logger.info("Get Forecast Quantity with Warehouse Code")
     # Get forecast quantity with warehouse code
     # if you want to see the results for a specific SKU, add the SKU to the function call
-    forecast_warehouse=get_forecast_quantity_warhouse()
-    forecast_warehouse_revenue=get_forecast_revenue_warhouse()
+    forecast_warehouse=get_forecast_quantity_warhouse(sku)
+    forecast_warehouse_revenue=get_forecast_revenue_warhouse(sku)
     # merge forecast_warehouse and forecast_warehouse_revenue on ds, sku, warehouse_code
     # and get the revenue column from forecast_warehouse_revenue
     forecast_warehouse = pd.merge(forecast_warehouse,
@@ -226,8 +226,14 @@ def merge_shiptment_stocks_forecast(shipments,stocks,forecast_filtered):
     merged_df = merged_df.groupby(['sku', 'warehouse_code']).apply(compute_stock_status)
     # merged_df['running_stock_after_forecast']= merged_df.groupby(['sku', 'warehouse_code']).apply(compute_stock_status)
     merged_df['running_stock_after_forecast'] = merged_df['stock_status']
+    # Calculate average yhat for each SKU and warehouse combination
+    # drop merged_df index
+    merged_df = merged_df.reset_index(drop=True)
+    avg_yhat = merged_df.groupby(['sku', 'warehouse_code'])['yhat'].mean().reset_index()
     merged_df['is_understock'] = merged_df['running_stock_after_forecast'] < merged_df['yhat']
-    merged_df['is_overstock'] = merged_df['running_stock_after_forecast'] > ((merged_df['yhat'] * (pr_cf.forecast_stock_level) + 60))
+    # apply is_overstock condition based on the average yhat for each SKU and warehouse combination
+    merged_df = pd.merge(merged_df, avg_yhat, on=['sku', 'warehouse_code'], suffixes=('', '_avg'))
+    merged_df['is_overstock'] = merged_df['running_stock_after_forecast'] > (merged_df['yhat_avg']*(60+pr_cf.forecast_stock_level))
     merged_df = merged_df[
         ['ds', 'sku', 'warehouse_code', 'yhat', 'trend', 'yearly_seasonality', 'revenue',
          'running_stock_after_forecast', 'is_understock', 'is_overstock','Expected_Arrival_Date',
