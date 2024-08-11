@@ -124,7 +124,7 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         analysis_table = dash_table.DataTable(
             id='analysis-table',
             columns=[{"name": i, "id": i} for i in df_sales_filtered.columns],
-            data=df_sales_filtered.to_dict('records'),
+            data=df_sales_filtered.head(100).to_dict('records'),
             page_size=20,
             style_table={'className': 'col-md-12'},
             sort_action="native",

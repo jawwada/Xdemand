@@ -194,7 +194,7 @@ def update_demand_forecast_graph(quantity_sales_radio,time_window,
         forecast_table=dash_table.DataTable(
             id='forecast-table',
             columns=[{"name": i, "id": i} for i in download_columns],
-            data=df_fc_qp[download_columns].to_dict('records'),
+            data=df_fc_qp[download_columns].head(100).to_dict('records'),
             page_size=24,
             sort_action="native",
             sort_mode="multi",
