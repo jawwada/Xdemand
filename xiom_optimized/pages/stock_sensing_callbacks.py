@@ -7,6 +7,7 @@ from dash import Output, Input, State
 from dash import html, dcc
 from plotly import graph_objs as go
 from plotly.subplots import make_subplots
+from config import price_recommendation_settings as pr_cf
 
 from dash import dcc
 from dash import html
@@ -19,7 +20,6 @@ import logging
     State('filter-data', 'data'))
 def update_stockout_container(graph_data_tab,filter_data):
     top_n = 50
-
     # find the top 10 SKUs with the highest stockout loss
     df_running_stock_us = df_running_stock[df_running_stock.is_understock == True]. \
         groupby(['sku', 'warehouse_code'])[['revenue']].sum().reset_index()
@@ -54,16 +54,22 @@ def update_stockout_container(graph_data_tab,filter_data):
         groupby(['sku', 'warehouse_code'])[['ds']].first().reset_index()
     df_running_stock_os = pd.merge(df_running_stock_os, df_running_stock_os_quantity, how='inner',
                                    on=['sku', 'warehouse_code', 'ds'])
-    df_running_stock_os['over_stocked_quantity'] = df_running_stock_os['running_stock_after_forecast'] - \
-                                                   df_running_stock_os['yhat'] * 180
+    avg_yhat = df_running_stock.groupby(['sku', 'warehouse_code'])['yhat'].mean().reset_index()
+    df_running_stock_os = pd.merge(df_running_stock_os, avg_yhat, on=['sku', 'warehouse_code'], suffixes=('', '_avg'))
+
+    df_running_stock_os['over_stocked_quantity'] = (
+            df_running_stock_os['running_stock_after_forecast'] -
+            df_running_stock_os['yhat_avg'] * (pr_cf.forecast_stock_level +60))
 
     df_running_stock_os['over_stocked_revenue_loss'] = df_running_stock_os['over_stocked_quantity'] * (
     df_running_stock_os['price'])
     # filter nan and inf values
     df_running_stock_os = df_running_stock_os[df_running_stock_os['over_stocked_revenue_loss'].notna()]
     df_running_stock_os = df_running_stock_os[df_running_stock_os['over_stocked_revenue_loss'] != float('inf')]
-
+    df_running_stock_os= df_running_stock_os.groupby(['sku', 'warehouse_code'])[['over_stocked_revenue_loss']].sum().reset_index()
     top_overstock = df_running_stock_os.sort_values(by=['over_stocked_revenue_loss'], ascending=False).head(top_n)
+    top_overstock = top_overstock[top_overstock['over_stocked_revenue_loss'] > 0]
+
     total_overstock_loss = df_running_stock_os['over_stocked_revenue_loss'].sum()
     total_overstock_loss_formatted = "{:,.0f}".format(total_overstock_loss)
     top_overstock['sku'] = top_overstock['sku'] + ' - ' + top_overstock['warehouse_code']
