@@ -2879,3 +2879,333 @@ for in transit skus, stocks status and forecasted sales to calculate stock statu
 2024-08-11 17:10:12,266 - common.logger_ - INFO - Xdemand app starting
 2024-08-11 17:19:14,904 - common.logger_ - INFO - Xdemand app starting
 2024-08-11 17:19:14,904 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 19:21:53,607 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 19:21:53,607 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 20:04:49,004 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 20:04:49,004 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 20:04:55,083 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:04:55,083 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:04:55,083 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:04:55,083 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:04:55,158 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:04:55,158 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:04:56,041 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:04:56,041 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:04:56,041 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:04:56,041 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:04:56,042 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:04:56,042 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:04:56,096 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:04:56,096 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:04:56,097 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:04:56,097 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:04:56,156 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:04:56,156 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:04:56,157 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:04:56,157 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:04:56,476 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-11 20:04:56,476 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-11 20:04:56,476 - common.logger_ - INFO - Write to the database
+2024-08-11 20:04:56,476 - common.logger_ - INFO - Write to the database
+2024-08-11 20:04:58,721 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-11 20:04:58,721 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-11 20:04:58,723 - common.logger_ - INFO - Saved stock status to database with status 21
+2024-08-11 20:04:58,723 - common.logger_ - INFO - Saved stock status to database with status 21
+2024-08-11 20:05:57,498 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:05:57,498 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:05:57,499 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:05:57,499 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:05:57,570 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:05:57,570 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:05:58,615 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:05:58,615 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:05:58,616 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:05:58,616 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:05:58,616 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:05:58,616 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:05:58,676 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:05:58,676 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:05:58,676 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:05:58,676 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:05:58,741 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:05:58,741 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:05:58,742 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:05:58,742 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:05:59,063 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-11 20:05:59,063 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-11 20:05:59,063 - common.logger_ - INFO - Write to the database
+2024-08-11 20:05:59,063 - common.logger_ - INFO - Write to the database
+2024-08-11 20:06:00,593 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-11 20:06:00,593 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-11 20:06:00,594 - common.logger_ - INFO - Saved stock status to database with status 21
+2024-08-11 20:06:00,594 - common.logger_ - INFO - Saved stock status to database with status 21
+2024-08-11 20:08:50,788 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:08:50,788 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:08:50,789 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:08:50,789 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:08:50,867 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:08:50,867 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:08:52,006 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:08:52,006 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:08:52,007 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:08:52,007 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:08:52,007 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:08:52,007 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:08:52,064 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:08:52,064 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:08:52,065 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:08:52,065 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:08:52,128 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:08:52,128 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:08:52,128 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:08:52,128 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:09:16,548 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:09:16,548 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:09:16,549 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:09:16,549 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:09:16,706 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:09:16,706 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:09:17,711 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:09:17,711 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:09:17,712 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:09:17,712 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:09:17,712 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:09:17,712 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:09:17,767 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:09:17,767 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:09:17,767 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:09:17,767 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:09:17,845 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:09:17,845 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:09:17,845 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:09:17,845 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:10:41,572 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:10:41,572 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:10:41,572 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:10:41,572 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:10:41,644 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:10:41,644 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:10:42,810 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:10:42,810 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:10:42,811 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:10:42,811 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:10:42,811 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:10:42,811 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:10:42,867 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:10:42,867 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:10:42,867 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:10:42,867 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:10:42,955 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:10:42,955 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:10:42,956 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:10:42,956 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:11:33,007 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:11:33,007 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:11:33,007 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:11:33,007 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:11:33,079 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:11:33,079 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:11:34,149 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:11:34,149 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:11:34,149 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:11:34,149 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:11:34,150 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:11:34,150 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:11:34,207 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:11:34,207 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:11:34,208 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:11:34,208 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:11:34,272 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:11:34,272 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:11:34,272 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:11:34,272 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:11:49,806 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:11:49,806 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:11:49,810 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:11:49,810 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:11:49,882 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:11:49,882 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:11:51,838 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:11:51,838 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:11:51,839 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:11:51,839 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:11:51,839 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:11:51,839 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:11:51,909 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:11:51,909 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:11:51,911 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:11:51,911 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:11:51,980 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:11:51,980 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:11:51,980 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:11:51,980 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:12:14,268 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:12:14,268 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:12:14,268 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:12:14,268 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:12:14,343 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:12:14,343 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:12:15,876 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:12:15,876 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:12:15,876 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:12:15,876 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:12:15,876 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:12:15,876 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:12:16,023 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:12:16,023 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:12:16,025 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:12:16,025 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:12:16,155 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:12:16,155 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:12:16,156 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:12:16,156 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:18:50,940 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:18:50,940 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:18:50,940 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:18:50,940 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:18:50,940 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:18:50,940 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:20:22,526 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:20:22,526 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:20:22,526 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:20:22,526 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:20:22,526 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:20:22,526 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:20:54,300 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:20:54,300 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:20:54,300 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:20:54,300 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:20:54,300 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:20:54,300 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:21:07,610 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:21:07,610 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:21:07,610 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:21:07,610 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:21:07,610 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:21:07,610 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:21:31,437 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:21:31,437 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:21:31,438 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:21:31,438 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:21:31,438 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:21:31,438 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:21:32,595 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:21:32,595 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:21:32,595 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:21:32,595 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:21:32,595 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:21:32,595 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:21:32,650 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:21:32,650 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:21:32,651 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:21:32,651 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:21:32,718 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:21:32,718 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:21:32,719 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:21:32,719 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:21:33,028 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-11 20:21:33,028 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-11 20:21:33,028 - common.logger_ - INFO - Write to the database
+2024-08-11 20:21:33,028 - common.logger_ - INFO - Write to the database
+2024-08-11 20:21:34,574 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-11 20:21:34,574 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-11 20:21:34,575 - common.logger_ - INFO - Saved stock status to database with status 21
+2024-08-11 20:21:34,575 - common.logger_ - INFO - Saved stock status to database with status 21
+2024-08-11 20:29:00,286 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:29:00,286 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:29:00,286 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:29:00,286 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:29:18,374 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:29:18,374 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:29:18,374 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:29:18,374 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:29:18,452 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:29:18,452 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:29:51,035 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:29:51,035 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:29:51,035 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:29:51,035 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:29:51,113 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:29:51,113 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:30:21,151 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:30:21,151 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:30:21,151 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:30:21,151 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:30:21,232 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:30:21,232 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:30:22,341 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:30:22,341 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:30:22,341 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:30:22,341 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:30:22,342 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:30:22,342 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:30:22,399 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:30:22,399 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:30:22,401 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:30:22,401 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:30:22,468 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:30:22,468 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:30:22,469 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:30:22,469 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:30:55,633 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:30:55,633 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:30:55,633 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:30:55,633 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:30:55,705 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:30:55,705 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:31:25,618 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:31:25,618 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:31:25,618 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:31:25,618 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:31:25,703 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:31:25,703 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:31:26,618 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:31:26,618 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:31:26,618 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:31:26,618 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:31:26,618 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:31:26,618 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:31:26,670 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:31:26,670 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:31:26,671 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:31:26,671 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:31:26,728 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:31:26,728 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:31:26,728 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:31:26,728 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:31:27,051 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-11 20:31:27,051 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-11 20:31:27,051 - common.logger_ - INFO - Write to the database
+2024-08-11 20:31:27,051 - common.logger_ - INFO - Write to the database
+2024-08-11 20:31:28,769 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-11 20:31:28,769 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-11 20:31:28,770 - common.logger_ - INFO - Saved stock status to database with status 21
+2024-08-11 20:31:28,770 - common.logger_ - INFO - Saved stock status to database with status 21
+2024-08-11 20:35:20,378 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:35:20,378 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-11 20:35:20,378 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:35:20,378 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-11 20:35:20,456 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:35:20,456 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-11 20:35:21,384 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:35:21,384 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-11 20:35:21,385 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:35:21,385 - common.logger_ - INFO - 1 distinct SKUs present in Forecast Quantity
+2024-08-11 20:35:21,385 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:35:21,385 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-11 20:35:21,432 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:35:21,432 - common.logger_ - INFO - 1 distinct SKUs present in Latest Stock Status
+2024-08-11 20:35:21,433 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:35:21,433 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-11 20:35:21,486 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:35:21,486 - common.logger_ - INFO - 1 distinct SKUs present in Shipments
+2024-08-11 20:35:21,486 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:35:21,486 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-11 20:35:21,804 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-11 20:35:21,804 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-09 00:00:00
+2024-08-11 20:35:21,804 - common.logger_ - INFO - Write to the database
+2024-08-11 20:35:21,804 - common.logger_ - INFO - Write to the database
+2024-08-11 20:35:23,519 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-11 20:35:23,519 - common.logger_ - INFO - stat_running_stock_forecast written to DB
+2024-08-11 20:35:23,520 - common.logger_ - INFO - Saved stock status to database with status 21
+2024-08-11 20:35:23,520 - common.logger_ - INFO - Saved stock status to database with status 21

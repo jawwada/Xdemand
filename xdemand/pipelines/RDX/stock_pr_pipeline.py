@@ -1,6 +1,7 @@
 from common.db_connection import engine
 from common.logger_ import logger
 from config import price_recommendation_settings as pr_cf
+from config import stock_status_settings as ss_cf
 from xdemand.pipelines.RDX.price_recommender.price_optimizer import price_optimizer
 from xdemand.pipelines.RDX.price_recommender.pr_utils import get_data_price_recommender
 from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import get_forecast_stocks_shipments
@@ -12,7 +13,7 @@ def run_stock_status_forecast():
     logger.info("Starting Stock Status Forecast Pipeline")
 
     # Get forecast, stocks and shipments
-    forecast_filtered, stocks, shipments = get_forecast_stocks_shipments()
+    forecast_filtered, stocks, shipments = get_forecast_stocks_shipments(ss_cf.sku)
     # Merge with stocks DataFrame and calculate stock status
     merged_df = merge_shiptment_stocks_forecast(shipments, stocks, forecast_filtered)
 

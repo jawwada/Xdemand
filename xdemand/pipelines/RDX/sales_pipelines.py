@@ -72,5 +72,9 @@ if __name__ == '__main__':
     logger.info("Starting RDX Pipeline")
     preprocess_marketplace_sales_to_im_sales()
     run_prophet_training_pipeline()
+    logger.info("Starting Stockout Detection Pipeline")
     run_stockout_detection()
+    logger.info("Finished Stockout Detection Pipeline")
+
+    logger.info("Starting Price Sensing Pipeline")
     run_price_sensing_direct()
