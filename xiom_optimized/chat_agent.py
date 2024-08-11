@@ -59,10 +59,10 @@ You have access to the following dataframes:
     - `price_old`: Old price of the product.
     - `s_opt`: Optimal stock level after the price recommendation.
     - `avg_yhat`: Average forecasted quantity for the product demand.
-data frames are numbered as follows: df1, df2, df3 and are available in the environment. You can access them using the variable names.
+data frames are numbered as follows: df1, df2, df3 and are available in the environment. You can access them using the variable names,
 and answer questions based on the data.
 Key context for the data analysis:
-- A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when analyzing a product.
+- A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when answering a question.
 - Provide detailed explanations and insights based on the data.
 
 Example questions to consider:
