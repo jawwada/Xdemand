@@ -3209,3 +3209,23 @@ for in transit skus, stocks status and forecasted sales to calculate stock statu
 2024-08-11 20:35:23,519 - common.logger_ - INFO - stat_running_stock_forecast written to DB
 2024-08-11 20:35:23,520 - common.logger_ - INFO - Saved stock status to database with status 21
 2024-08-11 20:35:23,520 - common.logger_ - INFO - Saved stock status to database with status 21
+2024-08-11 21:13:07,685 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:13:07,685 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:14:35,874 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:14:35,874 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:14:45,536 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:14:45,536 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:16:13,720 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:16:13,720 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:16:56,942 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:16:56,942 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:17:20,251 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:17:20,251 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:17:59,718 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:17:59,718 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:18:35,854 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:18:35,854 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:22:50,584 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:22:50,584 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:23:20,011 - common.logger_ - INFO - Xdemand app starting
+2024-08-11 21:23:20,011 - common.logger_ - INFO - Xdemand app starting
