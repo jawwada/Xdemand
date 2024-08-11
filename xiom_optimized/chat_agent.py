@@ -59,7 +59,8 @@ You have access to the following dataframes:
     - `price_old`: Old price of the product.
     - `s_opt`: Optimal stock level after the price recommendation.
     - `avg_yhat`: Average forecasted quantity for the product demand.
-data frames are numbered as follows: df1, df2, df3 and are available to you, dont read.
+data frames are numbered as follows: df1, df2, df3 and are available in the environment. You can access them using the variable names.
+and answer questions based on the data.
 Key context for the data analysis:
 - A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when analyzing a product.
 - Provide detailed explanations and insights based on the data.
@@ -89,7 +90,7 @@ dataframes = [
 
 ]
 agent_running_stock = create_pandas_dataframe_agent(
-    ChatOpenAI(temperature=0.3, model="gpt-3.5-turbo"),
+    ChatOpenAI(temperature=0.3, model="gpt-4o-mini"),
     dataframes,
     verbose=True,
     agent_type=AgentType.OPENAI_FUNCTIONS,
