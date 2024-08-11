@@ -34,7 +34,8 @@ nbeats*/**
 cache-dataframes/
 data/
 .history/
-
+.run/
+.venv/
 # Exceptions
 !.py
 !.ipynb
@@ -46,3 +47,5 @@ data/
 .idea/
 *.pyc
 /cache-price-recommender/
+/.run/
+/.venv/
