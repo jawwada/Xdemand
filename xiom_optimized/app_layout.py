@@ -85,7 +85,7 @@ layout = html.Div(id='page_container',
                                 dcc.Tab(label=" Price Sensing ", value="/price-sensing"),
                                 dcc.Tab(label=" Stock Sensing ", value="/stockout-prediction"),
                                 dcc.Tab(label=" Product Research ", value="/product-research"),
-                                dcc.Tab(label=" Ask AI ", value="/inventory-planning")
+                                dcc.Tab(label=" Ask AI (Beta) ", value="/inventory-planning")
                             ]),
                         ], className="row", style={'width': 'auto'}),
                     html.Hr(),
