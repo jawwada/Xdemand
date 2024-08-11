@@ -15,8 +15,6 @@ from prophet import Prophet
 @cache.memoize(timeout=TIMEOUT)
 @app.callback(
     Output('tabs-content', 'children'),
-    Output('demand-forecast-store', 'data'),
-    State('demand-forecast-store', 'data'),
     Input('quantity-sales-radio', 'value'),
     Input('sample-rate-slider', 'value'),
     Input('demand-tabs', 'value'),
@@ -24,10 +22,9 @@ from prophet import Prophet
     Input('sku-dropdown', 'value'),
     Input('seasonality-mode-radio', 'value')
 )
-def update_demand_forecast_graph(store_data,quantity_sales_radio,time_window,
+def update_demand_forecast_graph(quantity_sales_radio,time_window,
                                  graph_data_tab,filter_data,
                                  selected_sku, seasonality_mode):
-    df_fc_qp_filtered= df_fc_qp
     if graph_data_tab == 'tab-1':
         if isinstance(selected_sku, str):
             df_ds = df_sales[df_sales['sku'] == selected_sku].copy()
@@ -106,7 +103,7 @@ def update_demand_forecast_graph(store_data,quantity_sales_radio,time_window,
 
             fig.update_layout(title=f'RDX Demand Forecast:  sku = {selected_sku} {quantity_sales_radio} ',
                               xaxis_title='Date', yaxis_title=quantity_sales_radio, height=400)
-            store_data = forecast.to_dict('records')
+
         else:
             df_fc_qp['ds'] = pd.to_datetime(df_fc_qp['ds'])
 
@@ -146,9 +143,11 @@ def update_demand_forecast_graph(store_data,quantity_sales_radio,time_window,
 
             # Inside your update_demand_forecast_graph function, after you define df_ds and set 'date' as its index:
 
+
             today = datetime.now()
 
             df_ds['ds'] = pd.to_datetime(df_ds['ds'], errors='coerce')
+
 
             # Create subplots: use 'domain' type for Pie subplot
             fig_components = make_subplots(rows=2, cols=1)
@@ -189,17 +188,13 @@ def update_demand_forecast_graph(store_data,quantity_sales_radio,time_window,
             dcc.Graph(id='forecast-data-graph', figure=fig),
             html.Hr(),
             dcc.Graph(id='components-data-graph', figure=fig_components),
-        ]), store_data
+        ])
     else:
-        if isinstance(selected_sku, str):
-            download_data=pd.DataFrame.from_records(store_data)
-        else:
-            download_data=df_fc_qp_filtered
-
+        download_columns=['sku','region','warehouse_code','ds','quantity','revenue']
         forecast_table=dash_table.DataTable(
             id='forecast-table',
-            columns = [{"name": i, "id": i} for i in store_data[0].keys()],
-            data=store_data,
+            columns=[{"name": i, "id": i} for i in download_columns],
+            data=df_fc_qp[download_columns].to_dict('records'),
             page_size=24,
             sort_action="native",
             sort_mode="multi",
@@ -214,15 +209,14 @@ def update_demand_forecast_graph(store_data,quantity_sales_radio,time_window,
         html.Div([forecast_table],className="col-md-12"),
         html.A('Download CSV', id='download-button', className='btn btn-primary', download="forecast_data.csv", href="",
                target="_blank"),
-        ],className="col-md-12"), store_data
+        ],className="col-md-12")
 
 
 @app.callback(
     Output('download-button', 'href'),
-    Input('demand-forecast-store', 'data'))
+    Input('forecast-table', 'data'))
 def update_download_link(data):
     df_to_download = pd.DataFrame.from_records(data)
     csv_string = df_to_download.to_csv(index=False, encoding='utf-8')
     csv_string = "data:text/csv;charset=utf-8," + urllib.parse.quote(csv_string)
     return csv_string
-

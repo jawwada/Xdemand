@@ -1,10 +1,8 @@
-from datetime import datetime, timedelta
-
+import pandas as pd
 from dash import dcc, html
-
-from xiom_optimized.pages.data_chooser_callbacks import ph_data
+from datetime import datetime, timedelta
+from xiom_optimized.pages.data_chooser_callbacks import *
 from xiom_optimized.utils import get_unique_values
-
 unique_skus = get_unique_values('sku')
 default_sku = unique_skus[0] if unique_skus else None
 
@@ -84,11 +82,6 @@ time_selector=html.Div([
 data_chooser = html.Div([
         html.Div([
             dcc.Store(id='filter-data', data=ph_data.to_json(date_format='iso', orient='split'),storage_type='session'),
-            dcc.Store(id='demand-forecast-store', data=ph_data.to_json(date_format='iso', orient='split'),storage_type='session'),
-            dcc.Store(id='price-sensing-store'),
-            dcc.Store(id='stockout-prediction-store'),
-            dcc.Store(id='inventory-planning-store'),
-            dcc.Store(id='product-research-store'),
             # Sales Data Radio Buttonns
         html.H5('   Selection Criteria'),
         dim_selector,
@@ -99,6 +92,3 @@ data_chooser = html.Div([
     ])
 ], id='data-chooser')
  #   , style={'display': 'none'})
-
-
-
