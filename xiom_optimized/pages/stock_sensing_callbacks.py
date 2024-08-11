@@ -46,7 +46,7 @@ def update_stockout_container(graph_data_tab,filter_data):
         yaxis_title='SKU - Warehouse Code ',
         xaxis_side="top",
         yaxis=dict(autorange="reversed"),  # To display top items at top
-        height=800
+        height=top_n*22
     )
 
     df_running_stock_os = df_running_stock[df_running_stock.is_overstock == True]
@@ -89,7 +89,7 @@ def update_stockout_container(graph_data_tab,filter_data):
         yaxis_title='SKU - Warehouse Code',
         xaxis_side="top",
         yaxis=dict(autorange="reversed"),  # To display top items at top
-        height=800
+        height=top_n*22
     )
     download_columns = ['sku', 'ds', 'warehouse_code', 'yhat', 'running_stock_after_forecast', 'InTransit_Quantity']
     # Add x-axis titles
