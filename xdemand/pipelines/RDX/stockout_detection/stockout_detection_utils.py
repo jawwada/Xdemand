@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns  # data visualization library
 from tqdm import tqdm
+from common.local_constants import region_warehouse_codes
 
 warnings.filterwarnings('ignore')
 
@@ -34,7 +35,7 @@ def get_daily_sales(engine) -> pd.DataFrame:
     daily_sales['month'] = daily_sales['date'].dt.month
     daily_sales['year_month'] = daily_sales['date'].dt.to_period('M')
     daily_sales['revenue'] = daily_sales['revenue'].astype(float)
-    daily_sales['warehouse_code'] = daily_sales['region'].str[0:2]
+    daily_sales['warehouse_code'] = daily_sales['region'].replace(region_warehouse_codes)
     return daily_sales
 
 def fill_missing_dates(df_sku: pd.DataFrame) -> pd.DataFrame:
