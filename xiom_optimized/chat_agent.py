@@ -4,11 +4,7 @@ from dash import dcc
 from xiom_optimized.caching import df_fc_qp, \
     df_running_stock, \
     df_price_rec_summary, \
-    df_price_sensing_tab, \
-    ph_data, \
-    df_price_reference, \
     df_agg_monthly_3years
-
 from langchain_openai import ChatOpenAI
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
 from langchain.agents.agent_types import AgentType
@@ -22,9 +18,11 @@ Focus on the following areas:
 3. Stock recommendation
 4. Demand analysis
 
-You have access to the following dataframes:
+Your task has two parts:
+# Part 1:
+You have access to the following dataframes: df1, df2, df3.
 
-1. **df_running_stock**:
+1. **df1:df_running_stock**:
     - `ds`: The date of the record.
     - `sku`: Stock Keeping Unit, a unique identifier .
     - `warehouse_code`: Code representing the warehouse region where the product is stored. [UK,DE,US,CA]
@@ -39,14 +37,14 @@ You have access to the following dataframes:
     - `InTransit_Quantity`: Quantity of the product that is currently in transit.
     - `status_date`: The date when the status was recorded.
 
-2. **df_agg_monthly_3years**:
+2. **df2:df_agg_monthly_3years**:
     - `sku`: 
     - `warehouse_code`:
     - `date`: The date of the record.
     - `quantity`: Total quantity sold.
     - `revenue`: Revenue generated.
 
-3. **df_price_rec_summary**:
+3. **df3:df_price_rec_summary**:
     - `sku`: .
     - `warehouse_code`:.
     - `yhat`: average Forecasted quantity for the product demand.
@@ -59,7 +57,8 @@ You have access to the following dataframes:
     - `price_old`: Old price of the product.
     - `s_opt`: Optimal stock level after the price recommendation.
     - `avg_yhat`: Average forecasted quantity for the product demand.
-data frames are numbered as follows: df1, df2, df3 and are available in the environment. You can access them using the variable names,
+
+df1, df2, df3 and are available in the environment. You can access them using the variable names,
 and answer questions based on the data.
 Key context for the data analysis:
 - A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when answering a question.
@@ -79,15 +78,20 @@ Example questions to consider:
 
 - Question about holiday season stock levels. Ans: look at df_running_stock sku, warehouse_code combinations from October to Jan.
 - What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
-
-Let's get started!
+# Part 2:
+At the very end of your response, Provide in only one python code block in ```python``` that does the following. 
+1. Defines a full function performing the analysis from question called analyse_data with signature: 
+analyse_data(df1, df2, df3):
+2. Defines a dash plotly callback function that calls analyse_data and returns the results in a dash table or plotly graph.
+The purpose of this code block is to demonstrate how the analysis can be automated in a dashboard. 
+Do not define a new app or layout, just the callback function. 
+Text of your response should not include any context for the code block. No heading, explanation or comments.
 """
 # create agent
 dataframes = [
     df_running_stock,  # df1
     df_agg_monthly_3years,  # df2
-    df_price_rec_summary,  # df3
-
+    df_price_rec_summary  # df3
 ]
 agent_running_stock = create_pandas_dataframe_agent(
     ChatOpenAI(temperature=0.3, model="gpt-4o-mini"),

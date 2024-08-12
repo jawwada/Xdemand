@@ -49,3 +49,4 @@ data/
 /cache-price-recommender/
 /.run/
 /.venv/
+/downloaded_pdfs/
