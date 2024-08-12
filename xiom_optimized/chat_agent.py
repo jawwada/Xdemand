@@ -112,9 +112,9 @@ agent_running_stock = create_pandas_dataframe_agent(
 # Create the agent using create_structured_chat_agent
 agent_remove_code_block = LLMChain(
     llm=ChatOpenAI(temperature=0.3, model="gpt-3.5-turbo"),
-    prompt=prompt_template)
+    prompt=prompt_template_code_remover)
 
 # Create the agent using create_structured_chat_agent
-agent_remove_code_block = LLMChain(
+agent_extract_code_block = LLMChain(
     llm=ChatOpenAI(temperature=0.3, model="gpt-3.5-turbo"),
-    prompt=prompt_template)
+    prompt=prompt_template_code_extracter)
