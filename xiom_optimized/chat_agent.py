@@ -17,7 +17,7 @@ from xiom_optimized.caching import df_running_stock as df1, \
 prompt_template_code_extracter = PromptTemplate(
     input_variables=["text"],
     template="""You are a python developer. Remove all the mark down text and combine the python code into one block from text: {text} ---
-    Provide the python code block """)
+    Provide the python code block back """)
 
 
 prompt_template_code_remover = PromptTemplate(
@@ -118,3 +118,23 @@ agent_remove_code_block = LLMChain(
 agent_extract_code_block = LLMChain(
     llm=ChatOpenAI(temperature=0.3, model="gpt-3.5-turbo"),
     prompt=prompt_template_code_extracter)
+
+prompt_visualization_expert = """   
+You are a python plotly dash expert. You are given a code snippet that reads data from dataframes returns a results.
+you take the code snippet and create a call back to dynamically return a component in an already existing dash app.
+This component will be composed of three parts:
+- A graph showing the trend of the data
+- A table showing the data
+- A download button to download the data in csv format
+The graph can show the trend of the data over time. 
+The table should show the data.head(10) in a tabular format.
+"""
+
+# create the python dash plotly code agent
+agent_ds = create_structured_chat_agent(
+    ChatOpenAI(temperature=0.3, model="gpt-4o-mini"),
+    prompt_visualization_expert,
+    agent_type=AgentType.OPENAI_FUNCTIONS,
+    verbose=True,
+    allow_dangerous_code=True
+)
