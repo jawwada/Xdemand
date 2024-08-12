@@ -1,10 +1,26 @@
 from dash.dependencies import Input, Output, State
-from xiom_optimized.chat_agent import agent_running_stock, agent_remove_code_block, prompt_ds
+from xiom_optimized.chat_agent import (agent_running_stock,
+                                       agent_remove_code_block,
+                                        agent_extract_code_block,
+                                        agent_visualisation,
+                                       prompt_ds)
 from xiom_optimized.app_config_initial import app
 import dash_bootstrap_components as dbc
 from dash import html, dcc
+import re
+import base64
+import io
+from xiom_optimized.caching import df_running_stock as df1, \
+    df_price_rec_summary as df3, \
+    df_agg_monthly_3years as df2
 
 IMAGES = {"XD": app.get_asset_url("home_img.png")}
+
+def get_fig_from_code(code):
+    local_variables = {}
+    global_variables = {'df1': df1, 'df2': df2, 'df3': df3}
+    exec(code, global_variables, local_variables)
+    return local_variables['fig']
 
 def remove_code_blocks(text):
     response = agent_remove_code_block.run(text)
@@ -74,7 +90,8 @@ def clear_input(n_clicks, n_submit):
 
 @app.callback(
     [Output("store-conversation", "data"),
-     Output("loading-component", "children")],
+     Output("loading-component", "children"),
+     Output("dynamic-figure", "children")],
     [Input("submit", "n_clicks"),
      Input("user-input", "n_submit")],
     [State("user-input", "value"),
@@ -93,5 +110,14 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
     model_input = f"{prompt_ds}\n  chat_history:\n {chat_history}\n User Input:{user_input}\n"
     response = agent_running_stock.run(model_input)
     response_text = remove_code_blocks(response)
+    response_code = agent_extract_code_block.invoke(response)
+    plotly_agent_response = agent_visualisation.invoke(response_code)
+    print(plotly_agent_response["text"])
     chat_history += f"{response_text}<split>"
-    return chat_history, None
+    try:
+        fig = get_fig_from_code(plotly_agent_response["text"])
+        fig=dcc.Graph(figure=fig)
+        return chat_history, None, fig
+    except(Exception) as e:
+        print(e)
+        return chat_history, None, None

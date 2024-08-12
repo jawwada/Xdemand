@@ -9,15 +9,13 @@ from langchain.chains import LLMChain
 from xiom_optimized.caching import df_running_stock, \
     df_price_rec_summary, \
     df_agg_monthly_3years
-from xiom_optimized.caching import df_running_stock as df1, \
-    df_price_rec_summary as df3, \
-    df_agg_monthly_3years as df2
+
 
 # Define a simple template
 prompt_template_code_extracter = PromptTemplate(
     input_variables=["text"],
     template="""You are a python developer. Remove all the mark down text and combine the python code into one block from text: {text} ---
-    Provide the python code block back """)
+    Provide the python code back. Code should not be enclosed in any markdown block. Just plain code that can be executed.""")
 
 
 prompt_template_code_remover = PromptTemplate(
@@ -29,16 +27,8 @@ prompt_code = """
 you are a visualisation expert in plotly dash. You are given a code snippet that reads data from a database and prepares it for visualization.
 take the code snippet and create a call back to dynamically update a graph in a dash app.
 """
-prompt_ds = f""" 
-System: You are a data scientist at a retail company. 
-Your task is to analyze the company's sales data to provide insights and recommendations. 
-Focus on the following areas:
-1. Demand forecasting
-2. Price recommendation
-3. Stock recommendation
-4. Demand analysis
 
-You have access to the following dataframes: df1, df2, df3.
+data_frames_description = """You have access to the following dataframes: df1, df2, df3.
 1. **df1:df_running_stock**:
     - `ds`: The date of the record.
     - `sku`: Stock Keeping Unit, a unique identifier .
@@ -74,7 +64,18 @@ You have access to the following dataframes: df1, df2, df3.
     - `price_old`: Old price of the product.
     - `s_opt`: Optimal stock level after the price recommendation.
     - `avg_yhat`: Average forecasted quantity for the product demand.
+"""
+prompt_ds = f""" 
+System: You are a data scientist at a retail company. 
+Your task is to analyze the company's sales data to provide insights and recommendations. 
+Focus on the following areas:
+1. Demand forecasting
+2. Price recommendation
+3. Stock recommendation
+4. Demand analysis
 
+You have access to the following dataframes: df1, df2, df3.
+{data_frames_description}
 df1, df2, df3 are available in the environment. You can access them using the variable names, and answer questions based on the data.
 Key context for the data analysis:
 - A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when answering a question.
@@ -119,22 +120,54 @@ agent_extract_code_block = LLMChain(
     llm=ChatOpenAI(temperature=0.3, model="gpt-3.5-turbo"),
     prompt=prompt_template_code_extracter)
 
-prompt_visualization_expert = """   
-You are a python plotly dash expert. You are given a code snippet that reads data from dataframes returns a results.
-you take the code snippet and create a call back to dynamically return a component in an already existing dash app.
-This component will be composed of three parts:
-- A graph showing the trend of the data
-- A table showing the data
-- A download button to download the data in csv format
-The graph can show the trend of the data over time. 
-The table should show the data.head(10) in a tabular format.
-"""
+prompt_template_visualisation_engineer = PromptTemplate(
+    input_variables=["text"],
+    template="""
+     You are a data visualisation expert. You are given a code snippet of a data analysis. The data frames in the code are already loaded in the environment.
+     plot the data using your favourite visualisation library plotly. You already know what is the best visualisation for the data.
+You have access to the following dataframes: df1, df2, df3.
+1. **df1:df_running_stock**:
+    - `ds`: The date of the record.
+    - `sku`: Stock Keeping Unit, a unique identifier .
+    - `warehouse_code`: Code representing the warehouse region where the product is stored. [UK,DE,US,CA]
+    - `yhat`: Forecasted quantity for the product demand.
+    - `trend`: The trend component of the forecast.
+    - `yearly_seasonality`: The yearly seasonality component of the forecast.
+    - `revenue`: Revenue generated from the product.
+    - `running_stock_after_forecast`: The stock level after considering the forecasted demand.
+    - `is_understock`: Indicator if the product is understocked on the date.
+    - `is_overstock`: Indicator if the product is overstocked on the date.
+    - `Expected_Arrival_Date`: The expected date of arrival for new stock.
+    - `InTransit_Quantity`: Quantity of the product that is currently in transit.
+    - `status_date`: The date when the status was recorded.
 
-# create the python dash plotly code agent
-agent_ds = create_structured_chat_agent(
-    ChatOpenAI(temperature=0.3, model="gpt-4o-mini"),
-    prompt_visualization_expert,
-    agent_type=AgentType.OPENAI_FUNCTIONS,
-    verbose=True,
-    allow_dangerous_code=True
-)
+2. **df2:df_agg_monthly_3years**:
+    - `sku`:
+    - `warehouse_code`:
+    - `date`: The date of the record.
+    - `quantity`: Total quantity sold.
+    - `revenue`: Revenue generated.
+
+3. **df3:df_price_rec_summary**:
+    - `sku`: .
+    - `warehouse_code`:.
+    - `yhat`: average Forecasted quantity for the product demand.
+    - `ref_price`: Reference price for the product.
+    - `price_elasticity`: Measure of how the quantity demanded of a product responds to a change in price.
+    - `opt_stock_level`: Optimal stock level for the product.
+    - `revenue_before`: Revenue generated before the price recommendation.
+    - `revenue_after`: Revenue generated after the price recommendation.
+    - `price_new`: New recommended price for the product.
+    - `price_old`: Old price of the product.
+    - `s_opt`: Optimal stock level after the price recommendation.
+    - `avg_yhat`: Average forecasted quantity for the product demand.
+    Here is the code snippet:
+    {text}
+    
+    
+    Responde with pure code to create the graph, do not include any markdown block.
+    """)
+
+agent_visualisation = LLMChain(
+    llm=ChatOpenAI(temperature=0.3, model="gpt-4o-mini"),
+    prompt=prompt_template_visualisation_engineer)

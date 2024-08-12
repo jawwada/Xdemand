@@ -41,7 +41,8 @@ layout = [
             conversation,
             controls,
             dbc.Spinner(html.Div(id="loading-component")),
-            html.Div(id="data-table-container")  # Container for the DataTable
+            html.Div(id="data-table-container") ,
+            html.Div(id='dynamic-figure', children='')# Container for the DataTable
         ],
     ),
 ]
