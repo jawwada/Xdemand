@@ -164,8 +164,11 @@ You have access to the following dataframes: df1, df2, df3.
     Here is the code snippet:
     {text}
     
+    Use the code provided to create a visualisation. 
+    Add your code to the end of the code snippet and provide the visualisation.
+    Respond with pure code, do not include any markdown block.
     
-    Responde with pure code to create the graph, do not include any markdown block.
+    
     """)
 
 agent_visualisation = LLMChain(
