@@ -9,19 +9,21 @@ from langchain.chains import LLMChain
 from xiom_optimized.caching import df_running_stock, \
     df_price_rec_summary, \
     df_agg_monthly_3years
+from xiom_optimized.caching import df_running_stock as df1, \
+    df_price_rec_summary as df3, \
+    df_agg_monthly_3years as df2
 
 # Define a simple template
-prompt_template_code_remover = """
-You are a helpful assistant. Remove all code blocks and their contextual information from the following markdown text:
-{text}
-
-Provide the left over markdown text. 
-"""
-
-prompt_template = PromptTemplate(
+prompt_template_code_extracter = PromptTemplate(
     input_variables=["text"],
-    template=prompt_template_code_remover
-)
+    template="""You are a python developer. Remove all the mark down text and combine the python code into one block from text: {text} ---
+    Provide the python code block """)
+
+
+prompt_template_code_remover = PromptTemplate(
+    input_variables=["text"],
+    template="""You are a helpful assistant. Remove all code blocks and their contextual information from the following markdown text: {text} ---
+    Provide the left over markdown text. """)
 
 prompt_code = """
 you are a visualisation expert in plotly dash. You are given a code snippet that reads data from a database and prepares it for visualization.
@@ -107,6 +109,11 @@ agent_running_stock = create_pandas_dataframe_agent(
     number_of_head_rows=20,
     allow_dangerous_code=True
 )
+# Create the agent using create_structured_chat_agent
+agent_remove_code_block = LLMChain(
+    llm=ChatOpenAI(temperature=0.3, model="gpt-3.5-turbo"),
+    prompt=prompt_template)
+
 # Create the agent using create_structured_chat_agent
 agent_remove_code_block = LLMChain(
     llm=ChatOpenAI(temperature=0.3, model="gpt-3.5-turbo"),
