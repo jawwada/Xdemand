@@ -1,16 +1,34 @@
-import os
+from langchain.agents import AgentType
+from langchain.agents import create_structured_chat_agent
+from langchain.prompts import PromptTemplate
+from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
+from langchain_openai import ChatOpenAI
+from langchain.chains import LLMChain
 
-from dash import dcc
-from xiom_optimized.caching import df_fc_qp, \
-    df_running_stock, \
+
+from xiom_optimized.caching import df_running_stock, \
     df_price_rec_summary, \
     df_agg_monthly_3years
-from langchain_openai import ChatOpenAI
-from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
-from langchain.agents.agent_types import AgentType
 
-prompt = f""" 
-You are a data scientist at a retail company. 
+# Define a simple template
+prompt_template_code_remover = """
+You are a helpful assistant. Remove all code blocks and their contextual information from the following markdown text:
+{text}
+
+Provide the left over markdown text. 
+"""
+
+prompt_template = PromptTemplate(
+    input_variables=["text"],
+    template=prompt_template_code_remover
+)
+
+prompt_code = """
+you are a visualisation expert in plotly dash. You are given a code snippet that reads data from a database and prepares it for visualization.
+take the code snippet and create a call back to dynamically update a graph in a dash app.
+"""
+prompt_ds = f""" 
+System: You are a data scientist at a retail company. 
 Your task is to analyze the company's sales data to provide insights and recommendations. 
 Focus on the following areas:
 1. Demand forecasting
@@ -18,10 +36,7 @@ Focus on the following areas:
 3. Stock recommendation
 4. Demand analysis
 
-Your task has two parts:
-# Part 1:
 You have access to the following dataframes: df1, df2, df3.
-
 1. **df1:df_running_stock**:
     - `ds`: The date of the record.
     - `sku`: Stock Keeping Unit, a unique identifier .
@@ -58,12 +73,10 @@ You have access to the following dataframes: df1, df2, df3.
     - `s_opt`: Optimal stock level after the price recommendation.
     - `avg_yhat`: Average forecasted quantity for the product demand.
 
-df1, df2, df3 and are available in the environment. You can access them using the variable names,
-and answer questions based on the data.
+df1, df2, df3 are available in the environment. You can access them using the variable names, and answer questions based on the data.
 Key context for the data analysis:
 - A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when answering a question.
-- Provide detailed explanations and insights based on the data.
-
+- Provide detailed explanations and insights based on the data. 
 Example questions to consider:
 - What are the top-selling products? Answer with respect to quantity and revenue for past 12 months from df_agg_monthly_3years.
 - What is the optimal stock level for each product? How does it compare to the current stock level? Answer with respect to df_price_rec_summary and df_running_stock.
@@ -75,17 +88,10 @@ Example questions to consider:
             - Sum is_understock from df_running_stock for next 6 months to get number of understock days during next 6 months.
             - Sum of yhat from df_running_stock for next 6 months to get expected demand.
             - Sum is_overstock from df_running_stock for next 6 months to get number of overstock days during next 6 months.
-
 - Question about holiday season stock levels. Ans: look at df_running_stock sku, warehouse_code combinations from October to Jan.
-- What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
-# Part 2:
-At the very end of your response, Provide in only one python code block in ```python``` that does the following. 
-1. Defines a full function performing the analysis from question called analyse_data with signature: 
-analyse_data(df1, df2, df3):
-2. Defines a dash plotly callback function that calls analyse_data and returns the results in a dash table or plotly graph.
-The purpose of this code block is to demonstrate how the analysis can be automated in a dashboard. 
-Do not define a new app or layout, just the callback function. 
-Text of your response should not include any context for the code block. No heading, explanation or comments.
+- What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity. 
+
+Provide python code used for analysis in the end.
 """
 # create agent
 dataframes = [
@@ -101,3 +107,7 @@ agent_running_stock = create_pandas_dataframe_agent(
     number_of_head_rows=20,
     allow_dangerous_code=True
 )
+# Create the agent using create_structured_chat_agent
+agent_remove_code_block = LLMChain(
+    llm=ChatOpenAI(temperature=0.3, model="gpt-3.5-turbo"),
+    prompt=prompt_template)

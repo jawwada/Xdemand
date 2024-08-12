@@ -1,47 +1,14 @@
 from dash.dependencies import Input, Output, State
-from xiom_optimized.chat_agent import agent_running_stock, prompt
+from xiom_optimized.chat_agent import agent_running_stock, agent_remove_code_block, prompt_ds
 from xiom_optimized.app_config_initial import app
 import dash_bootstrap_components as dbc
 from dash import html, dcc
 
 IMAGES = {"XD": app.get_asset_url("home_img.png")}
 
-
-def remove_code_block(text):
-    start_marker = "```python"
-    end_marker = "```"
-
-    start = text.find(start_marker)
-    if start == -1:
-        # No code block found, return the original text
-        return text
-
-    end = text.find(end_marker, start + len(start_marker))
-    if end == -1:
-        # No closing marker found, return the text up to the start of the code block
-        return text[:start].strip()
-
-    # Return the text before the code block and after the code block
-    return (text[:start] + text[end + len(end_marker):]).strip()
-
-
-
-def extract_code_block(text):
-    start_marker = "```python"
-    end_marker = "```"
-
-    start = text.find(start_marker)
-    if start == -1:
-        return None  # No code block found
-
-    start += len(start_marker)
-    end = text.find(end_marker, start)
-
-    if end == -1:
-        return None  # Closing marker not found
-
-    code_block = text[start:end].strip()
-    return code_block
+def remove_code_blocks(text):
+    response = agent_remove_code_block.run(text)
+    return response
 
 def Header(name, app):
     title = html.H4(name, style={"margin-top": 5})
@@ -51,7 +18,7 @@ def Header(name, app):
     return dbc.Row([dbc.Col(title, md=10), dbc.Col(logo, md=2)])
 
 def textbox(text, box="AI", name="RDX"):
-    text = text.replace(f"{name}:", "").replace("You:", "")
+    text = text.replace(f"{name}", "").replace(":", "")
     style = {
         "max-width": "100%",
         "width": "max-content",
@@ -90,8 +57,7 @@ def textbox(text, box="AI", name="RDX"):
 def update_display(chat_history):
     if chat_history != "":
         response = [
-            textbox(remove_code_block(x), box="user") if i % 2 == 0
-            else textbox(remove_code_block(x), box="AI")
+            textbox(x, box="user") if i % 2 == 0 else textbox(x, box="AI")
             for i, x in enumerate(chat_history.split("<split>")[:-1])
         ]
         return response
@@ -122,10 +88,10 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
         return chat_history, None
 
     name = "Xd"
-
     # First add the user input to the chat history
-    chat_history += f"You {user_input}<split>:"
-    model_input = f"{prompt}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
+    chat_history += f"You: {user_input}<split>:"
+    model_input = f"{prompt_ds}\n  chat_history:\n {chat_history}\n User Input:{user_input}\n"
     response = agent_running_stock.run(model_input)
-    chat_history += f"{response}<split>"
+    response_text = remove_code_blocks(response)
+    chat_history += f"{response_text}<split>"
     return chat_history, None
