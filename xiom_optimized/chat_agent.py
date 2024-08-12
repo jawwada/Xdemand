@@ -168,6 +168,9 @@ You have access to the following dataframes: df1, df2, df3.
     Add visualisation code at the end of the code snippet and provide the visualisation.
     Respond with pure code, do not include any markdown block.
     Do not include fig.show() in the code.
+    If the visualisation is a time series plot, make sure to include the date on the x-axis.
+    If there are multiple value types, think about including multiple y axes. 
+    If you think it is not sensible to plot the data, empty string is a valid response.
     """)
 
 agent_visualisation = LLMChain(
