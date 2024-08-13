@@ -2,7 +2,7 @@ import urllib
 import dash_table
 import pandas as pd
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.caching import df_running_stock, df_stockout_past ,df_price_rec, df_price_rec_summary
+from xiom_optimized.caching import df_running_stock ,df_price_rec, df_price_rec_summary
 from dash import Output, Input, State
 from dash import html, dcc
 from plotly import graph_objs as go
@@ -17,11 +17,15 @@ import logging
 @app.callback(
     Output('tabs-content-stockout', 'children'),
     Input('stockout-tabs', 'value'),
-    State('filter-data', 'data'))
+    Input('filter-data', 'data'))
 def update_stockout_container(graph_data_tab,filter_data):
+    filtered_data = pd.read_json(filter_data, orient='split')
+    unique_wh = filtered_data['warehouse_code'].unique()
     top_n = 50
     # find the top 10 SKUs with the highest stockout loss
-    df_running_stock_us = df_running_stock[df_running_stock.is_understock == True]. \
+    df_running_stock_filtered = df_running_stock[df_running_stock['warehouse_code'].isin(unique_wh)]
+
+    df_running_stock_us = df_running_stock_filtered[df_running_stock_filtered.is_understock == True]. \
         groupby(['sku', 'warehouse_code'])[['revenue']].sum().reset_index()
     top_stockouts = df_running_stock_us.sort_values(by=['revenue'], ascending=False).head(top_n)
     total_stockout_loss = df_running_stock_us['revenue'].sum()
@@ -49,12 +53,12 @@ def update_stockout_container(graph_data_tab,filter_data):
         height=top_n*22
     )
 
-    df_running_stock_os = df_running_stock[df_running_stock.is_overstock == True]
+    df_running_stock_os = df_running_stock_filtered[df_running_stock_filtered.is_overstock == True]
     df_running_stock_os_quantity = df_running_stock_os.sort_values(['sku', 'warehouse_code', 'ds'], ascending=False). \
         groupby(['sku', 'warehouse_code'])[['ds']].first().reset_index()
     df_running_stock_os = pd.merge(df_running_stock_os, df_running_stock_os_quantity, how='inner',
                                    on=['sku', 'warehouse_code', 'ds'])
-    avg_yhat = df_running_stock.groupby(['sku', 'warehouse_code'])['yhat'].mean().reset_index()
+    avg_yhat = df_running_stock_filtered.groupby(['sku', 'warehouse_code'])['yhat'].mean().reset_index()
     df_running_stock_os = pd.merge(df_running_stock_os, avg_yhat, on=['sku', 'warehouse_code'], suffixes=('', '_avg'))
 
     df_running_stock_os['over_stocked_quantity'] = (
@@ -91,13 +95,14 @@ def update_stockout_container(graph_data_tab,filter_data):
         yaxis=dict(autorange="reversed"),  # To display top items at top
         height=top_n*22
     )
-    download_columns = ['sku', 'ds', 'warehouse_code', 'yhat', 'running_stock_after_forecast', 'InTransit_Quantity']
+    download_columns = ['sku', 'ds', 'warehouse_code', 'yhat', 'running_stock_after_forecast',
+                        'InTransit_Quantity', 'Expected_Arrival_Date','is_understock', 'is_overstock']
     # Add x-axis titles
     # Add y-axis titles
     stockout_table = dash_table.DataTable(
         id='stockout-table',
         columns=[{"name": i, "id": i} for i in download_columns],
-        data=df_running_stock[download_columns].to_dict('records'),
+        data=df_running_stock_filtered[download_columns].to_dict('records'),
         page_size=12,
         style_table={'overflowX': 'scroll'},
         sort_action="native",
@@ -301,7 +306,7 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code):
         ])
     else:
         return html.Div([  # Forecast Data Table
-            # pr_table,
+            pr_table,
             html.A('Download CSV', id='download-button-pr', className='btn btn-primary',
                    download="price_recommender.csv",
                    href="",
