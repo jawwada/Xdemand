@@ -182,7 +182,9 @@ df_price_rec_summary=pd.read_json(query_price_recommender_summary(), convert_dat
 
 df_price_reference = pd.read_json(query_price_reference(), convert_dates=['date'], orient='split')
 df_price_reference['warehouse_code'] = df_price_reference['region'].map(region_warehouse_codes)
-df_price_reference = df_price_reference.drop(columns=['region'])
+df_price_reference=df_price_reference.drop(columns=['region','date'])
+df_price_reference = df_price_reference.groupby(['sku','warehouse_code'])['price'].mean().reset_index()
+
 
 df_price_sensing_tab = pd.read_json(query_price_sensing_tab(), convert_dates=['date'], orient='split')
 df_price_regression_tab = pd.read_json(query_price_regression_tab(), convert_dates=['date'], orient='split')
