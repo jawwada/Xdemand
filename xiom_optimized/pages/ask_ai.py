@@ -1,12 +1,15 @@
 from xiom_optimized.pages.ask_ai_callbacks import *
-import pandas as pd
+
 from dash import html
 from dash import dcc
 import dash_bootstrap_components as dbc
-import dash_table
+
+
 
 description = """
 This is a chatbot that can answer questions about the running stock of the products in the warehouse."""
+
+
 
 # Load images
 
@@ -29,21 +32,18 @@ controls = dbc.InputGroup(
     ]
 )
 
-
 layout = [
     dcc.Store(id="store-it", data=[]),
-    dcc.Store(id="store-conversation", data="", storage_type="session"),
     dbc.Container(
-        fluid=False,
-        children=[
-            Header("Inventory Assistant", app),
-            html.Hr(),
-            conversation,
-            controls,
-            dbc.Spinner(html.Div(id="loading-component")),
-            html.Div(id="data-table-container") ,
-            html.Div(id='dynamic-figure', children='')# Container for the DataTable
-        ],
-    ),
-]
+    fluid=False,
+    children=[
+        Header("Inventory Assistant", app),
+        html.Hr(),
+        dcc.Store(id="store-conversation", data="",storage_type="session"),
+        conversation,
+        controls,
+        dbc.Spinner(html.Div(id="loading-component")),
+    ],
+)]
+
 
