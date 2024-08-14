@@ -92,7 +92,7 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
     name = "Xd"
 
     # First add the user input to the chat history
-    chat_history += f"You {user_input}<split>:"
+    chat_history += f"You {user_input}<split>"
     model_input = f"{prompt}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
     response = agent_running_stock.run(model_input)
     chat_history += f"{response}<split>"
