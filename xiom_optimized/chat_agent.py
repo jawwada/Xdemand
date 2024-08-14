@@ -1,17 +1,13 @@
-import os
+from typing import Any
 
-from dash import dcc
-from xiom_optimized.caching import df_fc_qp, \
-    df_running_stock, \
-    df_price_rec_summary, \
-    df_price_sensing_tab, \
-    ph_data, \
-    df_price_reference, \
-    df_agg_monthly_3years
-
-from langchain_openai import ChatOpenAI
-from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
 from langchain.agents.agent_types import AgentType
+from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
+from langchain_openai import ChatOpenAI
+
+from xiom_optimized.caching import df_agg_monthly_3years
+from xiom_optimized.caching import df_price_rec_summary
+from xiom_optimized.caching import df_running_stock
+from xiom_optimized.custom_callback import CustomHandler
 
 prompt = f""" 
 You are a data scientist at a retail company. 
@@ -89,10 +85,11 @@ dataframes = [
     df_price_rec_summary,  # df3
 
 ]
+
 agent_running_stock = create_pandas_dataframe_agent(
     ChatOpenAI(temperature=0.3, model="gpt-4o-mini"),
     dataframes,
-    verbose=True,
+    verbose=False,
     agent_type=AgentType.OPENAI_FUNCTIONS,
     number_of_head_rows=20,
     allow_dangerous_code=True
