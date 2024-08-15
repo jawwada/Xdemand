@@ -4,7 +4,6 @@ import traceback
 
 import dash
 import dash_bootstrap_components as dbc
-import dash_table
 import pandas as pd
 from dash import dcc
 from dash import html
@@ -13,10 +12,10 @@ from dash.dependencies import Output
 from dash.dependencies import State
 
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.agent_running_stock import agent_running_stock
-from xiom_optimized.agent_running_stock import prompt
-from xiom_optimized.chat_agent_custom_callback import CustomHandler
-from xiom_optimized.ask_ai_utils import agent_data_table, get_final_df_from_code, generate_table, generate_graph
+from xiom_optimized.ask_ai_utils.agent_running_stock import agent_running_stock
+from xiom_optimized.ask_ai_utils.agent_running_stock import prompt
+from xiom_optimized.ask_ai_utils.chat_agent_custom_callback import CustomHandler
+from xiom_optimized.ask_ai_utils.ask_ai_utils import agent_data_table, get_final_df_from_code, generate_table, generate_graph
 
 
 IMAGES = {"XD": app.get_asset_url("home_img.png")}

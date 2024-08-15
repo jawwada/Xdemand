@@ -60,4 +60,4 @@ nbeats*/**
 !.*ignore
 !logging_logs/test_model.log
 mltools/
-!xiom_optimized/cache_manager.py
+!xiom_optimized/utils/cache_manager.py

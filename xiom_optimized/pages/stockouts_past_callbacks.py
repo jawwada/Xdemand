@@ -2,11 +2,12 @@ import urllib
 import dash_table
 import pandas as pd
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.data_fetcher import df_running_stock, df_stockout_past, df_price_rec, df_price_rec_summary
+from xiom_optimized.utils.data_fetcher import df_stockout_past
 from dash import Output, Input, State
 from dash import html, dcc
 from plotly import graph_objs as go
-from plotly.subplots import make_subplots
+
+
 @app.callback(
     Output('tabs-content-stockout-past', 'children'),
     Input('stockout-tabs-past', 'value'),

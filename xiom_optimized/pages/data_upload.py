@@ -1,9 +1,6 @@
-from dash import dcc,html
 import dash_table
-import pandas as pd
-from xiom_optimized.config_constants import cnxn
 from dash import dcc, html
-from xiom_optimized.data_fetcher import df_sku_sum
+from xiom_optimized.utils.data_fetcher import df_sku_sum
 
 def generate_table(max_rows=10):
 

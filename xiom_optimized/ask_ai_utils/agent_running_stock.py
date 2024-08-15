@@ -2,9 +2,9 @@ from langchain.agents.agent_types import AgentType
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
 from langchain_openai import ChatOpenAI
 
-from xiom_optimized.data_fetcher import df_agg_monthly_3years
-from xiom_optimized.data_fetcher import df_price_rec_summary
-from xiom_optimized.data_fetcher import df_running_stock
+from xiom_optimized.utils.data_fetcher import df_agg_monthly_3years
+from xiom_optimized.utils.data_fetcher import df_price_rec_summary
+from xiom_optimized.utils.data_fetcher import df_running_stock
 
 
 prompt = f""" 

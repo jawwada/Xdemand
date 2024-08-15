@@ -1,7 +1,7 @@
 import pandas as pd
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.data_fetcher import ph_data
-from dash import Input, Output,State
+from xiom_optimized.utils.data_fetcher import ph_data
+from dash import Input, Output
 from xiom_optimized.utils import filter_data
 
 
