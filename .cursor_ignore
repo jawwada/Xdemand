@@ -1,40 +1,12 @@
-# Data files
-*.csv
-*.pkl
-*.parquet
-*.zip
-*.rar
-*.xlsx
-
-# Logs
-*.log
-**logs/**
-logging_logs/**
-
-# Temporary files
-*tmpfile*
-tmp*
-**tmp**
-temp/*
-**temp**
-
-# Images
-*.png
-*.jpg
-*.jpeg
-
-
-# Project-specific directories
-data/**
-plots*/**
-nbeats*/**
-cache-dataframes/
-data/
-.history/
-
-# Exceptions
-!.py
-!.ipynb
-!logging_logs/test_model.log
-!xdemand/machine_learning/ModelCache.py
-
+#ignore everything except code files
+**
+!**.py
+!**ignore
+!pyproject.toml
+!*.md
+!*.yml
+!*.yaml
+!Dockerfile**
+!*.ignore
+!**.sh
+!**.sql

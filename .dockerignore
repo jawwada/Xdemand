@@ -54,10 +54,11 @@ tmp*
 # Ignore specific directories
 plots*/**
 nbeats*/**
+mltools/
+
 
 # Allow specific files
 !.py
 !.*ignore
 !logging_logs/test_model.log
-mltools/
-!xiom_optimized/utils/cache_manager.py
+!xiom_optimized/assets/
