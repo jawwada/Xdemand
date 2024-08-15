@@ -32,7 +32,7 @@ layout = [
     dbc.Container(
         fluid=False,
         children=[
-            Header("XDemand.AI", app),
+            Header("XD", app),
             html.Hr(),
             conversation,
             controls,
