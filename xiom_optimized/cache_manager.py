@@ -110,7 +110,6 @@ class CacheManager:
                  " sku in (select distinct sku from stat_forecast_data_quantity) order by price_elasticity desc")
         df = pd.read_sql_query(query, cnxn)
         df['price_elasticity'] = df['price_elasticity'].astype(float).round(4)
-        print(df.head())
         return df.to_json(date_format='iso', orient='split')
 
     def query_price_regression_tab(self):

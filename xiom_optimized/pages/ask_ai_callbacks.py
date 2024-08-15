@@ -1,14 +1,26 @@
-from dash.dependencies import Input, Output, State
-from xiom_optimized.chat_agent import agent_running_stock, prompt
-from xiom_optimized.app_config_initial import app
+import base64
+import io
+import traceback
+
+import dash
 import dash_bootstrap_components as dbc
-from dash import html, dcc
+import dash_table
+import pandas as pd
+from dash import dcc
+from dash import html
+from dash.dependencies import Input
+from dash.dependencies import Output
+from dash.dependencies import State
+
+from xiom_optimized.app_config_initial import app
+from xiom_optimized.agent_running_stock import agent_running_stock
+from xiom_optimized.agent_running_stock import prompt
 from xiom_optimized.chat_agent_custom_callback import CustomHandler
-from flask import request, make_response  # Import make_response
+from xiom_optimized.ask_ai_utils import agent_data_table, get_final_df_from_code, generate_table, generate_graph
+
 
 IMAGES = {"XD": app.get_asset_url("home_img.png")}
 custom_callback = CustomHandler(app)
-
 
 def Header(name, app):
     title = html.H4(name, style={"margin-top": 5})
@@ -53,19 +65,19 @@ def textbox(text, box="AI", name="RDX"):
         raise ValueError("Incorrect option for `box`.")
 
 
-
 @app.callback(
     Output("display-conversation", "children"),
     [Input("store-conversation", "data")]
 )
 def update_display(chat_history):
-    if chat_history!="":
+    if chat_history != "":
         return [
             textbox(x, box="user") if i % 2 == 0 else textbox(x, box="AI")
             for i, x in enumerate(chat_history.split("<split>")[:-1])
         ]
     else:
         return None
+
 
 @app.callback(
     Output("user-input", "value"),
@@ -78,7 +90,8 @@ def clear_input(n_clicks, n_submit):
 
 @app.callback(
     [Output("store-conversation", "data"),
-     Output("loading-component", "children")],
+     Output("loading-component", "children"),
+     Output("response-code", "data")],
     [Input("submit", "n_clicks"),
      Input("user-input", "n_submit")],
     [State("user-input", "value"),
@@ -86,20 +99,90 @@ def clear_input(n_clicks, n_submit):
 )
 def run_chatbot(n_clicks, n_submit, user_input, chat_history):
     if n_clicks == 0 and n_submit is None:
-
-        return "", None
+        return "", None, ""
 
     if user_input is None or user_input == "":
-        return chat_history, None
+        return chat_history, None, ""
 
     name = "Xd"
-
     # First add the user input to the chat history
     chat_history += f"You : {user_input} <split>"
     model_input = f"{prompt}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
     chat_response = agent_running_stock.run(model_input, callbacks=[custom_callback])
     # Access the response code from the custom callback
-    response_code = custom_callback.response_code
-    print(f"Response code in callback: {response_code}")
     chat_history += f"{chat_response}<split>"
-    return chat_history, None
+    return chat_history, None, custom_callback.response_code
+
+
+@app.callback(Output("response-code-final-df", "data"),
+             Input("response-code", "data")
+)
+def update_final_df(response_code):
+    if response_code == None or response_code == "":
+        return ""
+    try :
+        response_code_final_df = agent_data_table.invoke(response_code)
+    except Exception as e:
+        print(f"Error in update_final_df: {str(e)}")
+        response_code_final_df = ""
+    return response_code_final_df["text"]
+
+
+@app.callback(
+    Output("graph-table-container", "children"),
+    [Input("generate-table-button", "n_clicks"),
+     Input("generate-graph-button", "n_clicks")],
+    State("response-code-final-df", "data")
+)
+def update_graph_table_container(table_clicks, graph_clicks, response_code_final_df):
+    if response_code_final_df == "":
+        return None
+    final_df_code = response_code_final_df
+    ctx = dash.callback_context
+    print("Callback context:", ctx.triggered)
+    if not ctx.triggered:
+        return None
+    button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+    if button_id == "generate-table-button":
+            return generate_table(final_df_code)
+    elif button_id == "generate-graph-button":
+        return generate_graph(final_df_code)
+
+@app.callback(
+    Output('download-button-final-df','href'),
+    Input('response-code-final-df', 'data')
+)
+def update_download_link(response_code_final_df):
+    if response_code_final_df == "":
+        return ""
+    try:
+        final_df = get_final_df_from_code(response_code_final_df)
+        # Create an in-memory Excel file
+        output = io.BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            final_df.to_excel(writer, sheet_name='Sheet1', index=False)
+
+        # Encode the Excel file to base64
+        excel_bytes = output.getvalue()
+        b64 = base64.b64encode(excel_bytes).decode()
+
+        return f"data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}"
+    except Exception as e:
+        print(f"Error in update_download_link: {str(e)}")
+        print(traceback.format_exc())
+        return ""
+
+@app.callback(
+    Output("download-dataframe-xlsx", "data"),
+    Input("download-button-final-df", "n_clicks"),
+    State("response-code-final-df", "data"),
+    prevent_initial_call=True,
+)
+def download_xlsx(n_clicks, response_code_final_df):
+    try:
+        final_df = get_final_df_from_code(response_code_final_df)
+        return dcc.send_data_frame(final_df.to_excel, "final_dataframe.xlsx", sheet_name="Sheet1")
+    except Exception as e:
+        print(f"Error in download_xlsx: {str(e)}")
+        return None
+

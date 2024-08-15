@@ -34,16 +34,28 @@ controls = dbc.InputGroup(
 
 layout = [
     dcc.Store(id="store-it", data=[]),
+    dcc.Store(id="store-conversation", data="", storage_type="session"),
+    dcc.Store(id="response-code", data="", storage_type="session"),
+    dcc.Store(id="response-code-final-df", data="", storage_type="session"),
+
     dbc.Container(
-    fluid=False,
-    children=[
-        Header("Inventory Assistant", app),
-        html.Hr(),
-        dcc.Store(id="store-conversation", data="",storage_type="session"),
-        conversation,
-        controls,
-        dbc.Spinner(html.Div(id="loading-component")),
-    ],
-)]
+        fluid=False,
+        children=[
+            Header("Inventory Assistant", app),
+            html.Hr(),
+            conversation,
+            controls,
+            dbc.Spinner(html.Div(id="loading-component")),
+            html.Div(id='buttons-container', children=[
+                dbc.Button("Generate Table", id="generate-table-button", className="mr-2"),
+                dbc.Button("Generate Graph", id="generate-graph-button", className="mr-2")
+            ]),
+            html.Div(id="graph-table-container", children=''),  # This is where the table or graph will be displayed
+            html.Div(id="data-table-container", children=''),
+            html.Div(id='dynamic-figure', children='')
+
+        ],
+    ),
+]
 
 

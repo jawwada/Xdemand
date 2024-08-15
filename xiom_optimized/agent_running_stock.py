@@ -1,5 +1,3 @@
-from typing import Any
-
 from langchain.agents.agent_types import AgentType
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
 from langchain_openai import ChatOpenAI
@@ -7,7 +5,7 @@ from langchain_openai import ChatOpenAI
 from xiom_optimized.data_fetcher import df_agg_monthly_3years
 from xiom_optimized.data_fetcher import df_price_rec_summary
 from xiom_optimized.data_fetcher import df_running_stock
-from xiom_optimized.chat_agent_custom_callback import CustomHandler
+
 
 prompt = f""" 
 You are a data scientist at a retail company. 
@@ -95,3 +93,4 @@ agent_running_stock = create_pandas_dataframe_agent(
     handle_output_parsing_errors=True,
     allow_dangerous_code=True,
 )
+
