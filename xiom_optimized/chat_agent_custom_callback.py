@@ -4,7 +4,6 @@ from uuid import UUID
 from typing import Any, Dict, List, Union
 from langchain.schema import BaseMessage, LLMResult, AgentAction, AgentFinish
 from dash import callback_context
-from flask import request, make_response  # Import make_response
 
 
 
@@ -16,6 +15,7 @@ class CustomHandler(BaseCallbackHandler):
         self.parent_run_id: Optional[UUID] = None
         self.handlers = []  # Initialize handlers attribute
         self.app = app
+        self.response_code=None
 
     def on_agent_action(self, action, **kwargs: Any) -> Any:
         """Run on agent action."""
@@ -23,10 +23,7 @@ class CustomHandler(BaseCallbackHandler):
             # Use the global callback_context directly
             if callback_context is not None:
                 # Create a response object
-                response = make_response()
-                print(action.tool_input["query"])
-                # Set the cookie
-                response.set_cookie("response_code", action.tool_input["query"])
+                self.response_code = action.tool_input['query']
                 return
 
 

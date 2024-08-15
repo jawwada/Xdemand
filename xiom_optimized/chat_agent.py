@@ -7,7 +7,7 @@ from langchain_openai import ChatOpenAI
 from xiom_optimized.data_fetcher import df_agg_monthly_3years
 from xiom_optimized.data_fetcher import df_price_rec_summary
 from xiom_optimized.data_fetcher import df_running_stock
-from xiom_optimized.custom_callback import CustomHandler
+from xiom_optimized.chat_agent_custom_callback import CustomHandler
 
 prompt = f""" 
 You are a data scientist at a retail company. 

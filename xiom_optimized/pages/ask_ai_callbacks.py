@@ -3,8 +3,8 @@ from xiom_optimized.chat_agent import agent_running_stock, prompt
 from xiom_optimized.app_config_initial import app
 import dash_bootstrap_components as dbc
 from dash import html, dcc
-from xiom_optimized.custom_callback import CustomHandler
-
+from xiom_optimized.chat_agent_custom_callback import CustomHandler
+from flask import request, make_response  # Import make_response
 
 IMAGES = {"XD": app.get_asset_url("home_img.png")}
 custom_callback = CustomHandler(app)
@@ -97,6 +97,9 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
     # First add the user input to the chat history
     chat_history += f"You : {user_input} <split>"
     model_input = f"{prompt}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
-    response = agent_running_stock.run(model_input, callbacks=[custom_callback])
-    chat_history += f"{response}<split>"
+    chat_response = agent_running_stock.run(model_input, callbacks=[custom_callback])
+    # Access the response code from the custom callback
+    response_code = custom_callback.response_code
+    print(f"Response code in callback: {response_code}")
+    chat_history += f"{chat_response}<split>"
     return chat_history, None
