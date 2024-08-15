@@ -4,7 +4,7 @@ import dash_table
 
 from xiom_optimized.ask_ai_utils.agents import agent_visualisation
 from xiom_optimized.utils.data_fetcher import df_agg_monthly_3years as df2
-from xiom_optimized.utils.data_fetcher import df_price_rec as df3
+from xiom_optimized.utils.data_fetcher import df_price_rec_summary as df3
 from xiom_optimized.utils.data_fetcher import df_running_stock as df1
 
 

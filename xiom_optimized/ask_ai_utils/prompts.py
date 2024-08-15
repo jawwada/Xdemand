@@ -1,4 +1,3 @@
-from langchain.prompts import PromptTemplate
 from langchain_core.prompts import PromptTemplate
 
 data_frames_description = """You have access to the following dataframes: df1, df2, df3.
