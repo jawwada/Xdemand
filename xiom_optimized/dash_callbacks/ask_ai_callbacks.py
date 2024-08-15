@@ -20,14 +20,14 @@ from xiom_optimized.ask_ai_utils.dangerous_code import generate_table
 from xiom_optimized.ask_ai_utils.dangerous_code import get_final_df_from_code
 from xiom_optimized.ask_ai_utils.prompts import prompt_ds
 
-IMAGES = {"XD": app.get_asset_url("home_img.png")}
+IMAGES = {"XD": app.get_asset_url("img.png")}
 custom_callback = CustomHandler(app)
 
 
 def Header(name, app):
     title = html.H4(name, style={"margin-top": 5})
     logo = html.Img(
-        src=app.get_asset_url("home_img.png"), style={"float": "right", "height": 40}
+        src=app.get_asset_url("img.png"), style={"float": "right", "height": 40}
     )
     return dbc.Row([dbc.Col(title, md=10), dbc.Col(logo, md=2)])
 
@@ -53,7 +53,7 @@ def textbox(text, box="AI", name="RDX"):
         style["margin-right"] = "auto"
 
         thumbnail = html.Img(
-            src=app.get_asset_url("home_img.png"),
+            src=app.get_asset_url("img.png"),
             style={
                 "height": 40,
                 "float": "left",

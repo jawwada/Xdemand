@@ -10,3 +10,4 @@
 !*.ignore
 !**.sh
 !**.sql
+!xiom_optimized/assets/*

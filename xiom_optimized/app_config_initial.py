@@ -9,7 +9,7 @@ server = Flask(__name__)
 
 app = dash.Dash(
     __name__,
-    external_stylesheets=[dbc.themes.ZEPHYR],
+    external_stylesheets=[dbc.themes.MORPH],
     server=server)
 app.title = 'X-Demand'
 app.config['suppress_callback_exceptions'] = False

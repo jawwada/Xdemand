@@ -42,7 +42,7 @@ layout = html.Div(id='page_container',
                           [
                               dbc.Col(
                                   dbc.NavLink(
-                                      html.Img(src=app.get_asset_url('home_img.png'),
+                                      html.Img(src=app.get_asset_url('img.png'),
                                                style={'height': '80px', 'width': '80px', 'float': 'left'}),
                                       href="/", active="exact"),
                                   width="auto"

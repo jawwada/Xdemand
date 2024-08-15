@@ -32,7 +32,7 @@ layout = [
     dbc.Container(
         fluid=False,
         children=[
-            Header("Inventory Assistant", app),
+            Header("XDemand.AI", app),
             html.Hr(),
             conversation,
             controls,

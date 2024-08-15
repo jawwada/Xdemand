@@ -31,3 +31,19 @@
     font-size: 0.8em;
     opacity: 0.7;
 }
+
+/* New styles for tabs, buttons, and links */
+.nav-pills .nav-link {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+button, .btn {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+a {
+    font-size: 1.2em;
+    font-weight: bold;
+}

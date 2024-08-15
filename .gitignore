@@ -41,7 +41,7 @@ data/
 !.ipynb
 !logging_logs/test_model.log
 !xdemand/machine_learning/ModelCache.py
-!xiom_optimized/assets/home_img.png
+!xiom_optimized/assets/img.png
 
 /cache_directory/
 .idea/
