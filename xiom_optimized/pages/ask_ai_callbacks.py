@@ -7,16 +7,6 @@ from langchain.callbacks.base import BaseCallbackHandler
 from typing import Any
 
 IMAGES = {"XD": app.get_asset_url("home_img.png")}
-class CustomHandler(BaseCallbackHandler):
-    """Base callback handler that can be used to handle callbacks from langchain."""
-
-    def on_agent_action(self, action, **kwargs: Any) -> Any:
-        """Run on agent action."""
-        if action.tool == "python_repl_ast":
-            print(action.tool_input)
-
-custom_callback = CustomHandler()
-
 
 def Header(name, app):
     title = html.H4(name, style={"margin-top": 5})
@@ -105,7 +95,7 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
     # First add the user input to the chat history
     chat_history += f"You {user_input}<split>"
     model_input = f"{prompt}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
-    response = agent_running_stock.invoke({"input":model_input},{"callback":custom_callback})
+    response = agent_running_stock.invoke(model_input)
     chat_history += f"{response}<split>"
     return chat_history, None
 

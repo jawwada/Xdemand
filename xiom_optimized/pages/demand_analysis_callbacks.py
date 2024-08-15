@@ -4,11 +4,13 @@ import pandas as pd
 import plotly.express as px
 from xiom_optimized.data_fetcher import df_sales,ph_data
 
-from xiom_optimized.config_constants import *
+from xiom_optimized.config_constants import sample_rate_dict
+from xiom_optimized.cache_manager import cache_decorator
 from dash import html, dcc, Output, Input
 
 from xiom_optimized.app_config_initial import app
 
+@cache_decorator
 @app.callback(
     Output('da-tabs-content-analysis', 'children'),
     Input('quantity-sales-radio', 'value'),

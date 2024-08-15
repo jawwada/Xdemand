@@ -8,7 +8,7 @@ from dash import html, dcc
 from plotly import graph_objs as go
 from plotly.subplots import make_subplots
 from config import price_recommendation_settings as pr_cf
-from xiom_optimized.data_fetcher import cache_decorator
+from xiom_optimized.cache_manager import cache_decorator
 
 from dash import dcc
 from dash import html

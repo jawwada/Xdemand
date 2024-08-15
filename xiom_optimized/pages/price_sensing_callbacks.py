@@ -1,5 +1,7 @@
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.data_fetcher import cache_decorator, df_daily_sales_da, df_price_sensing_tab, df_price_regression_tab, ph_data
+from xiom_optimized.data_fetcher import  df_daily_sales_da, df_price_sensing_tab, df_price_regression_tab
+from xiom_optimized.cache_manager import cache_decorator
+
 from dash import Output, Input, State
 from dash import html, dcc
 from plotly import graph_objs as go
@@ -8,8 +10,6 @@ import dash_table
 import pandas as pd
 import plotly.express as px
 
-from datetime import datetime
-from xiom_optimized.config_constants import TIMEOUT
 
 @cache_decorator
 @app.callback(
