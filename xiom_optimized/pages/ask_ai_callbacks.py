@@ -3,10 +3,12 @@ from xiom_optimized.chat_agent import agent_running_stock, prompt
 from xiom_optimized.app_config_initial import app
 import dash_bootstrap_components as dbc
 from dash import html, dcc
-from langchain.callbacks.base import BaseCallbackHandler
-from typing import Any
+from xiom_optimized.custom_callback import CustomHandler
+
 
 IMAGES = {"XD": app.get_asset_url("home_img.png")}
+custom_callback = CustomHandler(app)
+
 
 def Header(name, app):
     title = html.H4(name, style={"margin-top": 5})
@@ -17,7 +19,7 @@ def Header(name, app):
 
 
 def textbox(text, box="AI", name="RDX"):
-    text = text.replace(f"{name}:", "").replace("You:", "")
+    text = text.replace(f"{name}:", "")
     style = {
         "max-width": "100%",
         "width": "max-content",
@@ -93,9 +95,8 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
     name = "Xd"
 
     # First add the user input to the chat history
-    chat_history += f"You {user_input}<split>"
+    chat_history += f"You : {user_input} <split>"
     model_input = f"{prompt}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
-    response = agent_running_stock.invoke(model_input)
+    response = agent_running_stock.run(model_input, callbacks=[custom_callback])
     chat_history += f"{response}<split>"
     return chat_history, None
-
