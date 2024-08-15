@@ -2,7 +2,7 @@ import pandas as pd
 from dash import dcc, html
 from datetime import datetime, timedelta
 from xiom_optimized.pages.data_chooser_callbacks import *
-from xiom_optimized.utils import get_unique_values
+from xiom_optimized.utils.utils import get_unique_values
 unique_skus = get_unique_values('sku')
 default_sku = unique_skus[0] if unique_skus else None
 
