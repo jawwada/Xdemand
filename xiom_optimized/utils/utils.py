@@ -28,12 +28,6 @@ def filter_data(filter_state, selected_channel=None,selected_warehouse=None,
 def get_unique_values(column_name):
     return ph_data[column_name].unique().tolist()
 
-
-def format_sql_values(values):
-    if len(values) == 1:
-        return f"('{values[0]}')"
-    else:
-        return str(tuple(values))
 def format_sql_values(values):
     if len(values) == 1:
         return f"('{values[0]}')"
