@@ -3,11 +3,18 @@ from xiom_optimized.chat_agent import agent_running_stock, prompt
 from xiom_optimized.app_config_initial import app
 import dash_bootstrap_components as dbc
 from dash import html, dcc
+from langchain.callbacks.base import BaseCallbackHandler
 from typing import Any
-from xiom_optimized.custom_callback import CustomHandler
-
 
 IMAGES = {"XD": app.get_asset_url("home_img.png")}
+class CustomHandler(BaseCallbackHandler):
+    """Base callback handler that can be used to handle callbacks from langchain."""
+
+    def on_agent_action(self, action, **kwargs: Any) -> Any:
+        """Run on agent action."""
+        if action.tool == "python_repl_ast":
+            print(action.tool_input)
+
 custom_callback = CustomHandler()
 
 
@@ -95,11 +102,10 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
 
     name = "Xd"
 
-
     # First add the user input to the chat history
     chat_history += f"You {user_input}<split>"
     model_input = f"{prompt}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
-    response = agent_running_stock.invoke({"input":model_input},{"callbacks":[custom_callback]})
+    response = agent_running_stock.invoke({"input":model_input},{"callback":custom_callback})
     chat_history += f"{response}<split>"
     return chat_history, None
 
