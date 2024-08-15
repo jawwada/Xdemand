@@ -53,7 +53,6 @@ Consider the following scenarios:
 convert it to a data frame and assign it to final_df.
 3. If the final data structure is a dictionary of data frames, merge these data frames to create final_df.
 Additionally, remove any head() or tail() function type calls that limit the data to a few rows.
-
 Finally, Provide the complete code for analysis, including both the original code snippet and the assignment to final_df. No markdowns are needed.
 Here is the code snippet:
 {text}
@@ -70,6 +69,8 @@ Do not include fig.show() in the code.
 If the visualization is a time series plot, ensure the date is on the x-axis.
 If there are multiple values for the y-axis, consider multiple y-axes with different axis limits.
 The visualization should be appealing and easy to understand for business managers.
+No markdowns.
+Here is the code snippet:
     """
 
 prompt_ds = f""" 
@@ -82,42 +83,7 @@ Focus on the following areas:
 4. Demand analysis
 
 You have access to the following dataframes:
-
-1. **df_running_stock**:
-    - `ds`: The date of the record.
-    - `sku`: Stock Keeping Unit, a unique identifier .
-    - `warehouse_code`: Code representing the warehouse region where the product is stored. [UK,DE,US,CA]
-    - `yhat`: Forecasted quantity for the product demand.
-    - `trend`: The trend component of the forecast.
-    - `yearly_seasonality`: The yearly seasonality component of the forecast.
-    - `revenue`: Revenue generated from the product.
-    - `running_stock_after_forecast`: The stock level after considering the forecasted demand.
-    - `is_understock`: Indicator if the product is understocked on the date.
-    - `is_overstock`: Indicator if the product is overstocked on the date.
-    - `Expected_Arrival_Date`: The expected date of arrival for new stock.
-    - `InTransit_Quantity`: Quantity of the product that is currently in transit.
-    - `status_date`: The date when the status was recorded.
-
-2. **df_agg_monthly_3years**:
-    - `sku`: 
-    - `warehouse_code`:
-    - `date`: The date of the record.
-    - `quantity`: Total quantity sold.
-    - `revenue`: Revenue generated.
-
-3. **df_price_rec_summary**:
-    - `sku`: .
-    - `warehouse_code`:.
-    - `yhat`: average Forecasted quantity for the product demand.
-    - `ref_price`: Reference price for the product.
-    - `price_elasticity`: Measure of how the quantity demanded of a product responds to a change in price.
-    - `opt_stock_level`: Optimal stock level for the product.
-    - `revenue_before`: Revenue generated before the price recommendation.
-    - `revenue_after`: Revenue generated after the price recommendation.
-    - `price_new`: New recommended price for the product.
-    - `price_old`: Old price of the product.
-    - `s_opt`: Optimal stock level after the price recommendation.
-    - `avg_yhat`: Average forecasted quantity for the product demand.
+{data_frames_description}
 data frames are numbered as follows: df1, df2, df3 and are available in the environment. You can access them using the variable names,
 and answer questions based on the data.
 Key context for the data analysis:
