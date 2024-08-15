@@ -1,14 +1,15 @@
 # config_constants.py
-import os
 from sys import platform
+
 CACHE_TYPE = 'filesystem'
 CACHE_DIR = 'cache-dataframes'
-TIMEOUT=60*60*24 # 24 hours
+TIMEOUT = 60 * 60 * 24  # 24 hours
 # Redis connection details
 CACHE_REDIS_URL = 'redis://:4Svi3ccc9vDciM6pYqlurHS613IbqZJssAzCaNYSIeU=@xdemand.redis.cache.windows.net:6379'
 # Database connection details
 import pyodbc
-#server = 'tcp:xdemand.database.windows.net'
+
+# server = 'tcp:xdemand.database.windows.net'
 server = "rdx4sales.database.windows.net"
 database = "rdx4cast"
 user = "rdxadmin"
@@ -41,9 +42,8 @@ query_running_stock = f"select * from stat_running_stock_forecast"
 query_df_daily_sales = f"""SELECT sku, date, quantity, revenue, price FROM agg_daily_sales WHERE sku !='0' and date > DATEADD(year, -1, GETDATE()) ORDER BY sku,date ; """
 '''
 
-#dictionary to jump from radio buttons to sampling rate
-sample_rate_dict={0: "D", 1: "W-Mon", 2: "M"}
+# dictionary to jump from radio buttons to sampling rate
+sample_rate_dict = {0: "D", 1: "W-Mon", 2: "M"}
 
-#per sampling rate, how many days back we need to go
+# per sampling rate, how many days back we need to go
 sample_rate_backdate_dict = {"D": 90, "W-Mon": 365, "M": 365}
-

@@ -3,7 +3,6 @@ import dash_auth
 import dash_bootstrap_components as dbc
 from flask import Flask
 
-
 from xiom_optimized.utils.config_constants import VALID_USERNAME_PASSWORD_PAIRS
 
 server = Flask(__name__)

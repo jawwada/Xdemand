@@ -1,18 +1,27 @@
 import urllib
 from datetime import datetime
+
 import dash_table
 import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
-from xiom_optimized.app_config_initial import app
-from xiom_optimized.utils.data_fetcher import  df_fc_qp, df_sales
-from xiom_optimized.utils.cache_manager import cache_decorator
-from xiom_optimized.utils.config_constants import sample_rate_dict
-from dash import Input, Output, dcc, html, dash_table
+from dash import Input
+from dash import Output
+from dash import dash_table
+from dash import dcc
+from dash import html
 from plotly.subplots import make_subplots
 from prophet import Prophet
 
+from xiom_optimized.app_config_initial import app
+from xiom_optimized.utils.cache_manager import cache_decorator
+from xiom_optimized.utils.config_constants import sample_rate_dict
+from xiom_optimized.utils.data_fetcher import df_fc_qp
+from xiom_optimized.utils.data_fetcher import df_sales
+
 cache_decorator
+
+
 @app.callback(
     Output('tabs-content', 'children'),
     Input('quantity-sales-radio', 'value'),
@@ -22,8 +31,8 @@ cache_decorator
     Input('sku-dropdown', 'value'),
     Input('seasonality-mode-radio', 'value')
 )
-def update_demand_forecast_graph(quantity_sales_radio,time_window,
-                                 graph_data_tab,filter_data,
+def update_demand_forecast_graph(quantity_sales_radio, time_window,
+                                 graph_data_tab, filter_data,
                                  selected_sku, seasonality_mode):
     if graph_data_tab == 'tab-1':
         if isinstance(selected_sku, str):
@@ -121,7 +130,8 @@ def update_demand_forecast_graph(quantity_sales_radio,time_window,
 
             # Assuming filtered_data is another DataFrame you want to merge with
             # Merge the filtered DataFrame with filtered_data
-            df_fc_qp_filtered = df_fc_qp_filtered.merge(filtered_data, on=['sku', 'warehouse_code', 'region'], how='inner')
+            df_fc_qp_filtered = df_fc_qp_filtered.merge(filtered_data, on=['sku', 'warehouse_code', 'region'],
+                                                        how='inner')
 
             # Decide which set of columns to aggregate based on the value of quantity_sales_radio
             if quantity_sales_radio == 'quantity':
@@ -133,30 +143,28 @@ def update_demand_forecast_graph(quantity_sales_radio,time_window,
 
             # Create aggregation dictionary
             agg_dict = {col: 'sum' for col in agg_columns}
-            #keep only ds and agg_columns
-            columns=['ds']+agg_columns
+            # keep only ds and agg_columns
+            columns = ['ds'] + agg_columns
             # Group by the specified columns and aggregate
             df_ds = df_fc_qp_filtered[columns].groupby([
                 pd.Grouper(freq=sample_rate_dict[time_window], key='ds')
             ]).agg(agg_dict).reset_index()
 
-
             # Inside your update_demand_forecast_graph function, after you define df_ds and set 'date' as its index:
-
 
             today = datetime.now()
 
             df_ds['ds'] = pd.to_datetime(df_ds['ds'], errors='coerce')
 
-
             # Create subplots: use 'domain' type for Pie subplot
             fig_components = make_subplots(rows=2, cols=1)
-            fig_components.update_layout(title_text = "Forecasting Model Components")
+            fig_components.update_layout(title_text="Forecasting Model Components")
             # Add traces
             fig_components.add_trace(go.Scatter(x=df_ds['ds'], y=df_ds[agg_columns[3]], name='Trend'), row=1, col=1)
 
             if sample_rate_dict[time_window] == 'D':
-                fig_components.add_trace(go.Scatter(x=df_ds['ds'], y=df_ds[agg_columns[4]], name='Weekly'), row=2, col=1)
+                fig_components.add_trace(go.Scatter(x=df_ds['ds'], y=df_ds[agg_columns[4]], name='Weekly'), row=2,
+                                         col=1)
             fig_components.add_trace(go.Scatter(x=df_ds['ds'], y=df_ds[agg_columns[5]], name='Yearly'), row=2, col=1)
 
             # Update layout
@@ -180,8 +188,10 @@ def update_demand_forecast_graph(quantity_sales_radio,time_window,
             # Add the forecasted data to the figure
             fig.add_trace(go.Scatter(x=df_ds['ds'], y=df_ds[agg_columns[0]], name='Forecast'))
             # Add the forecast components to the figure
-            fig.add_trace(go.Scatter(x=df_ds['ds'], y=df_ds[agg_columns[1]], name='Lower Bound of Forecast', line=dict(width=0)))
-            fig.add_trace(go.Scatter(x=df_ds['ds'], y=df_ds[agg_columns[2]], name='Upper Bound of Forecast', fill='tonexty'))
+            fig.add_trace(
+                go.Scatter(x=df_ds['ds'], y=df_ds[agg_columns[1]], name='Lower Bound of Forecast', line=dict(width=0)))
+            fig.add_trace(
+                go.Scatter(x=df_ds['ds'], y=df_ds[agg_columns[2]], name='Upper Bound of Forecast', fill='tonexty'))
             fig.update_layout(title=f'RDX Demand Forecast for {quantity_sales_radio}',
                               xaxis_title='Date', yaxis_title=quantity_sales_radio, height=400)
         return html.Div([
@@ -190,8 +200,8 @@ def update_demand_forecast_graph(quantity_sales_radio,time_window,
             dcc.Graph(id='components-data-graph', figure=fig_components),
         ])
     else:
-        download_columns=['sku','region','warehouse_code','ds','quantity','revenue']
-        forecast_table=dash_table.DataTable(
+        download_columns = ['sku', 'region', 'warehouse_code', 'ds', 'quantity', 'revenue']
+        forecast_table = dash_table.DataTable(
             id='forecast-table',
             columns=[{"name": i, "id": i} for i in download_columns],
             data=df_fc_qp.head(100)[download_columns].to_dict('records'),
@@ -205,11 +215,12 @@ def update_demand_forecast_graph(quantity_sales_radio,time_window,
                 } for c in ['Date', 'Region']
             ])
 
-        return html.Div([ # Forecast Data Table
-        html.Div([forecast_table],className="col-md-12"),
-        html.A('Download CSV', id='download-button', className='btn btn-primary', download="forecast_data.csv", href="",
-               target="_blank"),
-        ],className="col-md-12")
+        return html.Div([  # Forecast Data Table
+            html.Div([forecast_table], className="col-md-12"),
+            html.A('Download CSV', id='download-button', className='btn btn-primary', download="forecast_data.csv",
+                   href="",
+                   target="_blank"),
+        ], className="col-md-12")
 
 
 @app.callback(

@@ -1,24 +1,28 @@
 import urllib
+
 import dash_table
 import pandas as pd
+from dash import Input
+from dash import Output
+from dash import State
+from dash import dcc
+from dash import html
+from plotly import graph_objs as go
+
 from xiom_optimized.app_config_initial import app
 from xiom_optimized.utils.data_fetcher import df_stockout_past
-from dash import Output, Input, State
-from dash import html, dcc
-from plotly import graph_objs as go
 
 
 @app.callback(
     Output('tabs-content-stockout-past', 'children'),
     Input('stockout-tabs-past', 'value'),
     State('filter-data', 'data'))
-def update_stockout_container_past(graph_data_tab,filter_data):
-    n_largest=10
+def update_stockout_container_past(graph_data_tab, filter_data):
+    n_largest = 10
     filtered_data = pd.DataFrame(filter_data)
     selected_sku = filtered_data['sku'].unique().tolist()
 
     normalized_stockout = df_stockout_past[df_stockout_past['sku'].isin(selected_sku)]
-
 
     pivot_df = normalized_stockout.pivot(index='date', columns='sku', values='gap_e_log10')
     # Create a heatmap using Plotly
@@ -57,11 +61,13 @@ def update_stockout_container_past(graph_data_tab,filter_data):
     else:
         return html.Div([  # Forecast Data Table
             html.Div([stockout_past_table]),
-            html.A('Download CSV', id='download-button-stockout-past', className='btn btn-primary', download="stock_status_past.csv",
+            html.A('Download CSV', id='download-button-stockout-past', className='btn btn-primary',
+                   download="stock_status_past.csv",
                    href="",
                    target="_blank"),
-        ],className='col')
-    #return html.Div([dcc.Graph(id='historical-bar-chart', figure=fig_stockout), html.Hr()])
+        ], className='col')
+    # return html.Div([dcc.Graph(id='historical-bar-chart', figure=fig_stockout), html.Hr()])
+
 
 @app.callback(
     Output('download-button-stockout-past', 'href'),

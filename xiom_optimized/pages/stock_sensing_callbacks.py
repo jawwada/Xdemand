@@ -1,17 +1,21 @@
+import logging
 import urllib
+
 import dash_table
 import pandas as pd
-from xiom_optimized.app_config_initial import app
-from xiom_optimized.utils.data_fetcher import df_running_stock ,df_price_rec, df_price_rec_summary
-from dash import Output, Input
-from plotly import graph_objs as go
-from plotly.subplots import make_subplots
-from config import price_recommendation_settings as pr_cf
-from xiom_optimized.utils.cache_manager import cache_decorator
-
+from dash import Input
+from dash import Output
 from dash import dcc
 from dash import html
-import logging
+from plotly import graph_objs as go
+from plotly.subplots import make_subplots
+
+from config import price_recommendation_settings as pr_cf
+from xiom_optimized.app_config_initial import app
+from xiom_optimized.utils.cache_manager import cache_decorator
+from xiom_optimized.utils.data_fetcher import df_price_rec
+from xiom_optimized.utils.data_fetcher import df_price_rec_summary
+from xiom_optimized.utils.data_fetcher import df_running_stock
 
 
 @cache_decorator
@@ -19,7 +23,7 @@ import logging
     Output('tabs-content-stockout', 'children'),
     Input('stockout-tabs', 'value'),
     Input('filter-data', 'data'))
-def update_stockout_container(graph_data_tab,filter_data):
+def update_stockout_container(graph_data_tab, filter_data):
     filtered_data = pd.read_json(filter_data, orient='split')
     unique_wh = filtered_data['warehouse_code'].unique()
     top_n = 50
@@ -32,7 +36,7 @@ def update_stockout_container(graph_data_tab,filter_data):
     total_stockout_loss = df_running_stock_us['revenue'].sum()
     total_stockout_loss_fomatted = "{:,.0f}".format(total_stockout_loss)
 
-    #get sku and warehouse code together in a string for top stockouts
+    # get sku and warehouse code together in a string for top stockouts
     top_stockouts['sku'] = top_stockouts['sku'] + ' - ' + top_stockouts['warehouse_code']
     # find the top 10 SKUs with the highest overstock loss
     # Stockout Plot
@@ -51,7 +55,7 @@ def update_stockout_container(graph_data_tab,filter_data):
         yaxis_title='SKU - Warehouse Code ',
         xaxis_side="top",
         yaxis=dict(autorange="reversed"),  # To display top items at top
-        height=top_n*22
+        height=top_n * 22
     )
 
     df_running_stock_os = df_running_stock_filtered[df_running_stock_filtered.is_overstock == True]
@@ -64,14 +68,15 @@ def update_stockout_container(graph_data_tab,filter_data):
 
     df_running_stock_os['over_stocked_quantity'] = (
             df_running_stock_os['running_stock_after_forecast'] -
-            df_running_stock_os['yhat_avg'] * (pr_cf.forecast_stock_level +60))
+            df_running_stock_os['yhat_avg'] * (pr_cf.forecast_stock_level + 60))
 
     df_running_stock_os['over_stocked_revenue_loss'] = df_running_stock_os['over_stocked_quantity'] * (
-    df_running_stock_os['price'])
+        df_running_stock_os['price'])
     # filter nan and inf values
     df_running_stock_os = df_running_stock_os[df_running_stock_os['over_stocked_revenue_loss'].notna()]
     df_running_stock_os = df_running_stock_os[df_running_stock_os['over_stocked_revenue_loss'] != float('inf')]
-    df_running_stock_os= df_running_stock_os.groupby(['sku', 'warehouse_code'])[['over_stocked_revenue_loss']].sum().reset_index()
+    df_running_stock_os = df_running_stock_os.groupby(['sku', 'warehouse_code'])[
+        ['over_stocked_revenue_loss']].sum().reset_index()
     top_overstock = df_running_stock_os.sort_values(by=['over_stocked_revenue_loss'], ascending=False).head(top_n)
     top_overstock = top_overstock[top_overstock['over_stocked_revenue_loss'] > 0]
 
@@ -94,10 +99,10 @@ def update_stockout_container(graph_data_tab,filter_data):
         yaxis_title='SKU - Warehouse Code',
         xaxis_side="top",
         yaxis=dict(autorange="reversed"),  # To display top items at top
-        height=top_n*22
+        height=top_n * 22
     )
     download_columns = ['sku', 'ds', 'warehouse_code', 'yhat', 'running_stock_after_forecast',
-                        'InTransit_Quantity', 'Expected_Arrival_Date','is_understock', 'is_overstock']
+                        'InTransit_Quantity', 'Expected_Arrival_Date', 'is_understock', 'is_overstock']
     # Add x-axis titles
     # Add y-axis titles
     stockout_table = dash_table.DataTable(
@@ -119,7 +124,7 @@ def update_stockout_container(graph_data_tab,filter_data):
         return html.Div([
             html.Div([
                 dcc.Graph(id='top-n-so-graph', figure=fig_stockout)
-            ], style={'overflow-y': 'auto',  'display': 'inline-block', 'width': '50%', 'height': '500px'}),
+            ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%', 'height': '500px'}),
 
             html.Div([
                 dcc.Graph(id='bottom-n-so-graph', figure=fig_overstock)
@@ -128,11 +133,12 @@ def update_stockout_container(graph_data_tab,filter_data):
     else:
         return html.Div([  # Forecast Data Table
             stockout_table,
-            html.A('Download CSV', id='download-button-stockout', className='btn btn-primary', download="stock_status.csv",
+            html.A('Download CSV', id='download-button-stockout', className='btn btn-primary',
+                   download="stock_status.csv",
                    href="",
                    target="_blank"),
-        ], style={'overflow-y': 'scroll', 'overflowX': 'scroll', 'width':'100%'})
-    #return html.Div([dcc.Graph(id='historical-bar-chart', figure=fig_stockout), html.Hr()])
+        ], style={'overflow-y': 'scroll', 'overflowX': 'scroll', 'width': '100%'})
+    # return html.Div([dcc.Graph(id='historical-bar-chart', figure=fig_stockout), html.Hr()])
 
 
 @app.callback(
@@ -193,7 +199,7 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code):
                            showarrow=False, font=dict(color='red'), row=1, col=1)
 
     sku_price_summary = df_price_rec_summary[(df_price_rec_summary['sku'] == selected_sku) & (
-                df_price_rec_summary['warehouse_code'] == selected_warehouse_code)]
+            df_price_rec_summary['warehouse_code'] == selected_warehouse_code)]
 
     # Check if sku_price_summary is empty
     if sku_price_summary.empty:
@@ -315,6 +321,7 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code):
                    href="",
                    target="_blank"),
         ])
+
 
 @app.callback(
     Output('download-button-pr', 'href'),

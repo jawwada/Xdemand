@@ -1,5 +1,3 @@
-from dash import html, dcc
-from xiom_optimized.utils import get_unique_values
 from xiom_optimized.pages.demand_forecasting_callbacks import *
 
 content = html.Div([

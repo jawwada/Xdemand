@@ -1,9 +1,13 @@
-from xiom_optimized.app_layout import layout, page_layouts
+from dash import Input
+from dash import Output
+
 from xiom_optimized.app_config_initial import app
-from dash import Input, Output
+from xiom_optimized.app_layout import layout
+from xiom_optimized.app_layout import page_layouts
 
 # no date column
-app.layout=layout
+app.layout = layout
+
 
 @app.callback(Output("page-content", "children"),
               [Input("tabs-navigation", "value")])
@@ -13,10 +17,9 @@ def render_content(pathname):
         return layout
 
 
-
 server = app.server
 
 if __name__ == "__main__":
     app.run_server(debug=True)
 
-#app.config['DEBUG'] = True
+# app.config['DEBUG'] = True

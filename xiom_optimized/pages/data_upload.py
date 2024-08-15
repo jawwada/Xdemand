@@ -1,16 +1,18 @@
 import dash_table
-from dash import dcc, html
+from dash import dcc
+from dash import html
+
 from xiom_optimized.utils.data_fetcher import df_sku_sum
 
-def generate_table(max_rows=10):
 
-    dataframe=df_sku_sum.copy(deep=True)
+def generate_table(max_rows=10):
+    dataframe = df_sku_sum.copy(deep=True)
     sales_table = dash_table.DataTable(
         id='sales-data-table',
         columns=[{"name": i, "id": i} for i in dataframe.columns],
         data=dataframe.to_dict('records'),
         page_size=12,
-        style_table={'overflow': 'hidden','textOverflow': 'ellipsis'},
+        style_table={'overflow': 'hidden', 'textOverflow': 'ellipsis'},
         sort_action="native",
         sort_mode="multi",
         style_cell={'textAlign': 'left', 'padding': '6px', 'whiteSpace': 'normal', 'height': 'fixed', },
@@ -36,4 +38,3 @@ layout = html.Div(
         ),
     ]
 )
-

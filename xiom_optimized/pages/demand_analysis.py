@@ -1,7 +1,4 @@
-from dash import html, dcc
 from xiom_optimized.pages.demand_analysis_callbacks import *
-
-
 
 content = html.Div([
     # Forecasting Graphs
@@ -17,6 +14,6 @@ content = html.Div([
 
 layout = html.Div([
     html.Div([
-        html.Div([content],style={'margin-left': '0px'})
+        html.Div([content], style={'margin-left': '0px'})
     ], className="row")
 ], className="col-md-12")

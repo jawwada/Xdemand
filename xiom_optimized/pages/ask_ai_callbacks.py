@@ -12,14 +12,17 @@ from dash.dependencies import Output
 from dash.dependencies import State
 
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.ask_ai_utils.agent_running_stock import agent_running_stock
-from xiom_optimized.ask_ai_utils.agent_running_stock import prompt
-from xiom_optimized.ask_ai_utils.chat_agent_custom_callback import CustomHandler
-from xiom_optimized.ask_ai_utils.ask_ai_utils import agent_data_table, get_final_df_from_code, generate_table, generate_graph
-
+from xiom_optimized.ask_ai_utils.agent_executor_custom_call_backs import CustomHandler
+from xiom_optimized.ask_ai_utils.agents import agent_data_table
+from xiom_optimized.ask_ai_utils.agents import agent_running_stock
+from xiom_optimized.ask_ai_utils.dangerous_code import generate_graph
+from xiom_optimized.ask_ai_utils.dangerous_code import generate_table
+from xiom_optimized.ask_ai_utils.dangerous_code import get_final_df_from_code
+from xiom_optimized.ask_ai_utils.prompts import prompt_ds
 
 IMAGES = {"XD": app.get_asset_url("home_img.png")}
 custom_callback = CustomHandler(app)
+
 
 def Header(name, app):
     title = html.H4(name, style={"margin-top": 5})
@@ -106,7 +109,7 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
     name = "Xd"
     # First add the user input to the chat history
     chat_history += f"You : {user_input} <split>"
-    model_input = f"{prompt}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
+    model_input = f"{prompt_ds}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
     chat_response = agent_running_stock.run(model_input, callbacks=[custom_callback])
     # Access the response code from the custom callback
     chat_history += f"{chat_response}<split>"
@@ -114,12 +117,12 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
 
 
 @app.callback(Output("response-code-final-df", "data"),
-             Input("response-code", "data")
-)
+              Input("response-code", "data")
+              )
 def update_final_df(response_code):
     if response_code == None or response_code == "":
         return ""
-    try :
+    try:
         response_code_final_df = agent_data_table.invoke(response_code)
     except Exception as e:
         print(f"Error in update_final_df: {str(e)}")
@@ -143,12 +146,13 @@ def update_graph_table_container(table_clicks, graph_clicks, response_code_final
         return None
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
     if button_id == "generate-table-button":
-            return generate_table(final_df_code)
+        return generate_table(final_df_code)
     elif button_id == "generate-graph-button":
         return generate_graph(final_df_code)
 
+
 @app.callback(
-    Output('download-button-final-df','href'),
+    Output('download-button-final-df', 'href'),
     Input('response-code-final-df', 'data')
 )
 def update_download_link(response_code_final_df):
@@ -171,6 +175,7 @@ def update_download_link(response_code_final_df):
         print(traceback.format_exc())
         return ""
 
+
 @app.callback(
     Output("download-dataframe-xlsx", "data"),
     Input("download-button-final-df", "n_clicks"),
@@ -184,4 +189,3 @@ def download_xlsx(n_clicks, response_code_final_df):
     except Exception as e:
         print(f"Error in download_xlsx: {str(e)}")
         return None
-

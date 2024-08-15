@@ -1,9 +1,9 @@
 import dash
 import dash_bootstrap_components as dbc
-from dash import dcc, html
+from dash import dcc
+from dash import html
 
 dash.register_page(__name__, path='/profile')
-
 
 layout = html.Div(
     [
@@ -59,4 +59,3 @@ layout = html.Div(
         ),
     ]
 )
-

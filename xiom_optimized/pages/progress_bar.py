@@ -1,12 +1,16 @@
-from dash import dcc, html
 import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
+from dash import dcc
+from dash import html
+from dash.dependencies import Input
+from dash.dependencies import Output
+
 from xiom_optimized.app_config_initial import app
 
 progress_bar_layout = html.Div([
-dbc.Progress(id="progress_bar", value=0, striped=True, animated=True, style={'width': '100%', 'color': '#0000FF'}),
-dcc.Interval(id="progress_interval", interval=100, n_intervals=0),  # Timer for updating progress bar
- ])
+    dbc.Progress(id="progress_bar", value=0, striped=True, animated=True, style={'width': '100%', 'color': '#0000FF'}),
+    dcc.Interval(id="progress_interval", interval=100, n_intervals=0),  # Timer for updating progress bar
+])
+
 
 @app.callback(
     Output('progress_bar', 'value'),
@@ -20,6 +24,7 @@ def update_progress_bar(n):
     if progress >= 100:
         return 0, {'display': 'none'}, 100000000000000
     return progress, {'width': '{}%'.format(progress)}, 100
+
 
 # Function to calculate progress (example)
 def calculate_progress(n):

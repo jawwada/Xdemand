@@ -1,14 +1,18 @@
-from xiom_optimized.app_config_initial import app
-from xiom_optimized.utils.data_fetcher import  df_daily_sales_da, df_price_sensing_tab, df_price_regression_tab
-from xiom_optimized.utils.cache_manager import cache_decorator
-
-from dash import Output, Input
-from dash import html, dcc
-from plotly import graph_objs as go
-from plotly.subplots import make_subplots
 import dash_table
 import pandas as pd
 import plotly.express as px
+from dash import Input
+from dash import Output
+from dash import dcc
+from dash import html
+from plotly import graph_objs as go
+from plotly.subplots import make_subplots
+
+from xiom_optimized.app_config_initial import app
+from xiom_optimized.utils.cache_manager import cache_decorator
+from xiom_optimized.utils.data_fetcher import df_daily_sales_da
+from xiom_optimized.utils.data_fetcher import df_price_regression_tab
+from xiom_optimized.utils.data_fetcher import df_price_sensing_tab
 
 
 @cache_decorator
@@ -28,8 +32,8 @@ def update_price_sensing_graph(graph_data_tab, filter_data):
 
     if graph_data_tab == 'ps-tab-1':
         # Define the bins and labels
-        bins = [float('-inf'),-3,-1, 0]
-        labels = ['Highly Elastic', 'Elastic','Unitary/Inelastic']
+        bins = [float('-inf'), -3, -1, 0]
+        labels = ['Highly Elastic', 'Elastic', 'Unitary/Inelastic']
 
         # Categorize the SKUs based on the price elasticity bins
         df['elasticity_bin'] = pd.cut(df['price_elasticity'], bins=bins, labels=labels)
@@ -90,11 +94,13 @@ def update_price_sensing_graph(graph_data_tab, filter_data):
         download_button = html.Button("Download Data", id="download-button")
         download_component = dcc.Download(id="download-dataframe-csv")
 
-        return html.Div([ # Forecast Data Table
+        return html.Div([  # Forecast Data Table
             ps_table,
             download_button,
             download_component
         ])
+
+
 @app.callback(
     Output('sku-price-sensing-container', 'children'),
     Input('sku-dropdown', 'value'),
@@ -117,7 +123,7 @@ def update_sku_price_relationship_graph(selected_sku=None, filter_data=None):
 
     df_dsa['date'] = pd.to_datetime(df_dsa['date'])
     df_dsa.fillna(0, inplace=True)
-    df_dsa = df_dsa.groupby([pd.Grouper(key='date', freq='W-Mon')]).\
+    df_dsa = df_dsa.groupby([pd.Grouper(key='date', freq='W-Mon')]). \
         agg({'quantity': 'sum', 'revenue': 'sum', 'price': 'mean', 'promotional rebates': 'mean'}).reset_index()
     df_dsa.set_index('date', inplace=True)
     sku = selected_sku
@@ -157,6 +163,8 @@ def update_sku_price_relationship_graph(selected_sku=None, filter_data=None):
         html.Div([dcc.Graph(id='sku-price-sensing-graph', figure=fig2)
                   ], style={'display': 'inline-block', 'width': '50%'})
     ])
+
+
 @app.callback(
     Output("download-dataframe-csv", "data"),
     Input("download-button", "n_clicks"),
