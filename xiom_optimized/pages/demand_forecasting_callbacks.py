@@ -7,7 +7,7 @@ import plotly.graph_objs as go
 from xiom_optimized.app_config_initial import app
 from xiom_optimized.utils.data_fetcher import  df_fc_qp, df_sales
 from xiom_optimized.utils.cache_manager import cache_decorator
-from xiom_optimized.config_constants import sample_rate_dict
+from xiom_optimized.utils.config_constants import sample_rate_dict
 from dash import Input, Output, dcc, html, dash_table
 from plotly.subplots import make_subplots
 from prophet import Prophet
