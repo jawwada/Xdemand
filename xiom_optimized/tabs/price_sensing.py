@@ -1,4 +1,4 @@
-from xiom_optimized.page_callbacks.price_sensing_callbacks import *
+from xiom_optimized.dash_callbacks.price_sensing_callbacks import *
 
 from xiom_optimized.utils.utils import get_unique_values
 

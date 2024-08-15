@@ -1,6 +1,6 @@
-from xiom_optimized.page_callbacks.stock_sensing_callbacks import *
+from xiom_optimized.dash_callbacks.stock_sensing_callbacks import *
 
-# from xiom_optimized.pages.data_chooser import sku_warehouse_selector
+# from xiom_optimized.tabs.data_chooser import sku_warehouse_selector
 
 content = html.Div([
     # Forecasting Graphs

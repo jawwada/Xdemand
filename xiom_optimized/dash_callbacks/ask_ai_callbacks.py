@@ -124,6 +124,7 @@ def update_final_df(response_code):
         return ""
     try:
         response_code_final_df = agent_data_table.invoke(response_code)
+        print(response_code_final_df)
     except Exception as e:
         print(f"Error in update_final_df: {str(e)}")
         response_code_final_df = ""

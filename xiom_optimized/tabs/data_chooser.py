@@ -4,7 +4,7 @@ from datetime import timedelta
 from dash import dcc
 from dash import html
 
-from xiom_optimized.page_callbacks.data_chooser_callbacks import *
+from xiom_optimized.dash_callbacks.data_chooser_callbacks import *
 from xiom_optimized.utils.utils import get_unique_values
 
 unique_skus = get_unique_values('sku')
