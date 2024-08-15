@@ -22,7 +22,6 @@ data/
 cache_directory/
 cache-dataframes/
 logs/
-**cache**/
 **logs**
 .run/
 .history/
@@ -62,3 +61,4 @@ mltools/
 !.*ignore
 !logging_logs/test_model.log
 !xiom_optimized/assets/
+!xiom_optimized.utils.cache_manager.py
