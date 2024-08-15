@@ -1,5 +1,5 @@
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.caching import cache, df_daily_sales_da, df_price_sensing_tab, df_price_regression_tab, ph_data
+from xiom_optimized.data_fetcher import cache_decorator, df_daily_sales_da, df_price_sensing_tab, df_price_regression_tab, ph_data
 from dash import Output, Input, State
 from dash import html, dcc
 from plotly import graph_objs as go
@@ -11,7 +11,7 @@ import plotly.express as px
 from datetime import datetime
 from xiom_optimized.config_constants import TIMEOUT
 
-@cache.memoize(timeout=TIMEOUT)
+@cache_decorator
 @app.callback(
     Output('ps-tabs-content', 'children'),
     Input('ps-tabs', 'value'),

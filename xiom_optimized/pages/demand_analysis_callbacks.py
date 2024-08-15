@@ -2,7 +2,7 @@ import urllib
 import dash_table
 import pandas as pd
 import plotly.express as px
-from xiom_optimized.caching import df_sales,ph_data
+from xiom_optimized.data_fetcher import df_sales,ph_data
 
 from xiom_optimized.config_constants import *
 from dash import html, dcc, Output, Input

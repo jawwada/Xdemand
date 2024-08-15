@@ -6,13 +6,13 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.caching import cache, df_fc_qp, df_sales
+from xiom_optimized.data_fetcher import cache_decorator, df_fc_qp, df_sales
 from xiom_optimized.config_constants import  TIMEOUT, sample_rate_dict
 from dash import Input, Output, State, dcc, html, dash_table
 from plotly.subplots import make_subplots
 from prophet import Prophet
 
-@cache.memoize(timeout=TIMEOUT)
+cache_decorator
 @app.callback(
     Output('tabs-content', 'children'),
     Input('quantity-sales-radio', 'value'),

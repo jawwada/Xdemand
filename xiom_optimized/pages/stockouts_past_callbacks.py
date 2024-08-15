@@ -2,7 +2,7 @@ import urllib
 import dash_table
 import pandas as pd
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.caching import df_running_stock, df_stockout_past, df_price_rec, df_price_rec_summary
+from xiom_optimized.data_fetcher import df_running_stock, df_stockout_past, df_price_rec, df_price_rec_summary
 from dash import Output, Input, State
 from dash import html, dcc
 from plotly import graph_objs as go

@@ -1,6 +1,6 @@
 import pandas as pd
 import json
-from xiom_optimized.caching import ph_data
+from xiom_optimized.data_fetcher import ph_data
 
 def filter_data(filter_state, selected_channel=None,selected_warehouse=None,
                 selected_region=None, selected_category=None,

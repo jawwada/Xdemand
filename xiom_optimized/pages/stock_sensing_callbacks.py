@@ -2,18 +2,20 @@ import urllib
 import dash_table
 import pandas as pd
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.caching import df_running_stock ,df_price_rec, df_price_rec_summary
+from xiom_optimized.data_fetcher import df_running_stock ,df_price_rec, df_price_rec_summary
 from dash import Output, Input, State
 from dash import html, dcc
 from plotly import graph_objs as go
 from plotly.subplots import make_subplots
 from config import price_recommendation_settings as pr_cf
+from xiom_optimized.data_fetcher import cache_decorator
 
 from dash import dcc
 from dash import html
 import logging
 
 
+@cache_decorator
 @app.callback(
     Output('tabs-content-stockout', 'children'),
     Input('stockout-tabs', 'value'),
@@ -132,6 +134,8 @@ def update_stockout_container(graph_data_tab,filter_data):
                    target="_blank"),
         ], style={'overflow-y': 'scroll', 'overflowX': 'scroll', 'width':'100%'})
     #return html.Div([dcc.Graph(id='historical-bar-chart', figure=fig_stockout), html.Hr()])
+
+
 @app.callback(
     Output('download-button-stockout', 'href'),
     Input('stockout-table', 'data'))

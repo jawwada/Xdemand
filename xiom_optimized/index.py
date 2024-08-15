@@ -1,5 +1,5 @@
 from xiom_optimized.app_layout import layout, page_layouts
-from xiom_optimized.caching import *
+from xiom_optimized.data_fetcher import *
 from dash import Input, Output
 
 # no date column
