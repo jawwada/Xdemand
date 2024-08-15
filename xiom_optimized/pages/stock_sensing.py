@@ -1,4 +1,4 @@
-from xiom_optimized.pages.stock_sensing_callbacks import *
+from xiom_optimized.page_callbacks.stock_sensing_callbacks import *
 
 # from xiom_optimized.pages.data_chooser import sku_warehouse_selector
 

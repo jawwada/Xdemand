@@ -1,5 +1,3 @@
-from xiom_optimized.pages.demand_analysis_callbacks import *
-
 content = html.Div([
     # Forecasting Graphs
     html.Div([
