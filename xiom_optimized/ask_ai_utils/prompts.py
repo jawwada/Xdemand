@@ -1,4 +1,5 @@
 from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 
 data_frames_description = """You have access to the following dataframes: df1, df2, df3.
 1. **df1: running stock data **:
@@ -61,13 +62,13 @@ Here is the code snippet:
 prompt_ve = f"""
     You are a data visualization expert. You have received a code snippet for data analysis. The data frames df1, df2, and df3 are already loaded in the environment.
 Your task is to:
-Plot the data using Plotly, your favorite visualization library.
+1. Plot the data using Plotly, your favorite visualization library.
 2. Append the visualization code at the end of the provided code snippet.
 3. Provide the complete code for visualization, including both the original code snippet and the Plotly code.
 Consider the following:
 Do not include fig.show() in the code.
 If the visualization is a time series plot, ensure the date is on the x-axis.
-If there are multiple values for the y-axis, create multiple y-axes with different axis limits.
+If there are multiple values for the y-axis, consider multiple y-axes with different axis limits.
 The visualization should be appealing and easy to understand for business managers.
     """
 
@@ -140,3 +141,6 @@ Example questions to consider:
 
 Let's get started!
 """
+prompt_template_visualisation_engineer = PromptTemplate(
+    input_variables=["text"],
+    template=prompt_ve + ": {text}")
