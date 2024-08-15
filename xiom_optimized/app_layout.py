@@ -141,5 +141,5 @@ def toggle_dropdown_visibility(selected_tab):
     elif selected_tab == '/inventory-planning':
         data_chooser_style = hidden_style
     elif selected_tab == '/product-research':
-        data_chooser_style= default_style
+        region_style = hidden_style
     return sku_style, warehouse_style, region_style, channel_style, dim_style, time_style, data_chooser_style
