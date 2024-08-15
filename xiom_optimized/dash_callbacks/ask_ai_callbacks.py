@@ -12,13 +12,13 @@ from dash.dependencies import Output
 from dash.dependencies import State
 
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.ask_ai_utils.agent_executor_custom_call_backs import CustomHandler
-from xiom_optimized.ask_ai_utils.agents import agent_data_table
-from xiom_optimized.ask_ai_utils.agents import agent_running_stock
-from xiom_optimized.ask_ai_utils.dangerous_code import generate_graph
-from xiom_optimized.ask_ai_utils.dangerous_code import generate_table
-from xiom_optimized.ask_ai_utils.dangerous_code import get_final_df_from_code
-from xiom_optimized.ask_ai_utils.prompts import prompt_ds
+from xiom_optimized.langchain_utils.agent_executor_custom_call_backs import CustomHandler
+from xiom_optimized.langchain_utils.agents import agent_data_table
+from xiom_optimized.langchain_utils.agents import agent_running_stock
+from xiom_optimized.langchain_utils.dangerous_code import generate_graph
+from xiom_optimized.langchain_utils.dangerous_code import generate_table
+from xiom_optimized.langchain_utils.dangerous_code import get_final_df_from_code
+from xiom_optimized.langchain_utils.prompts import prompt_ds
 
 IMAGES = {"XD": app.get_asset_url("img.png")}
 custom_callback = CustomHandler(app)

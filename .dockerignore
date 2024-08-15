@@ -25,6 +25,7 @@ logs/
 **logs**
 .run/
 .history/
+**__pycache__/
 
 # Ignore Jupyter notebook checkpoints
 **.ipynb_checkpoints/

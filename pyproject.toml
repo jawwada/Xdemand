@@ -47,6 +47,7 @@ dash-ag-grid = "31.2.0"
 langchain-groq = "0.1.9"
 openpyxl = "3.1.5"
 pyodbc = "5.0.1"
+pillow = "^10.4.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

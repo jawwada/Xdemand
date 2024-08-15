@@ -36,6 +36,7 @@ data/
 .history/
 .run/
 .venv/
+**__pycache__/
 # Exceptions
 !.py
 !.ipynb
