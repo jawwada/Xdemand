@@ -11,6 +11,7 @@ data/
 *.zip
 *.bin
 *.rar
+*.db
 
 # Ignore image files
 *.png
@@ -21,7 +22,7 @@ data/
 cache_directory/
 cache-dataframes/
 logs/
-**cache**
+**cache**/
 **logs**
 .run/
 .history/
@@ -58,3 +59,5 @@ nbeats*/**
 !.py
 !.*ignore
 !logging_logs/test_model.log
+mltools/
+!xiom_optimized/cache_manager.py
