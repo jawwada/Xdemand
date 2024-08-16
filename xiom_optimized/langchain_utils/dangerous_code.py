@@ -6,18 +6,19 @@ from xiom_optimized.langchain_utils.agents import agent_visualisation
 from xiom_optimized.utils.data_fetcher import df_agg_monthly_3years as df2
 from xiom_optimized.utils.data_fetcher import df_price_rec_summary as df3
 from xiom_optimized.utils.data_fetcher import df_running_stock as df1
+from xiom_optimized.utils.data_fetcher import ph_data as df4
 
 
 def get_fig_from_code(code):
     local_variables = {}
-    global_variables = {'df1': df1, 'df2': df2, 'df3': df3}
+    global_variables = {'df1': df1, 'df2': df2, 'df3': df3,'df4': df4}
     exec(code, global_variables, local_variables)
     return local_variables['fig']
 
 
 def get_final_df_from_code(code):
     local_variables = {}
-    global_variables = {'df1': df1, 'df2': df2, 'df3': df3}
+    global_variables = {'df1': df1, 'df2': df2, 'df3': df3, 'df4': df4}
     exec(code, global_variables, local_variables)
     return local_variables['final_df']
 

@@ -44,7 +44,7 @@ data_frames_description = """You have access to the following dataframes: df1, d
     - `marketplace_sku`: The SKU specific to the marketplace.
     - `asin`: The Amazon Standard Identification Number, a unique identifier for products on Amazon.
     - `marketplace`: The marketplace where the product is sold (e.g., Amazon.de).
-    - `level_1`: pruduct category
+    - `level_1`: pruduct category (e.g., BOXING GLOVES).
     - `level_2`: sub-category.
     - `level_3`: product type.
     - `channel`: The sales channel through which the product is sold (e.g., Amazon).
@@ -87,25 +87,26 @@ Focus on the following areas:
 
 You have access to the following dataframes:
 {data_frames_description}
-data frames are numbered as follows: df1, df2, df3 and are available in the environment. You can access them using the variable names,
+data frames are numbered as follows: df1, df2, df3 and df4 and are available in the environment. You can access them using the variable names,
 and answer questions based on the data.
 Key context for the data analysis:
 - A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when answering a question.
 - Provide detailed explanations and insights based on the data.
 
 Example questions to consider:
-- What are the top-selling products? Answer with respect to quantity and revenue for past 12 months from df_agg_monthly_3years.
-- What is the optimal stock level for each product? How does it compare to the current stock level? Answer with respect to df_price_rec_summary and df_running_stock.
-- How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
-- What is the demand trend for each product? Answer with respect to df_running_stock.
+- for product category related questions, use product data to get the product category
+- What are the top-selling products? Quantity and revenue for past 12 months from sales data.
+- What is the optimal stock level for each product? How does it compare to the current stock level? Answer with respect to price recommendation and running stock data.
+- How does the price recommendation impact revenue? Answer with respect to price recommendation.
+- What is the demand trend for each product? Answer with respect to running stock.
 - Give me a report on a a product . Ans: group by sku, warehouse_code over data frames.
-            - Sum Past 12 month quantity from df_agg_monthly_3years
-            - Sum Past 12 month revenue from df_agg_monthly_3years
-            - Sum is_understock from df_running_stock for next 6 months to get number of understock days during next 6 months.
-            - Sum of yhat from df_running_stock for next 6 months to get expected demand.
-            - Sum is_overstock from df_running_stock for next 6 months to get number of overstock days during next 6 months.
-- Question about holiday season stock levels. Ans: look at df_running_stock sku, warehouse_code combinations from October to Jan.
-- What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
+            - Sum Past 12 month quantity from sales data
+            - Sum Past 12 month revenue from sales data
+            - Sum is_understock from stock data for next 6 months to get number of understock days during next 6 months.
+            - Sum of yhat from stock data for next 6 months to get expected demand.
+            - Sum is_overstock from stock data for next 6 months to get number of overstock days during next 6 months.
+- Question about holiday season stock levels. Ans: look at stock data: sku, warehouse_code combinations from October to Jan.
+- What is the optimal price for a product? Ans: look at price recommendation: price_new, price_old, price_elasticity.
 - If the user wants to download or look at specific data frame, simply do a df.head() or df.tail() on the df.
 
 Let's get started!
