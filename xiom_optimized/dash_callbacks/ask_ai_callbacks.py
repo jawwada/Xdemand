@@ -20,8 +20,12 @@ from xiom_optimized.langchain_utils.dangerous_code import generate_table
 from xiom_optimized.langchain_utils.dangerous_code import get_final_df_from_code
 from xiom_optimized.langchain_utils.prompts import prompt_ds
 
+from common.logger_ import logger
+
+
 IMAGES = {"XD": app.get_asset_url("img.png")}
 custom_callback = CustomHandler(app)
+
 
 
 def Header(name, app):
@@ -111,9 +115,11 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
     chat_history += f"You : {user_input} <split>"
     model_input = f"{prompt_ds}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
     chat_response = agent_running_stock.run(model_input, callbacks=[custom_callback])
+    response_code = custom_callback.response_code
+    logger.info(f"Response code: {response_code}")
     # Access the response code from the custom callback
     chat_history += f"{chat_response}<split>"
-    return chat_history, None, custom_callback.response_code
+    return chat_history, None, response_code
 
 
 @app.callback(Output("response-code-final-df", "data"),

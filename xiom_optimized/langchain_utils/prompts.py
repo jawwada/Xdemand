@@ -42,19 +42,10 @@ data_frames_description = """You have access to the following dataframes: df1, d
 
 prompt_template_final_df = PromptTemplate(
     input_variables=["text"],
-    template="""You are a Python developer. You have received a code snippet from a data scientist who is analyzing sales data.
-Your task is to:
-1. Identify the final data structure in the code, which is typically the result of the analysis.
-2. Assign this final data structure to a data frame called final_df.
-Consider the following scenarios:
-1. If the final data structure is a data frame, assign it directly to final_df.
-2. If the final data structure is a dictionary (with keys as measures and values as results) or a list of results, 
-convert it to a data frame and assign it to final_df.
-3. If the final data structure is a dictionary of data frames, merge these data frames to create final_df.
-Additionally, remove any head() or tail() function type calls that limit the data to a few rows.
-Finally, Provide the complete code for analysis, including both the original code snippet and the assignment to final_df. No markdowns are needed.
-Here is the code snippet:
-{text}
+    template="""You are given a code snippet.Assign the last data frame in the code to final_df.
+    Remove any .head() or .tail() calls in the code and return the completed code (original and final_df) without any markdown.
+    Here is the code snippet:
+    {text}
      """)
 
 prompt_ve = f"""
@@ -103,6 +94,7 @@ Example questions to consider:
 
 - Question about holiday season stock levels. Ans: look at df_running_stock sku, warehouse_code combinations from October to Jan.
 - What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
+- If the user wants to download or look at specific data frame, simply do a df.head() or df.tail() on the df.
 
 Let's get started!
 """
