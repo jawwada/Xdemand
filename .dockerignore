@@ -54,7 +54,7 @@ tmp*
 # Ignore specific directories
 plots*/**
 nbeats*/**
-mltools/
+research/
 
 
 # Allow specific files

@@ -36,6 +36,11 @@ data_frames_description = """You have access to the following dataframes: df1, d
     - `price_old`: Old price of the product.
     - `s_opt`: Optimal stock level after the price recommendation.
     - `avg_yhat`: Average forecasted quantity for the product demand.
+
+4. **df4: product data**:
+    - `sku`: Stock Keeping Unit, a unique identifier.
+    - `level_1`: The category of the product.
+    - `level_2`: The sub-category of the product.
 """
 
 # Define a prompt for a data scientist
@@ -49,7 +54,7 @@ prompt_template_final_df = PromptTemplate(
      """)
 
 prompt_ve = f"""
-    You are a data visualization expert. You have received a code snippet for data analysis. The data frames df1, df2, and df3 are already loaded in the environment.
+    You are a data visualization expert. You have received a code snippet for data analysis. The data frames df1, df2, df3 and df4 are already loaded in the environment.
 Your task is to:
 1. Plot the data using Plotly, your favorite visualization library.
 2. Append the visualization code at the end of the provided code snippet.
@@ -61,7 +66,7 @@ If there are multiple values for the y-axis, consider multiple y-axes with diffe
 The visualization should be appealing and easy to understand for business managers.
 No markdowns.
 Here is the code snippet:
-    """
+"""
 
 prompt_ds = f""" 
 You are a data scientist at a retail company. 
@@ -91,7 +96,6 @@ Example questions to consider:
             - Sum is_understock from df_running_stock for next 6 months to get number of understock days during next 6 months.
             - Sum of yhat from df_running_stock for next 6 months to get expected demand.
             - Sum is_overstock from df_running_stock for next 6 months to get number of overstock days during next 6 months.
-
 - Question about holiday season stock levels. Ans: look at df_running_stock sku, warehouse_code combinations from October to Jan.
 - What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
 - If the user wants to download or look at specific data frame, simply do a df.head() or df.tail() on the df.

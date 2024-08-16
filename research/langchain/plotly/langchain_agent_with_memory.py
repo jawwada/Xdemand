@@ -20,7 +20,7 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # Create a .env file and write: GROQ_A
 
 
 # Load the dataset, grab the first 5 rows, and convert to string so that the LLM can read the data
-df = pd.read_csv('mltools/research/langchain/plotly/space-mission-data.csv')
+df = pd.read_csv('research/research/langchain/plotly/space-mission-data.csv')
 df_5_rows = df.head()
 csv_string = df_5_rows.to_string(index=False)
 
