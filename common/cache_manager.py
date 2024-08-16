@@ -139,7 +139,8 @@ class CacheManager:
 
     @cache_decorator
     def query_price_reference(self):
-        query = f"""SELECT * FROM look_latest_price_reference stat
+        query = f"""SELECT stat.sku, stat.region,stat.price , stat.date
+        FROM look_latest_price_reference stat
             JOIN (
                 SELECT DISTINCT sku
                 FROM stat_forecast_data_quantity 

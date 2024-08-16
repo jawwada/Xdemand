@@ -15,6 +15,7 @@ from xdemand.pipelines.RDX.sales_forecast.forecast_utils import prophet_pipeline
 from xdemand.pipelines.RDX.sales_forecast.execute_preprocessing_sql import preprocess_marketplace_sales_to_im_sales
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection import run_stockout_detection
 from common.cache_manager import CacheManager
+from xdemand.pipelines.RDX.price_sensing.ps_utils import filter_top_n
 
 sys.path.append('/opt/homebrew/lib')
 # Configure logging
@@ -62,6 +63,7 @@ def run_price_sensing_direct():
     df_dsa = df_dsa.groupby(['channel', 'sku', 'warehouse_code',
                              'level_1', 'date'])[['quantity','revenue',
                                                   'promotional rebates']].sum().reset_index()
+    df_dsa=filter_top_n(df_dsa)
     # Get daily sales and price sensing data
     df_dsa = daily_sales_price_sensing_transform(df_dsa)
     # log parameters
@@ -87,7 +89,6 @@ def run_price_sensing_direct():
     return
 
 if __name__ == '__main__':
-    """
     logger.info("Aggegrating Sales Table to Daily Sales View")
     preprocess_marketplace_sales_to_im_sales()
     logger.info("Starting Piplelines on Daily Sales Data ")
@@ -98,7 +99,6 @@ if __name__ == '__main__':
     logger.info("Starting Stockout Detection Pipeline, must be run after Prophet Training Pipeline")
     run_stockout_detection()
     logger.info("Finished Stockout Detection Pipeline")
-    """
 
     logger.info("Starting Price Sensing Pipeline")
     run_price_sensing_direct()

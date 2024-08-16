@@ -34,38 +34,35 @@ def process_reference_price():
     df_price_reference['warehouse_code'] = df_price_reference['region'].map(region_warehouse_codes)
     # drop region column and average price over warehouse_code
     df_price_reference.drop(columns=['region'], inplace=True)
-    df_price_reference = df_price_reference.groupby(['sku', 'warehouse_code']).agg({'ref_price': 'mean'}).reset_index()
+    df_price_reference = df_price_reference.groupby(['sku', 'warehouse_code']).agg({'price': 'mean'}).reset_index()
     return df_price_reference
 
 def daily_sales_price_sensing_transform(df_dsa):
     df_dsa['date'] = pd.to_datetime(df_dsa['date'])
-    # Filter data based on the top_n parameter
-    df_dsa = filter_top_n(df_dsa)
+
     # Calculate the average price and promotional rebates
-    df_dsa['price'] = (df_dsa['revenue'] - df_dsa['promotional rebates']) / (df_dsa['quantity']+0.00001)
-    df_price_reference=process_reference_price()
-    df_dsa = pd.merge(df_dsa, df_price_reference, how='left', on=['sku', 'warehouse_code'])
+    df_dsa['price'] = (df_dsa['revenue'] - df_dsa['promotional rebates']) / (df_dsa['quantity']+0.000001)
+    #df_price_reference=process_reference_price()
+    #df_dsa = pd.merge(df_dsa, df_price_reference, how='left', on=['sku', 'warehouse_code'])
     return df_dsa
 
 
 def std_price_regression(df_dsa):
     target = cf.target
-    regressor = 'avg_price'
+    regressor = 'price'
     days_before = cf.days_before
     log_normal_regression = cf.log_normal_regression
     plot = cf.plot
     # Filter data based on the days_before parameter
     days_ago = datetime.today() - timedelta(days=days_before)
     df_filtered = df_dsa[df_dsa['date'] > days_ago]
-    # Filter the original data to include only the top N SKUs
-    df_top_skus = df_filtered
     # Get a list of unique SKUs
-    unique_skus = df_top_skus['sku'].unique()
+    unique_skus = df_filtered['sku'].unique()
     # Initialize DataFrames to store regression coefficients and all regressions
     all_regressions_list = []
     # Iterate through each unique SKU and fit a linear regression model
     for sku in unique_skus:
-        df_sku = df_top_skus[(df_top_skus['sku'] == sku)]
+        df_sku = df_filtered[(df_filtered['sku'] == sku)]
         unique_wh = df_sku['warehouse_code'].unique()
         for warehouse in unique_wh:
             # put the code in try except block so that if data is not available for a particular sku and warehouse
@@ -78,7 +75,7 @@ def std_price_regression(df_dsa):
                 df_sku_wh.dropna(subset=[target, regressor], inplace=True)
                 # Prepare data for regression
                 # Calculate the mean and standard deviation of the target variable
-                mean_regresor = df_sku_wh['ref_price'].mean()
+                mean_regresor = df_sku_wh['price'].mean()
                 std_regresor = df_sku_wh[regressor].std()
 
                 lower_bound = mean_regresor - cf.regressor_lower_bound * std_regresor
