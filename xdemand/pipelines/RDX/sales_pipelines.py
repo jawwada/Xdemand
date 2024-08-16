@@ -11,7 +11,7 @@ from xdemand.pipelines.RDX.price_sensing.ps_utils import std_price_regression
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import add_holidays
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import forecast_sales
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import get_daily_sales_proecessed
-from xdemand.preprocessing.RDX.sql.execute_preprocessing_sql import preprocess_marketplace_sales_to_im_sales
+from xdemand.pipelines.RDX.sales_forecast.execute_preprocessing_sql import preprocess_marketplace_sales_to_im_sales
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection import run_stockout_detection
 sys.path.append('/opt/homebrew/lib')
 # Configure logging
