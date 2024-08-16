@@ -35,30 +35,35 @@ def get_price_elasticity(df_dsa, date_col='date'):
     df_dsa = df_dsa[(df_dsa['month'] < 5) | (df_dsa['month'] > 8)]
     # To store the results
     elasticity_results = []
-
-    # Apply the decomposition and adjustment by SKU, region, and channel
-    df_dsa = df_dsa.groupby(['sku', 'warehouse_code', 'channel']).apply(decompose_and_adjust).reset_index(drop=True)
+    try:
+        # Apply the decomposition and adjustment by SKU, region, and channel
+        df_dsa = df_dsa.groupby(['sku', 'warehouse_code', 'channel']).apply(decompose_and_adjust).reset_index(drop=True)
+    except:
+        pass
 
     # Calculate elasticity for each SKU and warehouse
     for (sku, warehouse_code), group in df_dsa.groupby(['sku', 'warehouse_code']):
-        # Prepare the data for the linear regression model
-        X = group[['price']]
-        # y = group['Seasonally_Trend_Adjusted_Quantity']
-        y = np.log(group['quantity'] + 1)
+        try:
+            # Prepare the data for the linear regression model
+            X = group[['price']]
+            # y = group['Seasonally_Trend_Adjusted_Quantity']
+            y = np.log(group['quantity'] + 1)
 
-        # Fit the linear regression model
-        model = LinearRegression()
-        model.fit(X, y)
+            # Fit the linear regression model
+            model = LinearRegression()
+            model.fit(X, y)
 
-        # Coefficient from the regression model
-        beta_1 = model.coef_[0]
+            # Coefficient from the regression model
+            beta_1 = model.coef_[0]
 
-        # Calculate elasticity at the mean price and mean adjusted quantity
-        mean_price = group['price'].mean()
-        mean_quantity = group['Seasonally_Trend_Adjusted_Quantity'].mean()
-        elasticity = beta_1 * (mean_price / mean_quantity)
-        # Store the SKU, warehouse code, and the calculated elasticity
-        elasticity_results.append({'sku': sku, 'warehouse_code': warehouse_code, 'price_elasticity': elasticity})
+            # Calculate elasticity at the mean price and mean adjusted quantity
+            mean_price = group['price'].mean()
+            mean_quantity = group['Seasonally_Trend_Adjusted_Quantity'].mean()
+            elasticity = beta_1 * (mean_price / mean_quantity)
+            # Store the SKU, warehouse code, and the calculated elasticity
+            elasticity_results.append({'sku': sku, 'warehouse_code': warehouse_code, 'price_elasticity': elasticity})
+        except:
+            pass
 
     # Convert the results into a DataFrame
     reg_coef_df = pd.DataFrame(elasticity_results)

@@ -70,31 +70,35 @@ def process_sku_warehouse_combinations(grid_df: pd.DataFrame, total_days_dict: d
     s_list, e_list, p_list = [], [], []
 
     for prod_id, dfx in tqdm(grid_df.groupby(["sku", 'warehouse_code'])):
-        sales_gaps = dfx.loc[:, 'gaps']
-        zero_days = sum(sales_gaps)
-        p = zero_days / total_days_dict[(prod_id[0], prod_id[1])]
+        try:
+            sales_gaps = dfx.loc[:, 'gaps']
+            zero_days = sum(sales_gaps)
+            p = zero_days / total_days_dict[(prod_id[0], prod_id[1])]
 
-        accum_add_prod = np.frompyfunc(lambda x, y: int((x + y) * y), 2, 1)
-        sales_gaps[:] = accum_add_prod.accumulate(dfx["gaps"], dtype=np.object).astype(int)
-        sales_gaps[sales_gaps < sales_gaps.shift(-1)] = np.NaN
-        sales_gaps = sales_gaps.fillna(method="bfill").fillna(method='ffill')
-        s_list += [sales_gaps]
+            accum_add_prod = np.frompyfunc(lambda x, y: int((x + y) * y), 2, 1)
+            sales_gaps[:] = accum_add_prod.accumulate(dfx["gaps"], dtype=np.object).astype(int)
+            sales_gaps[sales_gaps < sales_gaps.shift(-1)] = np.NaN
+            sales_gaps = sales_gaps.fillna(method="bfill").fillna(method='ffill')
+            s_list += [sales_gaps]
 
-        gap_length = sales_gaps.unique()
-        d = {length: ((1 - p ** length) / (p ** length * (1 - p))) / 365 for length in gap_length}
-        sales_E_years = sales_gaps.map(d)
-
-        p1 = 0
-        while p1 < p:
-            if p1 != 0:
-                p = p1
-            gap_days = sum(sales_E_years > 100)
-            p1 = (zero_days - gap_days + 0.0001) / (total_days_dict[prod_id] - gap_days)
-            d = {length: ((1 - p1 ** length) / (p1 ** length * (1 - p1))) / 365 for length in gap_length}
+            gap_length = sales_gaps.unique()
+            d = {length: ((1 - p ** length) / (p ** length * (1 - p))) / 365 for length in gap_length}
             sales_E_years = sales_gaps.map(d)
 
-        e_list += [sales_E_years]
-        p_list += [pd.Series(p, index=sales_gaps.index)]
+            p1 = 0
+            while p1 < p:
+                if p1 != 0:
+                    p = p1
+                gap_days = sum(sales_E_years > 100)
+                p1 = (zero_days - gap_days + 0.0001) / (total_days_dict[prod_id] - gap_days)
+                d = {length: ((1 - p1 ** length) / (p1 ** length * (1 - p1))) / 365 for length in gap_length}
+                sales_E_years = sales_gaps.map(d)
+
+            e_list += [sales_E_years]
+            p_list += [pd.Series(p, index=sales_gaps.index)]
+        except Exception as e:
+            logger.error(f"Error processing sku {prod_id[0]} warehouse {prod_id[1]}")
+            logger.error(e)
 
     grid_df['gap_days'] = pd.concat(s_list)
     grid_df['gap_e'] = pd.concat(e_list)
