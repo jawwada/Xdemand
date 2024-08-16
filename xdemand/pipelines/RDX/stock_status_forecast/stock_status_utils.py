@@ -7,6 +7,8 @@ from common.logger_ import get_logger
 from common.local_constants import region_warehouse_codes
 from config import price_recommendation_settings as pr_cf
 from config import stock_status_settings as ss_cf
+from common.cache_manager import CacheManager
+cache_manager = CacheManager()
 
 logger=get_logger()
 

@@ -7395,3 +7395,90 @@ understock_days_count
 2024-08-16 20:59:44,002 - common.logger_ - INFO - Forecasting SKU BGR-F6MB-12OZ for revenue in UK for next                 180 days with 792 rows
 2024-08-16 20:59:44,374 - common.logger_ - INFO - Forecasting SKU BGR-F6MB-14OZ for revenue in UK for next                 180 days with 789 rows
 2024-08-16 20:59:44,638 - common.logger_ - INFO - Forecasting SKU HYP-IS2B-M for revenue in UK for next                 180 days with 789 rows
+2024-08-16 23:13:41,845 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 23:13:41,845 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 23:28:06,640 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 23:28:06,640 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 23:28:06,642 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 23:28:06,642 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 23:28:06,642 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 23:28:12,892 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 23:28:12,892 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 23:28:12,892 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 23:28:12,892 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 23:29:38,264 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert 'ds' and 'status_date' to datetime for filtering
+# Assuming df1 is the running stock data
+# Filter for the holiday season (October to January)
+holiday_season_start = '2024-10-01'
+holiday_season_end = '2025-01-31'
+df1['ds'] = pd.to_datetime(df1['ds'])
+df1['status_date'] = pd.to_datetime(df1['status_date'])
+
+# Filter the data for the holiday season
+holiday_season_data = df1[(df1['ds'] >= holiday_season_start) & (df1['ds'] <= holiday_season_end)]
+
+# Get the understocked products during the holiday season
+understocked_products = holiday_season_data[holiday_season_data['is_understock'] == True]
+
+# Select relevant columns for reporting
+understocked_products_report = understocked_products[['sku', 'warehouse_code', 'ds', 'running_stock_after_forecast', 'yhat']]
+understocked_products_report
+2024-08-16 23:29:38,264 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert 'ds' and 'status_date' to datetime for filtering
+# Assuming df1 is the running stock data
+# Filter for the holiday season (October to January)
+holiday_season_start = '2024-10-01'
+holiday_season_end = '2025-01-31'
+df1['ds'] = pd.to_datetime(df1['ds'])
+df1['status_date'] = pd.to_datetime(df1['status_date'])
+
+# Filter the data for the holiday season
+holiday_season_data = df1[(df1['ds'] >= holiday_season_start) & (df1['ds'] <= holiday_season_end)]
+
+# Get the understocked products during the holiday season
+understocked_products = holiday_season_data[holiday_season_data['is_understock'] == True]
+
+# Select relevant columns for reporting
+understocked_products_report = understocked_products[['sku', 'warehouse_code', 'ds', 'running_stock_after_forecast', 'yhat']]
+understocked_products_report
+2024-08-16 23:29:38,264 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert 'ds' and 'status_date' to datetime for filtering
+# Assuming df1 is the running stock data
+# Filter for the holiday season (October to January)
+holiday_season_start = '2024-10-01'
+holiday_season_end = '2025-01-31'
+df1['ds'] = pd.to_datetime(df1['ds'])
+df1['status_date'] = pd.to_datetime(df1['status_date'])
+
+# Filter the data for the holiday season
+holiday_season_data = df1[(df1['ds'] >= holiday_season_start) & (df1['ds'] <= holiday_season_end)]
+
+# Get the understocked products during the holiday season
+understocked_products = holiday_season_data[holiday_season_data['is_understock'] == True]
+
+# Select relevant columns for reporting
+understocked_products_report = understocked_products[['sku', 'warehouse_code', 'ds', 'running_stock_after_forecast', 'yhat']]
+understocked_products_report
+2024-08-16 23:29:38,264 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert 'ds' and 'status_date' to datetime for filtering
+# Assuming df1 is the running stock data
+# Filter for the holiday season (October to January)
+holiday_season_start = '2024-10-01'
+holiday_season_end = '2025-01-31'
+df1['ds'] = pd.to_datetime(df1['ds'])
+df1['status_date'] = pd.to_datetime(df1['status_date'])
+
+# Filter the data for the holiday season
+holiday_season_data = df1[(df1['ds'] >= holiday_season_start) & (df1['ds'] <= holiday_season_end)]
+
+# Get the understocked products during the holiday season
+understocked_products = holiday_season_data[holiday_season_data['is_understock'] == True]
+
+# Select relevant columns for reporting
+understocked_products_report = understocked_products[['sku', 'warehouse_code', 'ds', 'running_stock_after_forecast', 'yhat']]
+understocked_products_report

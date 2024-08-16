@@ -19,12 +19,12 @@ data/
 *.jpeg
 
 # Ignore cache and log directories
-**cache**/
 logs/
 **logs**
 .run/
 .history/
 **__pycache__/
+common/cache/
 
 # Ignore Jupyter notebook checkpoints
 **.ipynb_checkpoints/
@@ -61,4 +61,5 @@ research/
 !.*ignore
 !logging_logs/test_model.log
 !xiom_optimized/assets/
-!xiom_optimized.utils.cache_manager.py
+!common.cache_manager.py
+!xdemand/utils/cache_manager.py

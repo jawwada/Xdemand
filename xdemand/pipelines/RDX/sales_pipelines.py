@@ -60,8 +60,7 @@ def run_price_sensing_direct():
     cache_manager = CacheManager()
     df_dsa = cache_manager.query_df_daily_sales_forecast_skus()
     logger.info(f"df_dsa head {df_dsa.head()}")
-    df_dsa = df_dsa.groupby(['channel', 'sku', 'warehouse_code',
-                             'level_1', 'date'])[['quantity','revenue',
+    df_dsa = df_dsa.groupby(['channel', 'sku', 'warehouse_code', 'date'])[['quantity','revenue',
                                                   'promotional rebates']].sum().reset_index()
     df_dsa=filter_top_n(df_dsa)
     # Get daily sales and price sensing data

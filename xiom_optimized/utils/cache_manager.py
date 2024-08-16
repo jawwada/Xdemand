@@ -1,110 +1,155 @@
 from functools import wraps
 from pathlib import Path
+
 import pandas as pd
-from flask_caching import Cache as FlaskCache
-from diskcache import Cache as DiskCache
-import pickle
+from flask_caching import Cache
 
 from common.local_constants import region_warehouse_codes
 from common.logger_ import get_logger
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.utils.config_constants import CACHE_REDIS_URL, CACHE_TYPE, TIMEOUT
-from get_db_tables import (
-    query_ph_data, query_df_daily_sales_oos, query_df_daily_sales, query_df_fc_qp,
-    query_df_running_stock, query_stockout_past, query_price_sensing_tab, query_price_regression_tab,
-    query_price_reference, query_price_recommender_summary, query_price_recommender
-)
+from xiom_optimized.utils.config_constants import CACHE_DIR
+from xiom_optimized.utils.config_constants import CACHE_REDIS_URL
+from xiom_optimized.utils.config_constants import CACHE_TYPE
+from xiom_optimized.utils.config_constants import TIMEOUT
+from xiom_optimized.utils.config_constants import cnxn
 
 logger = get_logger()
 logger.info("Xdemand app starting")
 
-class CacheManager:
-    def __init__(self, cache_type='flask'):
-        self.cache_type = cache_type
-        if cache_type == 'flask':
-            cache_dir = 'cache_flask'
-            self.cache = FlaskCache(app.server, config={
-                'CACHE_TYPE': 'redis' if CACHE_TYPE == 'redis' else 'filesystem',
+
+# define CacheDecorator class
+class CacheDecorator:
+    def __init__(self):
+        if CACHE_TYPE == 'redis':
+            self.cache = Cache(app.server, config={
+                'CACHE_TYPE': 'redis',
                 'CACHE_REDIS_URL': CACHE_REDIS_URL,
-                'CACHE_DIR': cache_dir,
                 'CACHE_DEFAULT_TIMEOUT': TIMEOUT
             })
-            if CACHE_TYPE == 'filesystem':
-                Path(cache_dir).mkdir(exist_ok=True)
-        elif cache_type == 'disk':
-            cache_dir = 'cache_disk'
-            self.cache = DiskCache(cache_dir)
-            Path(cache_dir).mkdir(exist_ok=True)
-        elif cache_type == 'pickle':
-            cache_dir = 'cache_pickle'
-            self.cache = {}
-            Path(cache_dir).mkdir(exist_ok=True)
+        elif CACHE_TYPE == 'filesystem':
+            self.cache = Cache(app.server, config={
+                'CACHE_TYPE': 'filesystem',
+                'CACHE_DIR': CACHE_DIR,
+                'CACHE_DEFAULT_TIMEOUT': TIMEOUT
+            })
+            Path(CACHE_DIR).mkdir(exist_ok=True)
         else:
-            raise ValueError(f'CACHE_TYPE {cache_type} not supported')
+            raise ValueError(f'CACHE_TYPE {CACHE_TYPE} not supported')
 
     def cache_decorator(self, func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            key = f"{func.__name__}_{args}_{kwargs}"
-            if self.cache_type == 'flask':
-                return self.cache.memoize(timeout=TIMEOUT)(func)(*args, **kwargs)
-            elif self.cache_type == 'disk':
-                if key in self.cache:
-                    return self.cache[key]
-                result = func(*args, **kwargs)
-                self.cache.set(key, result, expire=TIMEOUT)
-                return result
-            elif self.cache_type == 'pickle':
-                if key in self.cache:
-                    return pickle.loads(self.cache[key])
-                result = func(*args, **kwargs)
-                self.cache[key] = pickle.dumps(result)
-                return result
+            return self.cache.memoize(timeout=TIMEOUT)(func)(*args, **kwargs)
+
         return wrapper
 
-    @property
-    def cache_decorator(self):
-        return self.cache_decorator
+
+cache_decorator = CacheDecorator().cache_decorator
+
+
+class CacheManager:
+    def __init__(self):
+        pass
 
     @cache_decorator
     def query_ph_data(self):
-        return query_ph_data()
-
-    @cache_decorator
-    def query_df_daily_sales_oos(self):
-        return query_df_daily_sales_oos()
+        query = "SELECT * FROM look_product_hierarchy where im_sku in (select distinct sku from stat_forecast_data_quantity)"
+        df = pd.read_sql_query(query, cnxn)
+        df['sku'] = df.im_sku
+        df['warehouse_code'] = df['region'].map(region_warehouse_codes)
+        return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
     def query_df_daily_sales(self):
-        return query_df_daily_sales()
+        query = f"""SELECT * FROM agg_im_sku_daily_sales
+        where sku in (select distinct sku from stat_forecast_data_quantity) and date > DATEADD(year, -3, GETDATE()) order by sku, region, date;"""
+        df = pd.read_sql_query(query, cnxn)
+        df['date'] = pd.to_datetime(df['date'])
+        df['warehouse_code'] = df['region'].map(region_warehouse_codes)
+        return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
     def query_df_fc_qp(self):
-        return query_df_fc_qp()
+        query = f"""SELECT * FROM stat_forecast_quantity_revenue
+                WHERE sku IN (SELECT DISTINCT sku FROM stat_forecast_data_quantity) and ds > DATEADD(year, -1, GETDATE()) ORDER BY ds, sku, warehouse_code;"""
+        df = pd.read_sql_query(query, cnxn)
+        df['ds'] = pd.to_datetime(df['ds'])
+        return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
     def query_df_running_stock(self):
-        return query_df_running_stock()
+        query = """
+        select * from stat_running_stock_forecast
+        WHERE ds >= CAST(GETDATE() AS DATE)
+        AND sku in (SELECT DISTINCT sku FROM stat_forecast_data_quantity);
+        """
+        df = pd.read_sql_query(query, cnxn)
+        df.date = pd.to_datetime(df.ds).dt.date
+        df['ds'] = pd.to_datetime(df['ds'])
+        return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
     def query_stockout_past(self):
-        return query_stockout_past()
+        query = "SELECT * FROM stat_stock_out_past where sku in (select distinct sku from stat_forecast_data_quantity)"
+        df = pd.read_sql_query(query, cnxn)
+        df.date = pd.to_datetime(df.date)
+        return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
     def query_price_sensing_tab(self):
-        return query_price_sensing_tab()
+        query = ("SELECT * FROM stat_regression_coeff_avg_price_quantity where"
+                 " sku in (select distinct sku from stat_forecast_data_quantity) order by price_elasticity desc")
+        df = pd.read_sql_query(query, cnxn)
+        df['price_elasticity'] = df['price_elasticity'].astype(float).round(4)
+        return df.to_json(date_format='iso', orient='split')
 
     def query_price_regression_tab(self):
-        return query_price_regression_tab()
+        query = "SELECT * FROM  stat_regression_avg_price_quantity where sku in (select distinct sku from stat_forecast_data_quantity)"
+        df = pd.read_sql_query(query, cnxn)
+        return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
     def query_price_reference(self):
-        return query_price_reference()
+        query = f"""SELECT * FROM look_latest_price_reference
+        where sku in (select distinct sku from stat_forecast_data_quantity) and date > DATEADD(year, -1, GETDATE()) order by sku, region, date;"""
+        df = pd.read_sql_query(query, cnxn)
+        df['date'] = pd.to_datetime(df['date'])
+        return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
     def query_price_recommender_summary(self):
-        return query_price_recommender_summary()
+        query = f"""SELECT
+          [sku],
+          mean_demand as yhat
+          ,[warehouse_code]
+          ,[price_elasticity]
+          ,[opt_stock_level]
+          ,[revenue_before]
+          ,[revenue_after]
+          ,[price_new]
+          ,[price_old]
+            FROM [dbo].[stat_price_recommender_summary]"""
+        df = pd.read_sql_query(query, cnxn)
+        return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
     def query_price_recommender(self):
-        return query_price_recommender()
+        query = f"""SELECT
+        [sku]
+        , [ds]
+        , [warehouse_code]
+        , [InTransit_Quantity]
+        , [running_stock_after_forecast_adj] as running_stock_after_forecast_adj
+        , [q_prime_adj] as q_prime_adj
+        FROM[dbo].[stat_price_recommender]"""
+        df = pd.read_sql_query(query, cnxn)
+        df['ds'] = pd.to_datetime(df['ds'])
+        return df.to_json(date_format='iso', orient='split')
+
+    @cache_decorator
+    def query_ph_data(self):
+        query = "SELECT * FROM look_product_hierarchy where im_sku in (select distinct sku from stat_forecast_data_quantity)"
+        df = pd.read_sql_query(query, cnxn)
+        df['sku'] = df.im_sku
+        df['warehouse_code'] = df['region'].map(region_warehouse_codes)
+        return df.to_json(date_format='iso', orient='split')

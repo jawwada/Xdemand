@@ -19,10 +19,10 @@ def run_stockout_detection():
     # Fetch daily sales data
     cache_manager = CacheManager()
     df = cache_manager.query_df_daily_sales_forecast_skus()
-    df = df.groupby(['channel', 'sku', 'warehouse_code','level_1', 'date'])[['quantity']].sum().reset_index()
+    df = df.groupby(['channel', 'sku', 'warehouse_code', 'date'])[['quantity']].sum().reset_index()
 
     # Fill missing dates for each SKU and warehouse combination
-    df_filled = df.groupby(['channel', 'sku', 'warehouse_code','level_1']).apply(fill_missing_dates).reset_index(drop=True)
+    df_filled = df.groupby(['channel', 'sku', 'warehouse_code']).apply(fill_missing_dates).reset_index(drop=True)
     df_filled['quantity'] = df_filled['quantity'].fillna(0)
 
     # Calculate total days dictionary
@@ -40,7 +40,7 @@ def run_stockout_detection():
     grid_df[numeric_columns] = grid_df[numeric_columns].apply(pd.to_numeric, errors='coerce')
 
     grid_df = grid_df[
-        ['channel','sku', 'warehouse_code','level_1', 'date', 'quantity', 'gaps', 'gap_days', 'gap_e', 'sale_prob', 'gap_e_log10']]
+        ['channel','sku', 'warehouse_code', 'date', 'quantity', 'gaps', 'gap_days', 'gap_e', 'sale_prob', 'gap_e_log10']]
     # Add stockout column
     grid_df['out_of_stock'] = grid_df['gap_e_log10'] >= 2
 
