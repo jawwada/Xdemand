@@ -3853,3 +3853,436 @@ for in transit skus, stocks status and forecasted sales to calculate stock statu
 2024-08-16 01:07:29,223 - common.logger_ - INFO - Xdemand app starting
 2024-08-16 01:07:29,223 - common.logger_ - INFO - Xdemand app starting
 2024-08-16 01:07:29,223 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 02:28:38,479 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 02:28:38,479 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 02:28:38,482 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 02:28:38,482 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 02:28:38,482 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 02:28:42,116 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 02:28:42,116 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 02:28:42,119 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 02:28:42,119 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 02:28:42,119 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:28:09,848 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:28:09,848 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:28:09,851 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:28:09,851 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:28:09,851 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:36:49,781 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:36:49,781 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:36:49,784 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:36:49,784 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:36:49,784 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:37:32,061 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:37:32,061 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:37:32,064 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:37:32,064 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:37:32,064 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:38:29,229 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 11:38:29,229 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 11:38:29,229 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 11:40:51,515 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:40:51,515 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:40:51,517 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:40:51,517 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:40:51,517 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:41:38,173 - common.logger_ - INFO - Response code: df1.to_csv('stock_forecast_data.csv', index=False)
+2024-08-16 11:41:38,173 - common.logger_ - INFO - Response code: df1.to_csv('stock_forecast_data.csv', index=False)
+2024-08-16 11:41:38,173 - common.logger_ - INFO - Response code: df1.to_csv('stock_forecast_data.csv', index=False)
+2024-08-16 11:42:42,845 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:42:42,845 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:42:42,848 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:42:42,848 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:42:42,848 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:44:01,277 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 11:44:01,277 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 11:44:01,277 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 11:46:46,478 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:46:46,478 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:46:46,481 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:46:46,481 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:46:46,481 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:47:10,994 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:47:10,994 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:47:10,997 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:47:10,997 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:47:10,997 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 11:48:00,000 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 11:48:00,000 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 11:48:00,000 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 11:48:38,160 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert the 'ds' column to datetime format for filtering
+holiday_start = pd.to_datetime('2023-10-01')
+holiday_end = pd.to_datetime('2024-01-31')
+
+# Filter df1 for the holiday season and check for understocked products
+understocked_holiday = df1[(df1['ds'] >= holiday_start) & (df1['ds'] <= holiday_end) & (df1['is_understock'] == True)]
+
+# Select relevant columns for output
+understocked_holiday[['ds', 'sku', 'warehouse_code', 'yhat', 'running_stock_after_forecast', 'Expected_Arrival_Date']]
+2024-08-16 11:48:38,160 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert the 'ds' column to datetime format for filtering
+holiday_start = pd.to_datetime('2023-10-01')
+holiday_end = pd.to_datetime('2024-01-31')
+
+# Filter df1 for the holiday season and check for understocked products
+understocked_holiday = df1[(df1['ds'] >= holiday_start) & (df1['ds'] <= holiday_end) & (df1['is_understock'] == True)]
+
+# Select relevant columns for output
+understocked_holiday[['ds', 'sku', 'warehouse_code', 'yhat', 'running_stock_after_forecast', 'Expected_Arrival_Date']]
+2024-08-16 11:48:38,160 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert the 'ds' column to datetime format for filtering
+holiday_start = pd.to_datetime('2023-10-01')
+holiday_end = pd.to_datetime('2024-01-31')
+
+# Filter df1 for the holiday season and check for understocked products
+understocked_holiday = df1[(df1['ds'] >= holiday_start) & (df1['ds'] <= holiday_end) & (df1['is_understock'] == True)]
+
+# Select relevant columns for output
+understocked_holiday[['ds', 'sku', 'warehouse_code', 'yhat', 'running_stock_after_forecast', 'Expected_Arrival_Date']]
+2024-08-16 11:49:58,396 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert the 'ds' column to datetime format for df1
+# Assuming df1 is already loaded as a DataFrame
+
+df1['ds'] = pd.to_datetime(df1['ds'])
+
+# Filter for the next holiday season (October 1, 2024, to January 31, 2025)
+next_holiday_season = df1[(df1['ds'] >= '2024-10-01') & (df1['ds'] <= '2025-01-31')]
+
+# Check for understocked products during this period
+understocked_products = next_holiday_season[next_holiday_season['is_understock'] == True]
+
+understocked_products[['ds', 'sku', 'warehouse_code', 'running_stock_after_forecast', 'yhat']]
+2024-08-16 11:49:58,396 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert the 'ds' column to datetime format for df1
+# Assuming df1 is already loaded as a DataFrame
+
+df1['ds'] = pd.to_datetime(df1['ds'])
+
+# Filter for the next holiday season (October 1, 2024, to January 31, 2025)
+next_holiday_season = df1[(df1['ds'] >= '2024-10-01') & (df1['ds'] <= '2025-01-31')]
+
+# Check for understocked products during this period
+understocked_products = next_holiday_season[next_holiday_season['is_understock'] == True]
+
+understocked_products[['ds', 'sku', 'warehouse_code', 'running_stock_after_forecast', 'yhat']]
+2024-08-16 11:49:58,396 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert the 'ds' column to datetime format for df1
+# Assuming df1 is already loaded as a DataFrame
+
+df1['ds'] = pd.to_datetime(df1['ds'])
+
+# Filter for the next holiday season (October 1, 2024, to January 31, 2025)
+next_holiday_season = df1[(df1['ds'] >= '2024-10-01') & (df1['ds'] <= '2025-01-31')]
+
+# Check for understocked products during this period
+understocked_products = next_holiday_season[next_holiday_season['is_understock'] == True]
+
+understocked_products[['ds', 'sku', 'warehouse_code', 'running_stock_after_forecast', 'yhat']]
+2024-08-16 11:53:56,754 - common.logger_ - INFO - Response code: df1[df1['sku'].str.contains('boxing gloves')]
+2024-08-16 11:53:56,754 - common.logger_ - INFO - Response code: df1[df1['sku'].str.contains('boxing gloves')]
+2024-08-16 11:53:56,754 - common.logger_ - INFO - Response code: df1[df1['sku'].str.contains('boxing gloves')]
+2024-08-16 11:55:14,192 - common.logger_ - INFO - Response code: df2[df2['sku'].str.contains('boxing gloves', case=False)]
+2024-08-16 11:55:14,192 - common.logger_ - INFO - Response code: df2[df2['sku'].str.contains('boxing gloves', case=False)]
+2024-08-16 11:55:14,192 - common.logger_ - INFO - Response code: df2[df2['sku'].str.contains('boxing gloves', case=False)]
+2024-08-16 11:57:00,975 - common.logger_ - INFO - Response code: unique_categories_df1 = df1['sku'].unique()
+unique_categories_df2 = df2['sku'].unique()
+unique_categories_df3 = df3['sku'].unique()
+unique_categories = set(unique_categories_df1) | set(unique_categories_df2) | set(unique_categories_df3)
+unique_categories
+2024-08-16 11:57:00,975 - common.logger_ - INFO - Response code: unique_categories_df1 = df1['sku'].unique()
+unique_categories_df2 = df2['sku'].unique()
+unique_categories_df3 = df3['sku'].unique()
+unique_categories = set(unique_categories_df1) | set(unique_categories_df2) | set(unique_categories_df3)
+unique_categories
+2024-08-16 11:57:00,975 - common.logger_ - INFO - Response code: unique_categories_df1 = df1['sku'].unique()
+unique_categories_df2 = df2['sku'].unique()
+unique_categories_df3 = df3['sku'].unique()
+unique_categories = set(unique_categories_df1) | set(unique_categories_df2) | set(unique_categories_df3)
+unique_categories
+2024-08-16 13:23:45,471 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:23:45,471 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:23:45,475 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:23:45,475 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:23:45,475 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:33:38,301 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:33:38,301 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:33:38,304 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:33:38,304 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:33:38,304 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:50:57,412 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:50:57,412 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:50:57,414 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:50:57,414 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:50:57,414 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:51:57,943 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:51:57,943 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:51:57,944 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:51:57,944 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:51:57,944 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:53:17,572 - common.logger_ - INFO - Response code: None
+2024-08-16 13:53:17,572 - common.logger_ - INFO - Response code: None
+2024-08-16 13:53:17,572 - common.logger_ - INFO - Response code: None
+2024-08-16 13:53:54,474 - common.logger_ - INFO - Response code: df4['level_1'].unique()
+2024-08-16 13:53:54,474 - common.logger_ - INFO - Response code: df4['level_1'].unique()
+2024-08-16 13:53:54,474 - common.logger_ - INFO - Response code: df4['level_1'].unique()
+2024-08-16 13:54:33,827 - common.logger_ - INFO - Response code: df1[df1['sku'].isin(df4[df4['level_1'] == 'BOXING GLOVES']['sku'])].head()
+2024-08-16 13:54:33,827 - common.logger_ - INFO - Response code: df1[df1['sku'].isin(df4[df4['level_1'] == 'BOXING GLOVES']['sku'])].head()
+2024-08-16 13:54:33,827 - common.logger_ - INFO - Response code: df1[df1['sku'].isin(df4[df4['level_1'] == 'BOXING GLOVES']['sku'])].head()
+2024-08-16 13:55:34,007 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:55:34,007 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:55:34,011 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:55:34,011 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:55:34,011 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:58:26,505 - common.logger_ - INFO - Response code: df1[df1['sku'] == '3PBR-F6MB-5FT'].head()
+2024-08-16 13:58:26,505 - common.logger_ - INFO - Response code: df1[df1['sku'] == '3PBR-F6MB-5FT'].head()
+2024-08-16 13:58:26,505 - common.logger_ - INFO - Response code: df1[df1['sku'] == '3PBR-F6MB-5FT'].head()
+2024-08-16 13:59:03,265 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:59:03,265 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:59:03,266 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:59:03,266 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 13:59:03,266 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:00:09,000 - common.logger_ - INFO - Response code: None
+2024-08-16 14:00:09,000 - common.logger_ - INFO - Response code: None
+2024-08-16 14:00:09,000 - common.logger_ - INFO - Response code: None
+2024-08-16 14:00:27,083 - common.logger_ - INFO - Response code: df4['level_1'].unique()
+2024-08-16 14:00:27,083 - common.logger_ - INFO - Response code: df4['level_1'].unique()
+2024-08-16 14:00:27,083 - common.logger_ - INFO - Response code: df4['level_1'].unique()
+2024-08-16 14:00:53,761 - common.logger_ - INFO - Response code: df1[df1['sku'].str.contains('BOXING GLOVES')].head()
+2024-08-16 14:00:53,761 - common.logger_ - INFO - Response code: df1[df1['sku'].str.contains('BOXING GLOVES')].head()
+2024-08-16 14:00:53,761 - common.logger_ - INFO - Response code: df1[df1['sku'].str.contains('BOXING GLOVES')].head()
+2024-08-16 14:01:53,356 - common.logger_ - INFO - Response code: # Importing pandas to perform the merge operation
+import pandas as pd
+
+# First, let's check the df4 dataframe to find the SKU for the 'BOXING GLOVES' category.
+boxing_gloves_skus = df4[df4['level_1'] == 'BOXING GLOVES'][['sku', 'warehouse_code']]
+
+# Now, let's merge this with df1 to get the stock forecast for boxing gloves.
+stock_forecast_boxing_gloves = pd.merge(boxing_gloves_skus, df1, on=['sku', 'warehouse_code'], how='inner')
+
+# Display the merged dataframe
+stock_forecast_boxing_gloves.head()
+2024-08-16 14:01:53,356 - common.logger_ - INFO - Response code: # Importing pandas to perform the merge operation
+import pandas as pd
+
+# First, let's check the df4 dataframe to find the SKU for the 'BOXING GLOVES' category.
+boxing_gloves_skus = df4[df4['level_1'] == 'BOXING GLOVES'][['sku', 'warehouse_code']]
+
+# Now, let's merge this with df1 to get the stock forecast for boxing gloves.
+stock_forecast_boxing_gloves = pd.merge(boxing_gloves_skus, df1, on=['sku', 'warehouse_code'], how='inner')
+
+# Display the merged dataframe
+stock_forecast_boxing_gloves.head()
+2024-08-16 14:01:53,356 - common.logger_ - INFO - Response code: # Importing pandas to perform the merge operation
+import pandas as pd
+
+# First, let's check the df4 dataframe to find the SKU for the 'BOXING GLOVES' category.
+boxing_gloves_skus = df4[df4['level_1'] == 'BOXING GLOVES'][['sku', 'warehouse_code']]
+
+# Now, let's merge this with df1 to get the stock forecast for boxing gloves.
+stock_forecast_boxing_gloves = pd.merge(boxing_gloves_skus, df1, on=['sku', 'warehouse_code'], how='inner')
+
+# Display the merged dataframe
+stock_forecast_boxing_gloves.head()
+2024-08-16 14:03:07,153 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Filter df2 for boxing gloves sales data
+boxing_gloves_sales = df2[df2['sku'] == 'BGR-F6MB-10OZ']
+
+# Convert the 'date' column to datetime format
+boxing_gloves_sales['date'] = pd.to_datetime(boxing_gloves_sales['date'])
+
+# Set the date as the index
+boxing_gloves_sales.set_index('date', inplace=True)
+
+# Resample the data to get monthly sales trends
+monthly_sales_trend = boxing_gloves_sales.resample('M').sum()
+
+monthly_sales_trend
+2024-08-16 14:03:07,153 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Filter df2 for boxing gloves sales data
+boxing_gloves_sales = df2[df2['sku'] == 'BGR-F6MB-10OZ']
+
+# Convert the 'date' column to datetime format
+boxing_gloves_sales['date'] = pd.to_datetime(boxing_gloves_sales['date'])
+
+# Set the date as the index
+boxing_gloves_sales.set_index('date', inplace=True)
+
+# Resample the data to get monthly sales trends
+monthly_sales_trend = boxing_gloves_sales.resample('M').sum()
+
+monthly_sales_trend
+2024-08-16 14:03:07,153 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Filter df2 for boxing gloves sales data
+boxing_gloves_sales = df2[df2['sku'] == 'BGR-F6MB-10OZ']
+
+# Convert the 'date' column to datetime format
+boxing_gloves_sales['date'] = pd.to_datetime(boxing_gloves_sales['date'])
+
+# Set the date as the index
+boxing_gloves_sales.set_index('date', inplace=True)
+
+# Resample the data to get monthly sales trends
+monthly_sales_trend = boxing_gloves_sales.resample('M').sum()
+
+monthly_sales_trend
+2024-08-16 14:03:54,279 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Filter df2 for boxing gloves
+boxing_gloves_sales = df2[df2['sku'].str.contains('BOXING GLOVES')]
+
+# Group by date and sum quantity and revenue
+boxing_gloves_sales_trends = boxing_gloves_sales.groupby('date').agg({'quantity': 'sum', 'revenue': 'sum'}).reset_index()
+
+boxing_gloves_sales_trends
+2024-08-16 14:03:54,279 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Filter df2 for boxing gloves
+boxing_gloves_sales = df2[df2['sku'].str.contains('BOXING GLOVES')]
+
+# Group by date and sum quantity and revenue
+boxing_gloves_sales_trends = boxing_gloves_sales.groupby('date').agg({'quantity': 'sum', 'revenue': 'sum'}).reset_index()
+
+boxing_gloves_sales_trends
+2024-08-16 14:03:54,279 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Filter df2 for boxing gloves
+boxing_gloves_sales = df2[df2['sku'].str.contains('BOXING GLOVES')]
+
+# Group by date and sum quantity and revenue
+boxing_gloves_sales_trends = boxing_gloves_sales.groupby('date').agg({'quantity': 'sum', 'revenue': 'sum'}).reset_index()
+
+boxing_gloves_sales_trends
+2024-08-16 14:14:25,611 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:14:25,611 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:14:25,612 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:14:25,612 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:14:25,612 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:17:50,858 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:17:50,858 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:17:50,860 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:17:50,860 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:17:50,860 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:19:48,571 - common.logger_ - INFO - Response code: df1[df1['sku'].str.contains('BOXING GLOVES')].head()
+2024-08-16 14:19:48,571 - common.logger_ - INFO - Response code: df1[df1['sku'].str.contains('BOXING GLOVES')].head()
+2024-08-16 14:19:48,571 - common.logger_ - INFO - Response code: df1[df1['sku'].str.contains('BOXING GLOVES')].head()
+2024-08-16 14:39:09,677 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:39:09,677 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:39:09,679 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:39:09,679 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:39:09,679 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:46:55,548 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:46:55,548 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:46:55,550 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:46:55,550 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 14:46:55,550 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 15:00:24,195 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert the 'ds' column to datetime format in df1
+# and filter for the holiday season (October to January)
+df1['ds'] = pd.to_datetime(df1['ds'])
+
+# Filter for the holiday season
+holiday_season = df1[(df1['ds'].dt.month >= 10) | (df1['ds'].dt.month <= 1)]
+
+# Get the understocked products during the holiday season
+understocked_products = holiday_season[holiday_season['is_understock'] == True]
+
+# Select relevant columns for output
+understocked_products_output = understocked_products[['sku', 'warehouse_code', 'ds', 'running_stock_after_forecast']]
+understocked_products_output
+2024-08-16 15:00:24,195 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert the 'ds' column to datetime format in df1
+# and filter for the holiday season (October to January)
+df1['ds'] = pd.to_datetime(df1['ds'])
+
+# Filter for the holiday season
+holiday_season = df1[(df1['ds'].dt.month >= 10) | (df1['ds'].dt.month <= 1)]
+
+# Get the understocked products during the holiday season
+understocked_products = holiday_season[holiday_season['is_understock'] == True]
+
+# Select relevant columns for output
+understocked_products_output = understocked_products[['sku', 'warehouse_code', 'ds', 'running_stock_after_forecast']]
+understocked_products_output
+2024-08-16 15:00:24,195 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert the 'ds' column to datetime format in df1
+# and filter for the holiday season (October to January)
+df1['ds'] = pd.to_datetime(df1['ds'])
+
+# Filter for the holiday season
+holiday_season = df1[(df1['ds'].dt.month >= 10) | (df1['ds'].dt.month <= 1)]
+
+# Get the understocked products during the holiday season
+understocked_products = holiday_season[holiday_season['is_understock'] == True]
+
+# Select relevant columns for output
+understocked_products_output = understocked_products[['sku', 'warehouse_code', 'ds', 'running_stock_after_forecast']]
+understocked_products_output
+2024-08-16 15:01:06,662 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert 'ds' to datetime in df1 for filtering
+# Assuming df1 is already loaded in the environment
+
+# Filter for the next 4 months from today
+end_date = pd.to_datetime('2024-12-31')  # Assuming today is 2024-08-31
+start_date = end_date - pd.DateOffset(months=4)
+
+# Filter df1 for the next 4 months
+understock_days = df1[(df1['ds'] >= start_date) & (df1['ds'] <= end_date) & (df1['is_understock'] == True)]
+
+# Count understock days for each product (sku, warehouse_code)
+understock_days_count = understock_days.groupby(['sku', 'warehouse_code']).size().reset_index(name='understock_days')
+
+understock_days_count
+2024-08-16 15:01:06,662 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert 'ds' to datetime in df1 for filtering
+# Assuming df1 is already loaded in the environment
+
+# Filter for the next 4 months from today
+end_date = pd.to_datetime('2024-12-31')  # Assuming today is 2024-08-31
+start_date = end_date - pd.DateOffset(months=4)
+
+# Filter df1 for the next 4 months
+understock_days = df1[(df1['ds'] >= start_date) & (df1['ds'] <= end_date) & (df1['is_understock'] == True)]
+
+# Count understock days for each product (sku, warehouse_code)
+understock_days_count = understock_days.groupby(['sku', 'warehouse_code']).size().reset_index(name='understock_days')
+
+understock_days_count
+2024-08-16 15:01:06,662 - common.logger_ - INFO - Response code: import pandas as pd
+
+# Convert 'ds' to datetime in df1 for filtering
+# Assuming df1 is already loaded in the environment
+
+# Filter for the next 4 months from today
+end_date = pd.to_datetime('2024-12-31')  # Assuming today is 2024-08-31
+start_date = end_date - pd.DateOffset(months=4)
+
+# Filter df1 for the next 4 months
+understock_days = df1[(df1['ds'] >= start_date) & (df1['ds'] <= end_date) & (df1['is_understock'] == True)]
+
+# Count understock days for each product (sku, warehouse_code)
+understock_days_count = understock_days.groupby(['sku', 'warehouse_code']).size().reset_index(name='understock_days')
+
+understock_days_count
+2024-08-16 15:01:44,827 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 15:01:44,827 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 15:01:44,827 - common.logger_ - INFO - Response code: df1.head()
+2024-08-16 15:04:22,310 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 15:04:22,310 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 15:04:22,312 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 15:04:22,312 - common.logger_ - INFO - Xdemand app starting
+2024-08-16 15:04:22,312 - common.logger_ - INFO - Xdemand app starting

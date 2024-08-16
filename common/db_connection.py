@@ -37,13 +37,3 @@ def write_replace_db(df,table_name):
     with engine.connect() as con:
         df.to_sql(table_name, con, if_exists='replace', index=False)
     return True
-
-def read_db(table_name):
-    with engine.connect() as con:
-        df=pd.read_sql_table(table_name, con)
-    return df
-
-def read_sql(query):
-    with engine.connect() as con:
-        df=pd.read_sql(query, con)
-    return df
