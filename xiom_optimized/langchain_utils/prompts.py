@@ -38,9 +38,17 @@ data_frames_description = """You have access to the following dataframes: df1, d
     - `avg_yhat`: Average forecasted quantity for the product demand.
 
 4. **df4: product data**:
-    - `sku`: Stock Keeping Unit, a unique identifier.
-    - `level_1`: The category of the product.
-    - `level_2`: The sub-category of the product.
+    - `sku` 
+    - `region`: The geographic region associated with the product.
+    - `warehouse_code
+    - `marketplace_sku`: The SKU specific to the marketplace.
+    - `asin`: The Amazon Standard Identification Number, a unique identifier for products on Amazon.
+    - `marketplace`: The marketplace where the product is sold (e.g., Amazon.de).
+    - `level_1`: pruduct category
+    - `level_2`: sub-category.
+    - `level_3`: product type.
+    - `channel`: The sales channel through which the product is sold (e.g., Amazon).
+    - `company`: The company or brand associated with the product.
 """
 
 # Define a prompt for a data scientist
