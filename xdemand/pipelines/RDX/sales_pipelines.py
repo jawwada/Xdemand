@@ -2,6 +2,7 @@ import logging
 import sys
 import warnings
 
+from common.local_constants import region_warehouse_codes
 from common.db_connection import write_replace_db
 from config import forecast_settings as pf_cf
 from config import price_sensing_settings as ps_cf
@@ -45,6 +46,7 @@ def run_prophet_training_pipeline():
         # Add holidays to the forecast
         forecasts = add_holidays(forecasts, max_date)
         # Write to the database
+        forecasts['warehouse_code'] = forecasts['region'].map(region_warehouse_codes)
         write_replace_db(forecasts, f"stat_forecast_data_{target}")
         logger.info(f"Saved forecasts to database for target {target}")
 
@@ -56,7 +58,10 @@ def run_price_sensing_direct():
     logger.info("Starting Price Sensing Pipeline")
     cache_manager = CacheManager()
     df_dsa = cache_manager.query_df_daily_sales_forecast_skus()
-    df_dsa = df_dsa.groupby(['channel', 'sku', 'warehouse_code', 'level_1', 'date'])[['quantity']].sum().reset_index()
+    logger.info(f"df_dsa head {df_dsa.head()}")
+    df_dsa = df_dsa.groupby(['channel', 'sku', 'warehouse_code',
+                             'level_1', 'date'])[['quantity','revenue',
+                                                  'promotional rebates']].sum().reset_index()
     # Get daily sales and price sensing data
     df_dsa = daily_sales_price_sensing_transform(df_dsa)
     # log parameters
@@ -75,7 +80,6 @@ def run_price_sensing_direct():
     log_normal_regressions = std_price_regression(df_dsa)
     logger.info(f"log_normal_regressions.head() {log_normal_regressions.head()}")
 
-
     # Write regression coefficients and results to the database
     write_replace_db(reg_coef_df, f'stat_regression_coeff_{ps_cf.regressor}_{ps_cf.target}')
     write_replace_db(log_normal_regressions, f'stat_regression_{ps_cf.regressor}_{ps_cf.target}')
@@ -83,8 +87,9 @@ def run_price_sensing_direct():
     return
 
 if __name__ == '__main__':
+    """
     logger.info("Aggegrating Sales Table to Daily Sales View")
-    #preprocess_marketplace_sales_to_im_sales()
+    preprocess_marketplace_sales_to_im_sales()
     logger.info("Starting Piplelines on Daily Sales Data ")
     # Run the Prophet training pipeline
     run_prophet_training_pipeline()
@@ -93,6 +98,7 @@ if __name__ == '__main__':
     logger.info("Starting Stockout Detection Pipeline, must be run after Prophet Training Pipeline")
     run_stockout_detection()
     logger.info("Finished Stockout Detection Pipeline")
+    """
 
     logger.info("Starting Price Sensing Pipeline")
     run_price_sensing_direct()

@@ -4,7 +4,7 @@ from sklearn.linear_model import LinearRegression
 from statsmodels.tsa.seasonal import seasonal_decompose
 
 
-def decompose_and_adjust(group, quantity_col='quantity', price_col='avg_price'):
+def decompose_and_adjust(group, quantity_col='quantity'):
     # Decompose the time series for quantity
     decomposition = seasonal_decompose(group[quantity_col], model='multiplicative', period=7,
                                        extrapolate_trend='freq')
@@ -23,7 +23,7 @@ def decompose_and_adjust(group, quantity_col='quantity', price_col='avg_price'):
     return group
 
 
-def get_price_elasticity(df_dsa, date_col='date', quantity_col='quantity', price_col='avg_price'):
+def get_price_elasticity(df_dsa, date_col='date'):
     # Ensure the date column is in datetime format
     df_dsa[date_col] = pd.to_datetime(df_dsa[date_col])
 
@@ -42,7 +42,7 @@ def get_price_elasticity(df_dsa, date_col='date', quantity_col='quantity', price
     # Calculate elasticity for each SKU and warehouse
     for (sku, warehouse_code), group in df_dsa.groupby(['sku', 'warehouse_code']):
         # Prepare the data for the linear regression model
-        X = group[['avg_price']]
+        X = group[['price']]
         # y = group['Seasonally_Trend_Adjusted_Quantity']
         y = np.log(group['quantity'] + 1)
 
@@ -54,12 +54,9 @@ def get_price_elasticity(df_dsa, date_col='date', quantity_col='quantity', price
         beta_1 = model.coef_[0]
 
         # Calculate elasticity at the mean price and mean adjusted quantity
-        mean_price = group[price_col].mean()
+        mean_price = group['price'].mean()
         mean_quantity = group['Seasonally_Trend_Adjusted_Quantity'].mean()
         elasticity = beta_1 * (mean_price / mean_quantity)
-        # make the max elasticity 1
-        elasticity = min(1, elasticity) - 1.1
-
         # Store the SKU, warehouse code, and the calculated elasticity
         elasticity_results.append({'sku': sku, 'warehouse_code': warehouse_code, 'price_elasticity': elasticity})
 

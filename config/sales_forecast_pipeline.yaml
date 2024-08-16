@@ -1,6 +1,6 @@
 default:
   write_to_db: true
-  top_n: 500
+  top_n: 3
   plot: false
   min_rows_per_sku: 100
   forecast_periods: 180
