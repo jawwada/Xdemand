@@ -20,11 +20,13 @@ sys.path.append('/opt/homebrew/lib')
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+cache_manager = CacheManager("disk")
+
 # Ignore warnings
 warnings.filterwarnings('ignore')
 
+
 def run_prophet_training_pipeline():
-    cache_manager = CacheManager("disk")
     warnings.filterwarnings("ignore")
     logger.info("Starting Sales Forecasting Pipeline")
     # Get daily sales data
