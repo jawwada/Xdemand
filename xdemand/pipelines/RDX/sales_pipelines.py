@@ -6,7 +6,7 @@ from common.db_connection import write_replace_db
 from config import forecast_settings as pf_cf
 from config import price_sensing_settings as ps_cf
 from xdemand.pipelines.RDX.price_sensing.elasticity_log_ST_adjusted import get_price_elasticity
-from xdemand.pipelines.RDX.price_sensing.ps_utils import get_daily_sales_price_sensing
+from xdemand.pipelines.RDX.price_sensing.ps_utils import daily_sales_price_sensing_transform
 from xdemand.pipelines.RDX.price_sensing.ps_utils import std_price_regression
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import add_holidays
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import forecast_sales
@@ -20,7 +20,7 @@ sys.path.append('/opt/homebrew/lib')
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-cache_manager = CacheManager("disk")
+cache_manager = CacheManager()
 
 # Ignore warnings
 warnings.filterwarnings('ignore')
@@ -54,9 +54,11 @@ def run_prophet_training_pipeline():
 
 def run_price_sensing_direct():
     logger.info("Starting Price Sensing Pipeline")
-
+    cache_manager = CacheManager()
+    df_dsa = cache_manager.query_df_daily_sales_forecast_skus()
+    df_dsa = df_dsa.groupby(['channel', 'sku', 'warehouse_code', 'level_1', 'date'])[['quantity']].sum().reset_index()
     # Get daily sales and price sensing data
-    df_dsa = get_daily_sales_price_sensing()
+    df_dsa = daily_sales_price_sensing_transform(df_dsa)
     # log parameters
     logger.info(f"Parameters for regression, {ps_cf.top_n} top n, {ps_cf.regressor} regressors,  {ps_cf.target} target")
     max_date = max(df_dsa['date'])
@@ -67,6 +69,9 @@ def run_price_sensing_direct():
     # Get price elasticity
     reg_coef_df = get_price_elasticity(df_dsa)
     logger.info(f"price elasticity df head {reg_coef_df.head()}")
+    # clip the price elasticity to -5 and 0
+    reg_coef_df['price_elasticity'] = reg_coef_df['price_elasticity'].clip(lower=-5, upper=0)
+    # Get the regression results
     log_normal_regressions = std_price_regression(df_dsa)
     logger.info(f"log_normal_regressions.head() {log_normal_regressions.head()}")
 
@@ -79,15 +84,16 @@ def run_price_sensing_direct():
 
 if __name__ == '__main__':
     logger.info("Aggegrating Sales Table to Daily Sales View")
-    preprocess_marketplace_sales_to_im_sales()
+    #preprocess_marketplace_sales_to_im_sales()
     logger.info("Starting Piplelines on Daily Sales Data ")
     # Run the Prophet training pipeline
     run_prophet_training_pipeline()
     logger.info("Finished Sales Forecasting Pipeline")
 
-    logger.info("Starting Stockout Detection Pipeline")
+    logger.info("Starting Stockout Detection Pipeline, must be run after Prophet Training Pipeline")
     run_stockout_detection()
     logger.info("Finished Stockout Detection Pipeline")
+
     logger.info("Starting Price Sensing Pipeline")
     run_price_sensing_direct()
     logger.info("Finished Price Sensing Pipeline")

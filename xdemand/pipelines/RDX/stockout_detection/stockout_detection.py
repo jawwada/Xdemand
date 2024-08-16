@@ -7,9 +7,7 @@ from common.db_connection import engine
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection_utils import fill_missing_dates, \
     process_sku_warehouse_combinations, visualize_stockout, get_total_days_dict
 
-from common.cache_manager import CacheManagerFlask
-
-
+from common.cache_manager import CacheManager
 
 # Ignore warnings
 warnings.filterwarnings('ignore')
@@ -19,8 +17,8 @@ def run_stockout_detection():
     Main function to execute the stockout detection process.
     """
     # Fetch daily sales data
-    cache_manager = CacheManagerFlask()
-    df = cache_manager.query_df_daily_sales()
+    cache_manager = CacheManager()
+    df = cache_manager.query_df_daily_sales_forecast_skus()
     df = df.groupby(['channel', 'sku', 'warehouse_code','level_1', 'date'])[['quantity']].sum().reset_index()
 
     # Fill missing dates for each SKU and warehouse combination
@@ -47,7 +45,7 @@ def run_stockout_detection():
     grid_df['out_of_stock'] = grid_df['gap_e_log10'] >= 2
 
     # Preprocess DataFrame to handle inf values
-    grid_df = grid_df.replace([np.inf, -np.inf], None, inplace=True)
+    #grid_df = grid_df.replace([np.inf, -np.inf], None, inplace=True)
 
     # Save to database
     grid_df.to_sql('stat_stock_out_past', engine, if_exists='replace', index=False)
@@ -56,3 +54,7 @@ def run_stockout_detection():
     if platform.system() == 'Windows' or platform.system() == 'Darwin':
         visualize_stockout(grid_df)
     return
+
+
+if __name__ == '__main__':
+    run_stockout_detection()

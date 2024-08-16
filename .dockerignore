@@ -19,8 +19,7 @@ data/
 *.jpeg
 
 # Ignore cache and log directories
-cache_directory/
-cache-dataframes/
+**cache**/
 logs/
 **logs**
 .run/

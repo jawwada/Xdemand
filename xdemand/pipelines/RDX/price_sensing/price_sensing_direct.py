@@ -6,7 +6,7 @@ from common.db_connection import write_replace_db
 from common.logger_ import logger
 from config import price_sensing_settings as cf
 from xdemand.pipelines.RDX.price_sensing.elasticity_log_ST_adjusted import get_price_elasticity
-from xdemand.pipelines.RDX.price_sensing.ps_utils import get_daily_sales_price_sensing
+from xdemand.pipelines.RDX.price_sensing.ps_utils import daily_sales_price_sensing_transform
 from xdemand.pipelines.RDX.price_sensing.ps_utils import std_price_regression
 
 logger.info("Starting test model")
@@ -14,7 +14,7 @@ logger.info("Starting test model")
 sys.path.append('/opt/homebrew/lib')
 
 """ *************** 2. Create ABT *************** """
-df_dsa = get_daily_sales_price_sensing()
+df_dsa = daily_sales_price_sensing_transform()
 # log parameters
 logger.info(f"Parameters for regression, {cf.top_n} top n, {cf.regressor} regressors,  {cf.target} target")
 max_date = max(df_dsa['date'])

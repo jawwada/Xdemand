@@ -11,4 +11,4 @@
 !**.sh
 !**.sql
 !xiom_optimized/assets/*
-**__pycache__/
+**cache**/

@@ -31,7 +31,7 @@ temp/*
 data/**
 plots*/**
 nbeats*/**
-cache-dataframes/
+**cache**/
 data/
 .history/
 .run/
@@ -44,11 +44,9 @@ data/
 !xdemand/machine_learning/ModelCache.py
 !xiom_optimized/assets/img.png
 
-/cache_directory/
 .idea/
 *.pyc
 /cache-price-recommender/
 /.run/
 /.venv/
 /downloaded_pdfs/
-cache-price-recommender/

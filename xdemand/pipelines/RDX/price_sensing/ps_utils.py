@@ -22,11 +22,7 @@ plot = cf.plot
 logger = logging.getLogger(__name__)
 
 
-def get_daily_sales_price_sensing():
-    query = f"""SELECT * FROM agg_im_sku_daily_sales 
-    where sku in (select distinct sku from stat_forecast_data_revenue) and date > DATEADD(year, -1, GETDATE()) order by sku, region, date;"""
-    with engine.connect() as con:
-        df_dsa = pd.read_sql(text(query), con)
+def daily_sales_price_sensing_transform(df_dsa):
     df_dsa['date'] = pd.to_datetime(df_dsa['date'])
     # perform weekly aggregation with W-MON as the start of the week
     df_dsa['warehouse_code'] = df_dsa['region'].map(region_warehouse_codes)

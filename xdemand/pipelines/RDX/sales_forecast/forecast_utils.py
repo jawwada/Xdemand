@@ -4,16 +4,21 @@ from prophet import Prophet
 from sqlalchemy import text
 import logging
 
-from common.db_connection import engine
+from common.logger_ import logger
 from common.local_constants import region_warehouse_codes
 from config import forecast_settings as cf
 periods = cf.forecast_periods
 freq = cf.forecast_period_freq
 
-logger = logging.getLogger(__name__)
-
+def stanpy_logger():
+    stanpy_logger= logging.getLogger('cmdstanpy')
+    stanpy_logger.addHandler(logging.NullHandler())
+    stanpy_logger.propagate = False
+    stanpy_logger.setLevel(logging.CRITICAL)
+    return
 
 def forecast_sku(sku_data, sku, target_variable, region):
+
     # Preprocess the data
     df = sku_data[['date_part', target_variable]]
     prophet_data = df.rename(columns={'date_part': 'ds', target_variable: 'y'})
@@ -45,10 +50,8 @@ def forecast_sku(sku_data, sku, target_variable, region):
 
 
 def prophet_pipeline_daily_sales_transform(sales_df):
-    sales_df['date'] = pd.to_datetime(sales_df['date'])
+    #sales_df['date'] = pd.to_datetime(sales_df['date'])
     sales_df['date_part'] = pd.to_datetime(sales_df['date'].dt.date)
-    # Convert all columns to lowercase
-    sales_df.columns = sales_df.columns.str.lower()
 
     rows_per_sku = sales_df.groupby(['region', 'sku'])['date_part'].count().reset_index()
     rows_per_sku.describe()
@@ -63,6 +66,7 @@ def prophet_pipeline_daily_sales_transform(sales_df):
 
     # Filter the original DataFrame for only the top 100 SKUs
     sales_df = sales_df[sales_df['sku'].isin(top_products.index)]
+
     return sales_df
 
 
@@ -78,8 +82,6 @@ def forecast_sales(grouper, target_variable, max_date):
             forecast = forecast_sku(sku_data, sku, target_variable, region)
         if forecast is not None:
             forecast['sku'] = sku
-            forecast['region'] = 'US' if region == 'USA' else region
-            forecast['warehouse_code'] = forecast['region'].replace(region_warehouse_codes)
             all_forecasts = pd.concat([all_forecasts, forecast], axis=0, ignore_index=True)
         else:
             print("No forecast for this SKU" + sku + "in region" + region)
