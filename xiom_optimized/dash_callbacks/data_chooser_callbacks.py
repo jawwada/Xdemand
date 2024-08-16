@@ -3,7 +3,7 @@ from dash import Input
 from dash import Output
 
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.utils.data_fetcher import ph_data
+from common.data_fetcher import ph_data
 from xiom_optimized.utils.utils import filter_data
 
 

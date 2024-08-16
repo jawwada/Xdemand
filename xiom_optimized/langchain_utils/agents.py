@@ -5,10 +5,10 @@ from langchain_openai import ChatOpenAI
 
 from xiom_optimized.langchain_utils.prompts import prompt_template_final_df
 from xiom_optimized.langchain_utils.prompts import prompt_template_visualisation_engineer
-from xiom_optimized.utils.data_fetcher import df_agg_monthly_3years
-from xiom_optimized.utils.data_fetcher import df_price_rec_summary
-from xiom_optimized.utils.data_fetcher import df_running_stock
-from xiom_optimized.utils.data_fetcher import ph_data
+from common.data_fetcher import df_agg_monthly_3years
+from common.data_fetcher import df_price_rec_summary
+from common.data_fetcher import df_running_stock
+from common.data_fetcher import ph_data
 
 # create agent
 dataframes = [

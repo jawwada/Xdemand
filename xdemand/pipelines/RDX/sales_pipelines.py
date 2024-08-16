@@ -10,19 +10,26 @@ from xdemand.pipelines.RDX.price_sensing.ps_utils import get_daily_sales_price_s
 from xdemand.pipelines.RDX.price_sensing.ps_utils import std_price_regression
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import add_holidays
 from xdemand.pipelines.RDX.sales_forecast.forecast_utils import forecast_sales
-from xdemand.pipelines.RDX.sales_forecast.forecast_utils import get_daily_sales_proecessed
+from xdemand.pipelines.RDX.sales_forecast.forecast_utils import prophet_pipeline_daily_sales_transform
 from xdemand.pipelines.RDX.sales_forecast.execute_preprocessing_sql import preprocess_marketplace_sales_to_im_sales
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection import run_stockout_detection
+from common.cache_manager import CacheManagerFlask
+
 sys.path.append('/opt/homebrew/lib')
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Ignore warnings
+warnings.filterwarnings('ignore')
 
 def run_prophet_training_pipeline():
+    cache_manager = CacheManagerFlask()
     warnings.filterwarnings("ignore")
     logger.info("Starting Sales Forecasting Pipeline")
-    daily_sales = get_daily_sales_proecessed()
+    # Get daily sales data
+    sales_df =  cache_manager.query_df_daily_sales()
+    daily_sales = prophet_pipeline_daily_sales_transform(sales_df)
     # get daily sales
     max_date = max(daily_sales['date_part'])
 
@@ -69,12 +76,20 @@ def run_price_sensing_direct():
     return
 
 if __name__ == '__main__':
-    logger.info("Starting RDX Pipeline")
+    logger.info("Aggegrating Sales Table to Daily Sales View")
     preprocess_marketplace_sales_to_im_sales()
+    logger.info("Starting Piplelines on Daily Sales Data ")
+    # Run the Prophet training pipeline
     run_prophet_training_pipeline()
+    logger.info("Finished Sales Forecasting Pipeline")
+
     logger.info("Starting Stockout Detection Pipeline")
     run_stockout_detection()
     logger.info("Finished Stockout Detection Pipeline")
-
     logger.info("Starting Price Sensing Pipeline")
     run_price_sensing_direct()
+    logger.info("Finished Price Sensing Pipeline")
+
+
+
+

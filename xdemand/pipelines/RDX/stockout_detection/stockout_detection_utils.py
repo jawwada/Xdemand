@@ -1,4 +1,5 @@
 import warnings
+
 from datetime import datetime, timedelta
 
 import matplotlib.pyplot as plt
@@ -7,36 +8,10 @@ import pandas as pd
 import seaborn as sns  # data visualization library
 from tqdm import tqdm
 from common.local_constants import region_warehouse_codes
+from common.logger_ import logger
 
 warnings.filterwarnings('ignore')
 
-
-def get_daily_sales(engine) -> pd.DataFrame:
-    """
-    Fetch daily sales data from the database.
-
-    Args:
-        engine: SQLAlchemy engine object for database connection.
-
-    Returns:
-        pd.DataFrame: DataFrame containing daily sales data.
-    """
-    query = """
-    SELECT * FROM agg_im_sku_daily_sales 
-    WHERE sku IN (SELECT DISTINCT sku FROM look_product_hierarchy) 
-    AND date > DATEADD(year, -3, GETDATE()) 
-    ORDER BY sku, region, date;
-    """
-    with engine.connect() as con:
-        daily_sales = pd.read_sql_query(query, con)
-    daily_sales['date'] = pd.to_datetime(pd.to_datetime(daily_sales['date']).dt.date)
-    daily_sales['sku'] = daily_sales['sku'].str.replace('^M-', '', regex=True)
-    daily_sales['year'] = daily_sales['date'].dt.year
-    daily_sales['month'] = daily_sales['date'].dt.month
-    daily_sales['year_month'] = daily_sales['date'].dt.to_period('M')
-    daily_sales['revenue'] = daily_sales['revenue'].astype(float)
-    daily_sales['warehouse_code'] = daily_sales['region'].replace(region_warehouse_codes)
-    return daily_sales
 
 def fill_missing_dates(df_sku: pd.DataFrame) -> pd.DataFrame:
     """
@@ -56,6 +31,7 @@ def fill_missing_dates(df_sku: pd.DataFrame) -> pd.DataFrame:
     df_sku['warehouse_code'] = df_sku['warehouse_code'].fillna(method='ffill')
     df_sku['channel'] = df_sku['channel'].fillna(method='ffill')
     df_sku['quantity'] = df_sku['quantity'].fillna(0)
+    df_sku['revenue'] = df_sku['revenue'].fillna(0)
     return df_sku
 
 
@@ -72,6 +48,12 @@ def get_total_days_dict(df_filled: pd.DataFrame) -> dict:
     total_days = df_filled.groupby(['sku', 'warehouse_code'])['date'].agg(['min', 'max']).reset_index()
     total_days['total_days'] = (total_days['max'] - total_days['min']).dt.days
     total_days_dict = {(row['sku'], row['warehouse_code']): row['total_days'] for _, row in total_days.iterrows()}
+    # check if there is some sku with 0 days, output sku and warehouse
+    if 0 in total_days_dict.values():
+        logger.info('There are some sku with 0 days')
+        for sku, warehouse in total_days_dict.keys():
+            if total_days_dict[(sku, warehouse)] == 0:
+                logger.info(f"sku {sku} warehouse {warehouse} with 0 days")
     return total_days_dict
 
 
@@ -155,16 +137,3 @@ def visualize_stockout(grid_df: pd.DataFrame) -> None:
     plt.savefig('stockout.png')
     plt.show()
 
-
-def preprocess_dataframe(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Preprocess the DataFrame to replace inf values with None.
-
-    Args:
-        df: DataFrame containing the data to be inserted into the database.
-
-    Returns:
-        pd.DataFrame: DataFrame with inf values replaced by None.
-    """
-    df.replace([np.inf, -np.inf], None, inplace=True)
-    return df

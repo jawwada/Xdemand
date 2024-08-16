@@ -1,15 +1,13 @@
 default:
   write_to_db: true
-  top_n: 1000
+  top_n: 10
   plot: false
   min_rows_per_sku: 100
   forecast_periods: 180
-  forecast_period_freq: "D"
   target_cols:
     - quantity
     - revenue
   forecast_tail_periods: 550
 
   _comment_forecast_periods: "Number of periods to forecast after the last date in the data"
-  _comment_forecast_period_freq: "'D' for daily, 'W-MON' for weekly, or 'M' for monthly"
   _comment_forecast_tail_periods: "periods to prepend before the last date in the data"

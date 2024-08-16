@@ -44,38 +44,26 @@ def forecast_sku(sku_data, sku, target_variable, region):
     return forecast
 
 
-def get_daily_sales_proecessed():
-    query = f"""select * from agg_im_sku_daily_sales_wh_oos where sku in 
-    (select im_sku from look_product_hierarchy)"""
-
-    with engine.connect() as con:
-        sales_df = pd.read_sql(text(query), con)
-
+def prophet_pipeline_daily_sales_transform(sales_df):
     sales_df['date'] = pd.to_datetime(sales_df['date'])
     sales_df['date_part'] = pd.to_datetime(sales_df['date'].dt.date)
-
-    # group by channel, region, sku and and forecast_period_freq for date_part and sum the quantity and revenue
-    daily_sales = sales_df. \
-        groupby(['channel', 'region', 'sku', pd.Grouper(key='date_part', freq=cf.forecast_period_freq)]) \
-        [['quantity', 'revenue']].sum().reset_index()
-
     # Convert all columns to lowercase
-    daily_sales.columns = daily_sales.columns.str.lower()
+    sales_df.columns = sales_df.columns.str.lower()
 
-    rows_per_sku = daily_sales.groupby(['region', 'sku'])['date_part'].count().reset_index()
+    rows_per_sku = sales_df.groupby(['region', 'sku'])['date_part'].count().reset_index()
     rows_per_sku.describe()
 
     rows_per_sku = rows_per_sku[rows_per_sku['date_part'] > cf.min_rows_per_sku]
-    daily_sales = pd.merge(daily_sales, rows_per_sku[['region', 'sku']], how='inner', on=['region', 'sku'])
+    sales_df = pd.merge(sales_df, rows_per_sku[['region', 'sku']], how='inner', on=['region', 'sku'])
 
     # Group by 'sku' and sum the 'quantity'
-    grouped = daily_sales.groupby('sku')['revenue'].sum()
+    grouped = sales_df.groupby('sku')['revenue'].sum()
     # Sort the summed quantities in descending order and take the top 100
     top_products = grouped.sort_values(ascending=False).head(cf.top_n)
 
     # Filter the original DataFrame for only the top 100 SKUs
-    daily_sales = daily_sales[daily_sales['sku'].isin(top_products.index)]
-    return daily_sales
+    sales_df = sales_df[sales_df['sku'].isin(top_products.index)]
+    return sales_df
 
 
 def forecast_sales(grouper, target_variable, max_date):

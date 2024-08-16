@@ -2,13 +2,13 @@ import pandas as pd
 
 from common.local_constants import region_warehouse_codes
 from common.logger_ import get_logger
-from xiom_optimized.utils.cache_manager import CacheManager
+from common.cache_manager import CacheManagerFlask
 
 logger = get_logger()
 logger.info("Xdemand app starting")
 
 # Instantiate CacheManager
-cache_manager = CacheManager()
+cache_manager = CacheManagerFlask()
 
 
 def fetch_ph_data():
