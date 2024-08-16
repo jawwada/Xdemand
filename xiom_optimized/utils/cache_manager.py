@@ -60,15 +60,6 @@ class CacheManager:
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
-    def query_df_weekly_sales(self):
-        query = f"""SELECT * FROM agg_im_sku_weekly_sales
-        where sku in (select distinct sku from stat_forecast_data_quantity) and date > DATEADD(year, -3, GETDATE()) order by sku, region, date;"""
-        df = pd.read_sql_query(query, cnxn)
-        df['date'] = pd.to_datetime(df['date'])
-        df['warehouse_code'] = df['region'].map(region_warehouse_codes)
-        return df.to_json(date_format='iso', orient='split')
-
-    @cache_decorator
     def query_df_daily_sales(self):
         query = f"""SELECT * FROM agg_im_sku_daily_sales
         where sku in (select distinct sku from stat_forecast_data_quantity) and date > DATEADD(year, -3, GETDATE()) order by sku, region, date;"""
