@@ -5,7 +5,6 @@ import pandas as pd
 from flask_caching import Cache
 
 from common.local_constants import region_warehouse_codes
-from common.logger_ import get_logger
 from xiom_optimized.app_config_initial import app
 from xiom_optimized.utils.config_constants import CACHE_DIR
 from xiom_optimized.utils.config_constants import CACHE_REDIS_URL
@@ -13,7 +12,10 @@ from xiom_optimized.utils.config_constants import CACHE_TYPE
 from xiom_optimized.utils.config_constants import TIMEOUT
 from xiom_optimized.utils.config_constants import cnxn
 
-logger = get_logger()
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
 logger.info("Xdemand app starting")
 
 

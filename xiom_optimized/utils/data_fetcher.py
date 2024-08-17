@@ -1,10 +1,12 @@
 import pandas as pd
 
 from common.local_constants import region_warehouse_codes
-from common.logger_ import get_logger
 from xiom_optimized.utils.cache_manager import CacheManager
 
-logger = get_logger()
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
 logger.info("Xdemand app starting")
 
 # Instantiate CacheManager
