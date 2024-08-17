@@ -16,6 +16,9 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+import warnings
+warnings.filterwarnings("ignore")
+
 logger.info("Xdemand app starting")
 
 
@@ -170,9 +173,10 @@ class CacheManager:
         query = f"""SELECT stat.sku, stat.region,stat.price , stat.date
         FROM look_latest_price_reference stat
             JOIN (
-                SELECT DISTINCT sku
+                SELECT sku, region, count(*) as count
                 FROM stat_forecast_data_quantity 
-            ) fcst ON fcst.sku = stat.sku and fcst.region=stat.region
+                group by sku, region
+            ) fcst ON fcst.sku = stat.sku and fcst.[region]=stat.region
              and date > DATEADD(year, -1, GETDATE()) order by stat.sku, region, date;"""
         df = pd.read_sql_query(query, cnxn)
         df['date'] = pd.to_datetime(df['date'])
