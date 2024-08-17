@@ -114,10 +114,17 @@ class CacheManager:
 
     @cache_decorator
     def query_df_fc_qp(self):
-        query = f"""SELECT * FROM stat_forecast_quantity_revenue
-                WHERE ds > DATEADD(year, -1, GETDATE()) ORDER BY ds, sku, warehouse_code;"""
+        query = f"""SELECT stat.*, look.level_1 FROM stat_forecast_quantity_revenue stat
+                JOIN (
+                SELECT DISTINCT sku, region 
+                FROM look_product_level_1 
+            ) look ON look.sku = stat.sku AND look.region = stat.region
+                WHERE ds > DATEADD(year, -3, GETDATE()) ORDER BY ds, sku, warehouse_code;"""
         df = pd.read_sql_query(query, cnxn)
         df['ds'] = pd.to_datetime(df['ds'])
+        # drop sku column
+        df = df.drop(columns=['sku'])
+        df=df.groupby(['ds','region',"warehouse_code","level_1"]).sum().reset_index()
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator

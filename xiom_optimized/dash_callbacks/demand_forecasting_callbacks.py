@@ -14,7 +14,7 @@ from plotly.subplots import make_subplots
 from prophet import Prophet
 
 from xiom_optimized.app_config_initial import app
-from common.cache_manager import cache_decorator
+from xiom_optimized.utils.cache_manager import cache_decorator
 from xiom_optimized.utils.config_constants import sample_rate_dict
 from xiom_optimized.utils.data_fetcher import df_fc_qp
 from xiom_optimized.utils.data_fetcher import df_sales
@@ -120,9 +120,8 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
             today = pd.to_datetime("today")
 
             # Calculate the date range (today ± 6 months)
-            six_months_ago = today - pd.DateOffset(months=6)
             six_months_later = today + pd.DateOffset(months=5)
-            df_fc_qp_filtered = df_fc_qp[(df_fc_qp['ds'] >= six_months_ago) & (df_fc_qp['ds'] <= six_months_later)]
+            df_fc_qp_filtered = df_fc_qp[(df_fc_qp['ds'] <= six_months_later)]
             filtered_data = pd.read_json(filter_data, orient='split')
             # Convert the 'ds' column to a datetime object if it's not already
 
@@ -130,7 +129,7 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
 
             # Assuming filtered_data is another DataFrame you want to merge with
             # Merge the filtered DataFrame with filtered_data
-            df_fc_qp_filtered = df_fc_qp_filtered.merge(filtered_data, on=['sku', 'warehouse_code', 'region'],
+            df_fc_qp_filtered = df_fc_qp_filtered.merge(filtered_data, on=['warehouse_code', 'region', 'level_1'],
                                                         how='inner')
 
             # Decide which set of columns to aggregate based on the value of quantity_sales_radio

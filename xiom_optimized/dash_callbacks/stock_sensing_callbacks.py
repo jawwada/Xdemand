@@ -12,7 +12,7 @@ from plotly.subplots import make_subplots
 
 from config import price_recommendation_settings as pr_cf
 from xiom_optimized.app_config_initial import app
-from common.cache_manager import cache_decorator
+from xiom_optimized.utils.cache_manager import cache_decorator
 from xiom_optimized.utils.data_fetcher import df_price_rec
 from xiom_optimized.utils.data_fetcher import df_price_rec_summary
 from xiom_optimized.utils.data_fetcher import df_running_stock

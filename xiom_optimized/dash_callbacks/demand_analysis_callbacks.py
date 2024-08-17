@@ -9,7 +9,7 @@ from dash import dcc
 from dash import html
 
 from xiom_optimized.app_config_initial import app
-from common.cache_manager import cache_decorator
+from xiom_optimized.utils.cache_manager import cache_decorator
 from xiom_optimized.utils.config_constants import sample_rate_dict
 from xiom_optimized.utils.data_fetcher import df_sales
 from xiom_optimized.utils.data_fetcher import ph_data
@@ -42,7 +42,7 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
                                  how='inner')
 
     if graph_data_tab == 'da-tab-1':
-        n_largest = 8
+        n_largest = 10
         # Filter the data to past 12 months
         # Filter the data to past 12 months
 

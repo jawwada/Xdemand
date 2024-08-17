@@ -30,7 +30,6 @@ def fetch_daily_sales():
 
 def fetch_fc_qp():
     df_fc_qp = pd.read_json(cache_manager.query_df_fc_qp(), convert_dates=['ds'], orient='split')
-    df_fc_qp['warehouse_code'] = df_fc_qp['region'].map(region_warehouse_codes)
     return df_fc_qp
 
 
