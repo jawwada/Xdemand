@@ -1,6 +1,6 @@
 import pandas as pd
 
-from common.data_fetcher import ph_data
+from xiom_optimized.utils.data_fetcher import ph_data
 
 
 def filter_data(filter_state, selected_channel=None, selected_warehouse=None,

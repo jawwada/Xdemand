@@ -140,3 +140,15 @@ def visualize_stockout(grid_df: pd.DataFrame) -> None:
     plt.savefig('stockout.png')
     plt.show()
 
+def preprocess_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Preprocess the DataFrame to replace inf values with None.
+
+    Args:
+        df: DataFrame containing the data to be inserted into the database.
+
+    Returns:
+        pd.DataFrame: DataFrame with inf values replaced by None.
+    """
+    df.replace([np.inf, -np.inf], None, inplace=True)
+    return df

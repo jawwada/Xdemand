@@ -5,7 +5,7 @@ import numpy as np
 
 from common.db_connection import engine
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection_utils import fill_missing_dates, \
-    process_sku_warehouse_combinations, visualize_stockout, get_total_days_dict
+    process_sku_warehouse_combinations, visualize_stockout, get_total_days_dict, preprocess_dataframe
 
 from common.cache_manager import CacheManager
 
@@ -45,7 +45,7 @@ def run_stockout_detection():
     grid_df['out_of_stock'] = grid_df['gap_e_log10'] >= 2
 
     # Preprocess DataFrame to handle inf values
-    #grid_df = grid_df.replace([np.inf, -np.inf], None, inplace=True)
+    grid_df=preprocess_dataframe(grid_df)
 
     # Save to database
     grid_df.to_sql('stat_stock_out_past', engine, if_exists='replace', index=False)

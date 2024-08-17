@@ -85,7 +85,7 @@ class CacheManager:
     @cache_decorator
     def query_df_fc_qp(self):
         query = f"""SELECT * FROM stat_forecast_quantity_revenue
-                WHERE ds > DATEADD(year, -1, GETDATE()) ORDER BY ds, sku, warehouse_code;"""
+                WHERE ds > DATEADD(year, -3, GETDATE()) ORDER BY ds, sku, warehouse_code;"""
         df = pd.read_sql_query(query, engine)
         df['ds'] = pd.to_datetime(df['ds'])
         return df

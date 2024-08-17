@@ -2,7 +2,7 @@ import dash_table
 from dash import dcc
 from dash import html
 
-from common.data_fetcher import df_sku_sum
+from xiom_optimized.utils.data_fetcher import df_sku_sum
 
 
 def generate_table(max_rows=10):

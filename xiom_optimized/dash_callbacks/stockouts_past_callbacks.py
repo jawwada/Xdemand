@@ -10,7 +10,7 @@ from dash import html
 from plotly import graph_objs as go
 
 from xiom_optimized.app_config_initial import app
-from common.data_fetcher import df_stockout_past
+from xiom_optimized.utils.data_fetcher import df_stockout_past
 
 
 @app.callback(

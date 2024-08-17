@@ -3768,6 +3768,26 @@ for in transit skus, stocks status and forecasted sales to calculate stock statu
 2024-08-15 19:14:18,884 - common.logger_ - INFO - Xdemand app starting
 2024-08-15 19:14:18,884 - common.logger_ - INFO - Xdemand app starting
 2024-08-15 19:14:18,884 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:35:40,346 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:35:40,346 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:35:40,348 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:35:40,348 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:35:40,348 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:37:56,911 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:37:56,911 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:37:56,913 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:37:56,913 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:37:56,913 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:58:17,477 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:58:17,477 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:58:17,478 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:58:17,478 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:58:17,478 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:58:44,810 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:58:44,810 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:58:44,811 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:58:44,811 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 01:58:44,811 - common.logger_ - INFO - Xdemand app starting
 2024-08-15 21:38:03,934 - common.logger_ - INFO - Xdemand app starting
 2024-08-15 21:38:03,934 - common.logger_ - INFO - Xdemand app starting
 2024-08-15 21:38:03,936 - common.logger_ - INFO - Xdemand app starting
@@ -7482,3 +7502,42 @@ understocked_products = holiday_season_data[holiday_season_data['is_understock']
 # Select relevant columns for reporting
 understocked_products_report = understocked_products[['sku', 'warehouse_code', 'ds', 'running_stock_after_forecast', 'yhat']]
 understocked_products_report
+2024-08-17 02:06:51,901 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:06:51,901 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:06:51,902 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:06:51,902 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:06:51,902 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:19:23,659 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:19:23,659 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:19:23,661 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:19:23,661 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:19:23,661 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:22:29,331 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:22:29,331 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:22:29,332 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:22:29,332 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:22:29,332 - common.logger_ - INFO - Xdemand app starting
+2024-08-17 02:22:50,561 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-17 02:22:50,561 - common.logger_ - INFO - Starting RDX Stock and PR Pipeline
+2024-08-17 02:22:50,561 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-17 02:22:50,561 - common.logger_ - INFO - Starting Stock Status Forecast Pipeline
+2024-08-17 02:22:50,635 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-17 02:22:50,635 - common.logger_ - INFO - Get Forecast Quantity with Warehouse Code
+2024-08-17 02:24:45,142 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-17 02:24:45,142 - common.logger_ - INFO - Get distinct SKUs present in Forecast Quantity
+2024-08-17 02:24:45,153 - common.logger_ - INFO - 286 distinct SKUs present in Forecast Quantity
+2024-08-17 02:24:45,153 - common.logger_ - INFO - 286 distinct SKUs present in Forecast Quantity
+2024-08-17 02:24:45,153 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-17 02:24:45,153 - common.logger_ - INFO - Get Latest Stock Status for SKUs
+2024-08-17 02:24:45,508 - common.logger_ - INFO - 286 distinct SKUs present in Latest Stock Status
+2024-08-17 02:24:45,508 - common.logger_ - INFO - 286 distinct SKUs present in Latest Stock Status
+2024-08-17 02:24:45,509 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-17 02:24:45,509 - common.logger_ - INFO - Get Shipments after Log Date for SKUs
+2024-08-17 02:24:45,776 - common.logger_ - INFO - 232 distinct SKUs present in Shipments
+2024-08-17 02:24:45,776 - common.logger_ - INFO - 232 distinct SKUs present in Shipments
+2024-08-17 02:24:45,777 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-17 02:24:45,777 - common.logger_ - INFO - Get Stock Status after Forecast
+2024-08-17 02:25:41,284 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-16 00:00:00
+2024-08-17 02:25:41,284 - common.logger_ - INFO - Max Stock Status Date Processed 2024-08-16 00:00:00
+2024-08-17 02:25:41,284 - common.logger_ - INFO - Write to the database
+2024-08-17 02:25:41,284 - common.logger_ - INFO - Write to the database
