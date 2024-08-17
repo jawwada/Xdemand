@@ -116,9 +116,9 @@ class CacheManager:
     def query_df_fc_qp(self):
         query = f"""SELECT stat.*, look.level_1 FROM stat_forecast_quantity_revenue stat
                 JOIN (
-                SELECT DISTINCT sku, region 
+                SELECT sku, level_1
                 FROM look_product_level_1 
-            ) look ON look.sku = stat.sku AND look.region = stat.region
+            ) look ON look.sku = stat.sku 
                 WHERE ds > DATEADD(year, -3, GETDATE()) ORDER BY ds, sku, warehouse_code;"""
         df = pd.read_sql_query(query, cnxn)
         df['ds'] = pd.to_datetime(df['ds'])
