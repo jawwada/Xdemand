@@ -128,8 +128,9 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
             # Filter the DataFrame for this date range
 
             # Assuming filtered_data is another DataFrame you want to merge with
+            # perform cascading merge on warehouse_code and region
             # Merge the filtered DataFrame with filtered_data
-            df_fc_qp_filtered = df_fc_qp_filtered.merge(filtered_data, on=['warehouse_code', 'region', 'level_1'],
+            df_fc_qp_filtered = df_fc_qp_filtered.merge(filtered_data, on=['warehouse_code', 'region'],
                                                         how='inner')
 
             # Decide which set of columns to aggregate based on the value of quantity_sales_radio
