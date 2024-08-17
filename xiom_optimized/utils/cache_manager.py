@@ -19,7 +19,7 @@ logger.info("Xdemand app starting")
 
 
 # define CacheDecorator class
-class CacheDecorator:
+class CacheDecoratorFlask:
     def __init__(self):
         if CACHE_TYPE == 'redis':
             self.cache = Cache(app.server, config={
@@ -44,9 +44,10 @@ class CacheDecorator:
 
         return wrapper
 
+global cache_decorator
 
-cache_decorator = CacheDecorator().cache_decorator
-class CacheManager:
+class CacheManager():
+
     @cache_decorator
     def query_ph_data(self):
         query = "SELECT * FROM look_product_hierarchy where im_sku in (select distinct sku from stat_forecast_data_quantity)"

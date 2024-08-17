@@ -1,5 +1,4 @@
 default:
-  top_n: 1000
   plot: true
   log_normal_regression: true
   regressor_lower_bound: 2

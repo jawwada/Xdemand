@@ -1,23 +1,75 @@
-from functools import wraps
-from joblib import Memory
 import os
-
-
-# Set up joblib Memory cache
-cache_dir = os.path.join(os.path.dirname(__file__), 'cache')
-memory = Memory(cache_dir, verbose=0)
-
-def cache_decorator(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        # Use joblib's Memory cache
-        cached_func = memory.cache(func)
-        return cached_func(*args, **kwargs)
-    return wrapper
+import warnings
+from functools import wraps
+from pathlib import Path
 
 import pandas as pd
-from common.local_constants import region_warehouse_codes
+from flask_caching import Cache
+from joblib import Memory
+
 from common.db_connection import engine
+from common.local_constants import region_warehouse_codes
+from common.logger_ import get_logger
+from xiom_optimized.app_config_initial import app
+from xiom_optimized.utils.config_constants import CACHE_DIR
+from xiom_optimized.utils.config_constants import CACHE_REDIS_URL
+from xiom_optimized.utils.config_constants import CACHE_TYPE
+from xiom_optimized.utils.config_constants import TIMEOUT
+
+warnings.filterwarnings("ignore")
+logger = get_logger()
+
+# Set up joblib Memory cache
+
+
+class CacheDecoratorJoblib:
+    def __init__(self):
+        cache_dir = os.path.join(os.path.dirname(__file__), 'cache')
+        self.memory = Memory(cache_dir, verbose=0)
+
+    def cache_decorator(self, func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            return self.memory.cache(func)(*args, **kwargs)
+
+        return wrapper
+
+
+# define CacheDecorator class
+class CacheDecoratorFlask:
+    def __init__(self):
+        if CACHE_TYPE == 'redis':
+            self.cache = Cache(app.server, config={
+                'CACHE_TYPE': 'redis',
+                'CACHE_REDIS_URL': CACHE_REDIS_URL,
+                'CACHE_DEFAULT_TIMEOUT': TIMEOUT
+            })
+        elif CACHE_TYPE == 'filesystem':
+            self.cache = Cache(app.server, config={
+                'CACHE_TYPE': 'filesystem',
+                'CACHE_DIR': CACHE_DIR,
+                'CACHE_DEFAULT_TIMEOUT': TIMEOUT
+            })
+            Path(CACHE_DIR).mkdir(exist_ok=True)
+        else:
+            raise ValueError(f'CACHE_TYPE {CACHE_TYPE} not supported')
+
+    def cache_decorator(self, func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            return self.cache.memoize(timeout=TIMEOUT)(func)(*args, **kwargs)
+
+        return wrapper
+
+def set_cache_decorator(context):
+    if context == 'website':
+        global cache_decorator
+        cache_decorator= CacheDecoratorFlask().cache_decorator
+    elif context == 'pipeline':
+        global cache_decorator
+        cache_decorator= CacheDecoratorJoblib().cache_decorator
+    return
+
 
 class CacheManager:
     @cache_decorator
