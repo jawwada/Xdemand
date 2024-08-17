@@ -1,7 +1,7 @@
 from langchain_core.prompts import PromptTemplate
 
 data_frames_description = """You have access to the following dataframes: df1, df2, df3.
-1. **df1: running stock data **:
+1. **df1: stock forecast data for next 6 months **:
     - `ds`: The date of the record.
     - `sku`: Stock Keeping Unit, a unique identifier .
     - `warehouse_code`: Code representing the warehouse region where the product is stored. [UK,DE,US,CA]
@@ -10,8 +10,8 @@ data_frames_description = """You have access to the following dataframes: df1, d
     - `yearly_seasonality`: The yearly seasonality component of the forecast.
     - `revenue`: Revenue generated from the product.
     - `running_stock_after_forecast`: The stock level after considering the forecasted demand.
-    - `is_understock`: Indicator if the product is understocked on the date.
-    - `is_overstock`: Indicator if the product is overstocked on the date.
+    - `is_understock`: Indicator if the product is understocked on the given date.
+    - `is_overstock`: Indicator if the product is overstocked on the given date.
     - `Expected_Arrival_Date`: The expected date of arrival for new stock.
     - `InTransit_Quantity`: Quantity of the product that is currently in transit.
     - `status_date`: The date when the status was recorded.
