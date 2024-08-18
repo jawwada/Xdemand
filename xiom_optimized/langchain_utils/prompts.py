@@ -93,16 +93,19 @@ Let's get started:
 
 prompt_template_final_df = PromptTemplate(
     input_variables=["text"],
-    template="""You are a Python developer. You have received a code snippet from a data scientist who is analyzing sales data.
+    template="""You are a Python developer for data analysis. You have received a code snippet for data analysis. 
+    where the data frames df1, df2, and df3 are already loaded in the environment.
 Your task is to:
-Identify the final data structure in the code, which is typically the result of the analysis and assign it to a data frame called final_df.  
-Generally, the final data structure is a data frame, so it is easy to assign it to final_df.
- In some cases, it might be a a dictionary (with keys as measures and values as results) or a list of results, 
-then you can convert it to a data frame and the assign. 
-If it is a dictionary of data frames, merge these data frames to create final_df, or use your common sense.
-Additionally, remove any head() or tail() function type calls that limit the data to a few rows.
-Finally, Provide the complete code for analysis, including both the original code snippet and the assignment to final_df.
- No markdowns are needed.
+Assisn the result of the analysis to a dataframe called final_df, and return the complete code for analysis.
+
+Guidelines:
+Mostly, the result a data frame, so you can do df_final = name of last data frame and return the code
+in rare cases, it might be a a dictionary (with keys as measures and values as results) or a list of results, then you 
+have to convert them appropriately to final_df.
+remove any head() or tail() function type calls that limit the data to a few rows.
+Import a library if needed, but do not do any other change in the original code and provide the complete code for analysis, 
+which maena both the original code snippet and the assignment to final_df.
+ No markdowns.
 Here is the code snippet:
 
 {text}
