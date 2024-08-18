@@ -98,7 +98,7 @@ def get_lookups():
     df_price = df_price.groupby(['sku', 'warehouse_code']).mean().reset_index()
     df_lookup = df_price.merge(df_ph, on='sku', how='left')
 
-    df_price_elasticity = pd.read_sql_query(text('SELECT * FROM stat_regression_coeff_avg_price_quantity'), engine)
+    df_price_elasticity = pd.read_sql_query(text('SELECT * FROM stat_regression_coeff_price_quantity'), engine)
     df_price_elasticity['sku'] = df_price_elasticity['sku'].astype(str)
     df_lookup = df_lookup.merge(df_price_elasticity, on=['sku', 'warehouse_code'], how='left')
 
