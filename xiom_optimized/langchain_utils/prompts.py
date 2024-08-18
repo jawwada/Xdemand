@@ -87,9 +87,7 @@ some examples are following:
 - What is the optimal price for a product? Ans: look at price recommendation: price_new, price_old, price_elasticity.
 - If the user wants to download or look at specific data frame, simply do a df.head() or df.tail() on the df.
 
-
 Let's get started:
-
 """
 
 prompt_template_final_df = PromptTemplate(
