@@ -3,7 +3,7 @@ from sys import platform
 
 CACHE_TYPE = 'filesystem'
 CACHE_DIR = 'cache-dataframes'
-TIMEOUT = 60 * 60 * 24  # 24 hours
+TIMEOUT = 60 * 60 * 24 * 7  # 24 hours
 # Redis connection details
 CACHE_REDIS_URL = 'redis://:4Svi3ccc9vDciM6pYqlurHS613IbqZJssAzCaNYSIeU=@xdemand.redis.cache.windows.net:6379'
 # Database connection details

@@ -38,7 +38,7 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         'price': 'mean'}).reset_index()
     filtered_data = pd.read_json(filtered_data, orient='split')
 
-    df_sales_filtered = pd.merge(df_lastyear, filtered_data, on=['sku', 'channel', 'warehouse_code', 'region'],
+    df_sales_filtered = pd.merge(df_lastyear, filtered_data, on=['sku', 'warehouse_code', 'region', 'level_1'],
                                  how='inner')
 
     if graph_data_tab == 'da-tab-1':
@@ -94,7 +94,7 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         )
         # Convert the 'date' column back to datetime (from Period)
 
-        df_tree_map = pd.merge(df_tree_map, ph_data[['channel', 'region', 'level_1', 'sku']],
+        df_tree_map = pd.merge(df_tree_map, ph_data[[ 'region', 'level_1', 'sku']],
                                on=['channel', 'sku', 'region'], how='left')
         # Create the treemap
         df_tree_map = df_tree_map.groupby(['channel', 'region', 'level_1', 'sku'])[
