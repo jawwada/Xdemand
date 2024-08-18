@@ -56,14 +56,17 @@ class CacheManager:
 
     @cache_decorator
     def query_ph_data(self):
-        query = ("""SELECT * FROM look_product_hierarchy lph
-            JOIN (
-                SELECT DISTINCT sku, warehouse_code 
-                FROM stat_forecast_data_quantity
-            ) fcst ON fcst.sku = lph.sku AND fcst.region = lph.region
+        query = ("""SELECT lph.im_sku as sku,lph.channel, lph.region, 
+                    lph.level_1, lph.level_2, lph.level_3, lph.level_4,
+                    
+                    FROM look_product_hierarchy lph
+                    JOIN (
+                        SELECT DISTINCT sku, warehouse_code 
+                        FROM stat_forecast_data_quantity
+                    ) fcst ON fcst.sku = lph.im_sku AND fcst.region = lph.region
                  """)
         df = pd.read_sql_query(query, cnxn)
-
+        df['warehouse_code']=df['region'].map(region_warehouse_codes)
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
