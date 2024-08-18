@@ -33,12 +33,13 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         'region',
         'channel',
         'warehouse_code',
+        'level_1',
         pd.Grouper(freq=sample_rate_dict[time_window], key='date')]).agg({
         quantity_sales_radio: 'sum',
         'price': 'mean'}).reset_index()
     filtered_data = pd.read_json(filtered_data, orient='split')
 
-    df_sales_filtered = pd.merge(df_lastyear, filtered_data, on=['sku', 'warehouse_code', 'region', 'level_1'],
+    df_sales_filtered = pd.merge(df_lastyear, filtered_data, on=['channel','sku', 'warehouse_code', 'region', 'level_1'],
                                  how='inner')
 
     if graph_data_tab == 'da-tab-1':
@@ -94,12 +95,12 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         )
         # Convert the 'date' column back to datetime (from Period)
 
-        df_tree_map = pd.merge(df_tree_map, ph_data[[ 'region', 'level_1', 'sku']],
+        df_tree_map = pd.merge(df_tree_map, ph_data[['channel', 'sku', 'region']],
                                on=['channel', 'sku', 'region'], how='left')
         # Create the treemap
-        df_tree_map = df_tree_map.groupby(['channel', 'region', 'level_1', 'sku'])[
+        df_tree_map = df_tree_map.groupby(['channel', 'region', 'sku'])[
             quantity_sales_radio].sum().reset_index()
-        fig_tree = px.treemap(df_tree_map, path=['channel', 'region', 'level_1', 'sku'],
+        fig_tree = px.treemap(df_tree_map, path=['channel', 'region', 'sku'],
                               color='sku', values=quantity_sales_radio, title='Sales')
 
         num_skus = len(df_tree_map['sku'].unique())
