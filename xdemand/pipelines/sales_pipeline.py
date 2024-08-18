@@ -119,7 +119,7 @@ class SalesPipeline:
         logger.info("SKU Processed Count")
         logger.info(daily_sales['sku'].nunique())
 
-    def run_price_sensing(self, compute_elasticity_std=False, clip_elasticity=False):
+    def run_price_sensing(self, compute_elasticity_std=False, shift_elasticity=-0.5):
         """Runs the price sensing pipeline to analyze price elasticity and sales data."""
         logger.info("Starting Price Sensing Pipeline")
         df_dsa = self.cache_manager.query_df_daily_sales_forecast_skus()
@@ -137,8 +137,8 @@ class SalesPipeline:
             log_normal_regressions,_ = self.price_sensor.std_price_regression(df_dsa)  # Use self.price_sensor
         else:
             log_normal_regressions, reg_coef_df = self.price_sensor.std_price_regression(df_dsa)  # Use self.price_sensor
-        if clip_elasticity:
-            reg_coef_df['price_elasticity'] = reg_coef_df['price_elasticity'].clip(-5, 1)
+
+        reg_coef_df['price_elasticity'] = reg_coef_df['price_elasticity']-shift_elasticity
         logger.info(f"log_normal_regressions.head() {log_normal_regressions.head()}")
 
         if self.price_write_to_db:
