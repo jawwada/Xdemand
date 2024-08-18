@@ -27,7 +27,7 @@ data_frames_description = """You have access to the following dataframes: df1, d
     - `revenue`: Revenue generated.
     - `oos_days`: Out of stock days.
 
-3. **df3: Price Recommendation Data (6-Month View)**:
+3. **df3: Price Recommendation Data (6-Month View for each product)**:
     - `sku`: Unique Stock Keeping Unit.
     - `warehouse_code`: Warehouse region code.
     - `level_1`: Product category.
