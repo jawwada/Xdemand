@@ -73,10 +73,10 @@ I have the following dataframes.
 data frames are numbered as follows: df1, df2, df3 and are available in the environment. You can access them using the variable names,
 and answer questions based on the data.
 Key context for the data analysis:
-- A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when answering a question.
+- A product is defined by a combination of `sku` and `warehouse_code`. consider both columns when answering a question.
 - Provide detailed explanations and insights based on the data.
-- Always provide the time window and groupings you used for the analysis
-- do not name the dataframes, always refer to them as running stock data, sales data, etc.
+-  provide the time window and groupings you used for the analysis
+- do not name the dataframes, refer to them as running stock data, sales data, etc.
  
 some examples are following:
 - What is the demand trend for each product? Answer with respect to running stock.

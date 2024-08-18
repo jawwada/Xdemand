@@ -32,7 +32,7 @@ def update_price_sensing_graph(graph_data_tab, filter_data):
 
     if graph_data_tab == 'ps-tab-1':
         # Define the bins and labels
-        bins = [float('-inf'), -1, 0.1, 1]
+        bins = [float('-inf'), -1, -0.1, 1]
         labels = ['Highly Elastic', 'Elastic', 'Unitary/Inelastic']
 
         # Categorize the SKUs based on the price elasticity bins
