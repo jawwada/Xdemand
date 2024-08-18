@@ -64,7 +64,7 @@ Key Action:
     4. DE warehouse is seeing a revenue drop despite good forecasts, you might want to check the price and stock of the products
 
 Use markdowns, colors , bold where appropriate. Use the data frames in the environment and report the results along with actionable insights, 
-recommendations and context.
+recommendations and provide context: time frame, groupings, assumptions, etc.
 
 I have the following dataframes.
 {data_frames_description}
