@@ -29,10 +29,12 @@ agent_running_stock = create_pandas_dataframe_agent(
     allow_dangerous_code=True,
 )
 
+agent_data_table = LLMChain(
+    llm=ChatOpenAI(temperature=0.2, model="gpt-4o-mini"),
+    prompt=prompt_template_final_df)
+
 agent_visualisation = LLMChain(
     llm=ChatOpenAI(temperature=0.2, model="gpt-4o-mini"),
     prompt=prompt_template_visualisation_engineer)
 
-agent_data_table = LLMChain(
-    llm=ChatOpenAI(temperature=0.2, model="gpt-4o-mini"),
-    prompt=prompt_template_final_df)
+
