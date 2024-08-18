@@ -119,7 +119,7 @@ class SalesPipeline:
         logger.info("SKU Processed Count")
         logger.info(daily_sales['sku'].nunique())
 
-    def run_price_sensing(self, compute_elasticity_std=False, shift_elasticity=-0.5):
+    def run_price_sensing(self, compute_elasticity_std=False, shift_elasticity=-0.25):
         """Runs the price sensing pipeline to analyze price elasticity and sales data."""
         logger.info("Starting Price Sensing Pipeline")
         df_dsa = self.cache_manager.query_df_daily_sales_forecast_skus()
