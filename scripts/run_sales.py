@@ -1,4 +1,5 @@
 import logging
+import os
 import typer
 from config import forecast_settings as cf  # Import configuration settings for forecasting
 from config import price_sensing_settings as ps_cf  # Import price sensing configuration settings
@@ -14,13 +15,13 @@ logging.basicConfig(level=logging.INFO)
 
 @app.command(name='run-sales-pipeline', help='Run the sales forecasting pipeline with specified parameters.')
 def main(
-        top_n: int = typer.Option(5, help='Top N SKUs to consider.')  # Command-line option for top N SKUs
+        top_n_skus: int = typer.Option(int(os.getenv('TOP_N_SKUS_XDEMAND', 5)), help='Top N SKUs to consider.')  # Read top_n from environment variable
 ):
     """Main entry point for running the sales pipeline with command line arguments."""
 
     # Instantiate the SalesPipeline class with the provided top_n and configuration parameters
     sales_pipeline = SalesPipeline(
-        top_n=top_n,  # Set the number of top SKUs to consider
+        top_n=top_n_skus,  # Set the number of top SKUs to consider
         write_to_db=cf.write_to_db,  # Flag to determine if results should be written to the database
         plot=cf.plot,  # Flag to determine if results should be plotted
         min_rows_per_sku=cf.min_rows_per_sku,  # Minimum number of rows required per SKU for valid forecasting
