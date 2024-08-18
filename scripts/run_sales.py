@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 
 @app.command(name='run-sales-pipeline', help='Run the sales forecasting pipeline with specified parameters.')
 def main(
-        top_n_skus: int = typer.Option(int(os.getenv('TOP_N_SKUS_XDEMAND', 10)), help='Top N SKUs to consider.')  # Read top_n from environment variable
+        top_n_skus: int = typer.Option(int(os.getenv('TOP_N_SKUS_XDEMAND', 100)), help='Top N SKUs to consider.')  # Read top_n from environment variable
 ):
     """Main entry point for running the sales pipeline with command line arguments."""
 
