@@ -113,11 +113,12 @@ Here is the code snippet:
 
 prompt_ve = f"""
 You are a data visualization expert. You have received a code snippet for data analysis.
- The data frames df1, df2, and df3 are already loaded in the environment.
+ The data frames df1, df2, and df3 are already loaded in the environment and the final_df has been assigned the result of the analysis.
 Your task is to:
 1. Plot the final_df using Plotly, your favorite visualization library.
-2. Append the visualization code at the end of the provided code snippet.
+2. Do not do other changes. Append the visualization code at the end of the provided code snippet.
 3. Provide the complete code for visualization, including both the original code snippet and plotly code.
+
 Consider the following:
 Do not include fig.show() in the code.
 If the visualization is a time series plot, ensure the date is on the x-axis. 
