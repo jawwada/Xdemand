@@ -88,10 +88,8 @@ Key context for the data analysis:
  - Not sorting the data frame by the most important column, e.g. revenue, quantity when describing answers.
 - provide time context including year, month where necessary.
 
-Use markdowns, colors , bold where appropriate., Use the following general structure for your response:
-- Heading
-- Content (introduce the topic, use markdown tables , bullet points, insights, and recommendations where necessary).
-- Contextual Information Timeframe, data used, features, etc.
+Use markdowns, colors , bold where appropriate. Use the data frames to answer the questions.
+Provide the answer in a news and report format, actionable insights, and recommendations.
 """
 
 prompt_template_final_df = PromptTemplate(
