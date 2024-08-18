@@ -27,14 +27,14 @@ class PriceSensor:
         df_dsa[self.price_col] = (df_dsa['revenue'] - df_dsa['promotional rebates']) / (df_dsa['quantity'] + 0.000001)
         return df_dsa
 
-    def std_price_regression(self, df_dsa):
+    def std_price_regression(self, df_dsa, compute_elasticity=True):
         target = cf.target
         regressor = self.price_col
         days_ago = datetime.today() - timedelta(days=self.days_before)
         df_filtered = df_dsa[df_dsa['date'] > days_ago]
         unique_skus = df_filtered['sku'].unique()
         all_regressions_list = []
-
+        elasticity_results = []
         for sku in unique_skus:
             df_sku = df_filtered[df_filtered['sku'] == sku]
             unique_wh = df_sku['warehouse_code'].unique()
@@ -59,10 +59,10 @@ class PriceSensor:
                     y = np.where((y > 0) & (~np.isnan(y)), y, small_positive_number)
                     y = np.log(y) if self.log_normal_regression else y
 
-                    reg = LinearRegression()
-                    reg.fit(X, y)
+                    model = LinearRegression()
+                    model.fit(X, y)
                     X_pred = np.linspace(X.min(), X.max(), 100).reshape(-1, 1)
-                    y_pred = reg.predict(X_pred)
+                    y_pred = model.predict(X_pred)
                     y_pred = np.where((y_pred > 0) & (~np.isnan(y_pred)), y_pred, small_positive_number)
                     y_pred = np.exp(y_pred) if self.log_normal_regression else y_pred
 
@@ -71,6 +71,16 @@ class PriceSensor:
                             'idx': id, 'sku': sku, 'warehouse_code': warehouse,
                             'x_pred': x_val.item(), 'y_pred': y_val.item()
                         })
+                    if not compute_elasticity:
+                        continue
+                    # Calculate elasticity at the mean price and mean quantity
+                    beta_1 = model.coef_[0]
+                    mean_price = X.mean()
+                    mean_quantity = y.mean()
+                    elasticity = beta_1 * (mean_price / mean_quantity)
+                    # Store the SKU, warehouse code, and the calculated elasticity
+                    elasticity_results.append(
+                        {'sku': sku, 'warehouse_code': warehouse, 'price_elasticity': elasticity})
                 except Exception as e:
                     self.logger.info(f"Data not available for sku {sku} and warehouse {warehouse}: {e}")
                     continue
@@ -80,4 +90,4 @@ class PriceSensor:
         all_regressions['type_sense'] = regressor
         all_regressions['last_data_seen'] = df_filtered['date'].max()
         all_regressions['log_normal_regression'] = self.log_normal_regression
-        return all_regressions
+        return all_regressions, pd.DataFrame(elasticity_results)

@@ -119,25 +119,26 @@ class SalesPipeline:
         logger.info("SKU Processed Count")
         logger.info(daily_sales['sku'].nunique())
 
-    def run_price_sensing(self):
+    def run_price_sensing(self, compute_elasticity_std=False, clip_elasticity=False):
         """Runs the price sensing pipeline to analyze price elasticity and sales data."""
         logger.info("Starting Price Sensing Pipeline")
         df_dsa = self.cache_manager.query_df_daily_sales_forecast_skus()
         logger.info(f"df_dsa head {df_dsa.head()}")
-        df_dsa = df_dsa.groupby(['channel', 'sku', 'warehouse_code', 'date'])[
+        df_dsa = df_dsa.groupby(['channel', 'sku', 'warehouse_code', 'level_1', 'date'])[
             ['quantity', 'revenue', 'promotional rebates']].sum().reset_index()
         df_dsa = self.price_sensor.daily_sales_price_sensing_transform(df_dsa)  # Use self.price_sensor
         logger.info(
-            f"Parameters for regression,  {self.price_col} regressors, {self.price_target} target")
+            f"Parameters for regression,  {self.price_col} col, {self.price_target} target")
         max_date = max(df_dsa['date'])
         df_dsa['date_part'] = df_dsa['date'].dt.date
         logger.info(f"Max date {max_date} and min date {df_dsa['date'].min()}")
-
-        reg_coef_df = self.price_elasticity_calculator.get_price_elasticity(df_dsa)  # Call the method on the instance
-        logger.info(f"Price elasticity df head {reg_coef_df.head()}")
-        reg_coef_df['price_elasticity'] = reg_coef_df['price_elasticity'].clip(lower=self.regressor_lower_bound,
-                                                                               upper=self.regressor_upper_bound)
-        log_normal_regressions = self.price_sensor.std_price_regression(df_dsa)  # Use self.price_sensor
+        if compute_elasticity_std==False:
+            reg_coef_df = self.price_elasticity_calculator.get_price_elasticity(df_dsa)  # Call the method on the instance
+            log_normal_regressions,_ = self.price_sensor.std_price_regression(df_dsa)  # Use self.price_sensor
+        else:
+            log_normal_regressions, reg_coef_df = self.price_sensor.std_price_regression(df_dsa)  # Use self.price_sensor
+        if clip_elasticity:
+            reg_coef_df['price_elasticity'] = reg_coef_df['price_elasticity'].clip(-5, 1)
         logger.info(f"log_normal_regressions.head() {log_normal_regressions.head()}")
 
         if self.price_write_to_db:

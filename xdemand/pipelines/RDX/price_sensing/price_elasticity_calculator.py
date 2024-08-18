@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class PriceElasticityCalculator:
     def __init__(self, date_col='date', quantity_col='quantity', price_col='price',
-                 period=7, model='multiplicative', remove_months=True,
+                 period=365, model='additive', remove_months=True,
                  remove_months_window=(5, 6, 7, 8)):
         self.date_col = date_col
         self.quantity_col = quantity_col
@@ -30,9 +30,13 @@ class PriceElasticityCalculator:
         # Extract the trend and seasonal components
         trend = decomposition.trend
         seasonal = decomposition.seasonal
+        if self.model == 'additive':
+            group['Seasonally_Trend_Adjusted_Quantity'] = group[self.quantity_col] -  seasonal
+        else:
+            group['Seasonally_Trend_Adjusted_Quantity'] = group[self.quantity_col] / seasonal
 
         # Adjust the quantity by removing both trend and seasonality
-        group['Seasonally_Trend_Adjusted_Quantity'] = group[self.quantity_col] / (trend * seasonal)
+
 
         # Handle missing values after decomposition
         group['Seasonally_Trend_Adjusted_Quantity'].fillna(method='bfill', inplace=True)
@@ -56,16 +60,17 @@ class PriceElasticityCalculator:
         elasticity_results = []
         try:
             # Apply the decomposition and adjustment by SKU, region, and channel
-            df_dsa = df_dsa.groupby(['sku', 'warehouse_code', 'channel']).apply(self.decompose_and_adjust).reset_index(drop=True)
+            df_dsa = df_dsa.groupby(['sku', 'warehouse_code']).apply(self.decompose_and_adjust).reset_index(drop=True)
         except Exception as e:
             logger.error(f"Error during decomposition: {e}")
+            df_dsa['Seasonally_Trend_Adjusted_Quantity'] = df_dsa[self.quantity_col]
 
         # Calculate elasticity for each SKU and warehouse
         for (sku, warehouse_code), group in df_dsa.groupby(['sku', 'warehouse_code']):
             try:
                 # Prepare the data for the linear regression model
                 X = group[[self.price_col]]
-                y = np.log(group[self.quantity_col] + 1)
+                y = np.log(group['Seasonally_Trend_Adjusted_Quantity'] + 1)
 
                 # Fit the linear regression model
                 model = LinearRegression()
@@ -78,6 +83,7 @@ class PriceElasticityCalculator:
                 mean_price = group[self.price_col].mean()
                 mean_quantity = group['Seasonally_Trend_Adjusted_Quantity'].mean()
                 elasticity = beta_1 * (mean_price / mean_quantity)
+                logger.info(f"SKU {sku}, Warehouse {warehouse_code}: Price Elasticity = {elasticity}")
                 # Store the SKU, warehouse code, and the calculated elasticity
                 elasticity_results.append({'sku': sku, 'warehouse_code': warehouse_code, 'price_elasticity': elasticity})
 
