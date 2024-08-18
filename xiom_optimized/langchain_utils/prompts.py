@@ -85,7 +85,9 @@ some examples are following:
             - describe the price recommendation
 - Question about holiday season stock levels. Ans: look at stock data: sku, warehouse_code combinations from October to Jan.
 - What is the optimal price for a product? Ans: look at price recommendation: price_new, price_old, price_elasticity.
+- For advance analysis, you have statsmodels, scikit-learn, xgboost, and prophet libraries available.
 - If the user wants to download or look at specific data frame, simply do a df.head() or df.tail() on the df.
+
 
 Let's get started:
 
@@ -104,7 +106,7 @@ in rare cases, it might be a a dictionary (with keys as measures and values as r
 have to convert them appropriately to final_df.
 remove any head() or tail() function type calls that limit the data to a few rows.
 Import a library if needed, but do not do any other change in the original code and provide the complete code for analysis, 
-which maena both the original code snippet and the assignment to final_df.
+which means both the original code snippet and the assignment to final_df.
  No markdowns.
 Here is the code snippet:
 
