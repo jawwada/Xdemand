@@ -57,11 +57,10 @@ class CacheManager:
     @cache_decorator
     def query_ph_data(self):
         query = ("""SELECT lph.im_sku as sku,lph.channel, lph.region, 
-                    lph.level_1, lph.level_2, lph.level_3, lph.level_4,
-                    
+                    lph.level_1, lph.level_2, lph.level_3, lph.level_4
                     FROM look_product_hierarchy lph
                     JOIN (
-                        SELECT DISTINCT sku, warehouse_code 
+                        SELECT DISTINCT sku, region
                         FROM stat_forecast_data_quantity
                     ) fcst ON fcst.sku = lph.im_sku AND fcst.region = lph.region
                  """)
