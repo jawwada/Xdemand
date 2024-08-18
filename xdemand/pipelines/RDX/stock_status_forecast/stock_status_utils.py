@@ -107,7 +107,7 @@ def get_forecast_quantity_warhouse(sku=None):
     group_by_columns = ['ds', 'sku', 'last_data_seen', 'warehouse_code']  # Add other non-numerical columns as needed
 
     # Group by the specified columns and sum numerical columns
-    forecast_warehouse = forecast_data.drop(columns=['region','yhat_lower','yhat_upper','trend_lower','trend_upper']).\
+    forecast_warehouse = forecast_data.drop(columns=['region','yhat_lower','yhat_upper']).\
         groupby(group_by_columns).sum().reset_index()
     forecast_warehouse['yhat'] = forecast_warehouse['yhat'] * ss_cf.amazon_shopify_factor
     forecast_warehouse['trend'] = forecast_warehouse['trend'] * ss_cf.amazon_shopify_factor
@@ -132,7 +132,7 @@ def get_forecast_revenue_warhouse(sku=None):
     group_by_columns = ['ds', 'sku', 'last_data_seen', 'warehouse_code']  # Add other non-numerical columns as needed
 
     # Group by the specified columns and sum numerical columns
-    forecast_warehouse = forecast_data.drop(columns=['region','yhat_lower','yhat_upper','trend_lower','trend_upper']).\
+    forecast_warehouse = forecast_data.drop(columns=['region','yhat_lower','yhat_upper']).\
         groupby(group_by_columns).sum().reset_index()
     forecast_warehouse['yhat'] = forecast_warehouse['yhat'] * ss_cf.amazon_shopify_factor
     forecast_warehouse['trend'] = forecast_warehouse['trend'] * ss_cf.amazon_shopify_factor
