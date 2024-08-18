@@ -138,7 +138,7 @@ class SalesPipeline:
         else:
             log_normal_regressions, reg_coef_df = self.price_sensor.std_price_regression(df_dsa)  # Use self.price_sensor
 
-        reg_coef_df['price_elasticity'] = reg_coef_df['price_elasticity']-shift_elasticity
+        reg_coef_df['price_elasticity'] = reg_coef_df['price_elasticity']+shift_elasticity
         logger.info(f"log_normal_regressions.head() {log_normal_regressions.head()}")
 
         if self.price_write_to_db:
