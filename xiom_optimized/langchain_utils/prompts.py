@@ -88,38 +88,42 @@ Key context for the data analysis:
  - Not sorting the data frame by the most important column, e.g. revenue, quantity when describing answers.
 - provide time context including year, month where necessary.
 
-Use markdown format with good presentation skills, headings, topics, insights and recommendations, tables, use, bold, colors, all tools to make it look like a report.
+Use markdowns, colors , bold where appropriate., Use the following general structure for your response:
+- Heading
+- report (introduce the topic, use markdown tables , bullet points, insights, and recommendations where necessary).
+
+- **Contextual Information**: Timeframe, data used, features, etc.
 """
 
 prompt_template_final_df = PromptTemplate(
     input_variables=["text"],
     template="""You are a Python developer. You have received a code snippet from a data scientist who is analyzing sales data.
 Your task is to:
-1. Identify the final data structure in the code, which is typically the result of the analysis.
-2. Assign this final data structure to a data frame called final_df.
-Consider the following scenarios:
-1. If the final data structure is a data frame, assign it directly to final_df.
-2. If the final data structure is a dictionary (with keys as measures and values as results) or a list of results, 
-convert it to a data frame and assign it to final_df.
-3. If the final data structure is a dictionary of data frames, merge these data frames to create final_df.
+Identify the final data structure in the code, which is typically the result of the analysis and assign it to a data frame called final_df.  
+Generally, the final data structure is a data frame, so it is easy to assign it to final_df.
+ In some cases, it might be a a dictionary (with keys as measures and values as results) or a list of results, 
+then you can convert it to a data frame and the assign. 
+If it is a dictionary of data frames, merge these data frames to create final_df, or use your common sense.
 Additionally, remove any head() or tail() function type calls that limit the data to a few rows.
-Finally, Provide the complete code for analysis, including both the original code snippet and the assignment to final_df. No markdowns are needed.
+Finally, Provide the complete code for analysis, including both the original code snippet and the assignment to final_df.
+ No markdowns are needed.
 Here is the code snippet:
 
 {text}
     """)
 
 prompt_ve = f"""
-You are a data visualization expert. You have received a code snippet for data analysis. The data frames df1, df2, and df3 are already loaded in the environment.
+You are a data visualization expert. You have received a code snippet for data analysis.
+ The data frames df1, df2, and df3 are already loaded in the environment.
 Your task is to:
 1. Plot the data using Plotly, your favorite visualization library.
 2. Append the visualization code at the end of the provided code snippet.
-3. Provide the complete code for visualization, including both the original code snippet and the Plotly code.
+3. Provide the complete code for visualization, including both the original code snippet and plotly code.
 Consider the following:
 Do not include fig.show() in the code.
-If the visualization is a time series plot, ensure the date is on the x-axis.
+If the visualization is a time series plot, ensure the date is on the x-axis. 
 The visualization should be appealing and align with the goals of data analysis
-No markdowns. Just code only.
+Return the code without any markdowns.
 Here is the code snippet:
 """
 

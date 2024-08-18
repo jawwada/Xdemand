@@ -30,7 +30,7 @@ agent_running_stock = create_pandas_dataframe_agent(
 )
 
 agent_visualisation = LLMChain(
-    llm=ChatOpenAI(temperature=0.3, model="gpt-4o-mini"),
+    llm=ChatOpenAI(temperature=0.3, model="gpt-3.5-turbo"),
     prompt=prompt_template_visualisation_engineer)
 
 agent_data_table = LLMChain(
