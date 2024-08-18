@@ -27,6 +27,8 @@ class CacheDecoratorJoblib:
 
 cache_decorator = CacheDecoratorJoblib().cache_decorator
 
+query_ph_data = ("""SELECT * FROM look_product_level_1""")
+
 
 class CacheManagerJoblib:
 
@@ -90,24 +92,24 @@ class CacheManagerJoblib:
         df['date'] = pd.to_datetime(df['date'])
         df['warehouse_code'] = df['region'].map(region_warehouse_codes)
 
-        query_ph_data = ("""SELECT * FROM look_product_level_1""")
         ph_data = pd.read_sql_query(query_ph_data, engine)
         df = df.merge(ph_data, on='sku', how='inner')
         return df
 
     @cache_decorator
-    def query_df_fc_qp(self, ph_data):
+    def query_df_fc_qp(self):
         query = f"""SELECT stat.*
                         FROM stat_forecast_quantity_revenue stat
                         WHERE ds > DATEADD(day, -400, GETDATE()) 
                         ORDER BY ds, warehouse_code, region;"""
         df = pd.read_sql_query(query, engine)
         df['ds'] = pd.to_datetime(df['ds'])
+        ph_data = pd.read_sql_query(query_ph_data, engine)
         df = df.merge(ph_data, on='sku', how='inner')
         return df
 
     @cache_decorator
-    def query_df_running_stock(self, ph_data):
+    def query_df_running_stock(self):
         query = """
             select stat.* from stat_running_stock_forecast stat
                 JOIN (
@@ -119,11 +121,12 @@ class CacheManagerJoblib:
         df = pd.read_sql_query(query, engine)
         df.date = pd.to_datetime(df.ds).dt.date
         df['ds'] = pd.to_datetime(df['ds'])
+        ph_data = pd.read_sql_query(query_ph_data, engine)
         df = df.merge(ph_data, on='sku', how='inner')
         return df
 
     @cache_decorator
-    def query_stockout_past(self, ph_data):
+    def query_stockout_past(self):
         query = """SELECT stat.* FROM stat_stock_out_past stat
                 JOIN (
                     SELECT DISTINCT sku, warehouse_code 
@@ -131,11 +134,12 @@ class CacheManagerJoblib:
                 ) fcst ON fcst.sku = stat.sku AND fcst.warehouse_code = stat.warehouse_code"""
         df = pd.read_sql_query(query, engine)
         df.date = pd.to_datetime(df.date)
+        ph_data = pd.read_sql_query(query_ph_data, engine)
         df = df.merge(ph_data, on='sku', how='inner')
         return df
 
     @cache_decorator
-    def query_price_sensing_tab(self, ph_data):
+    def query_price_sensing_tab(self):
         query = """SELECT stat.* FROM stat_regression_coeff_price_quantity stat
                 JOIN (
                     SELECT DISTINCT sku, warehouse_code 
@@ -144,22 +148,25 @@ class CacheManagerJoblib:
                       order by price_elasticity desc"""
         df = pd.read_sql_query(query, engine)
         df['price_elasticity'] = df['price_elasticity'].astype(float).round(4)
+        ph_data = pd.read_sql_query(query_ph_data, engine)
         df = df.merge(ph_data, on='sku', how='inner')
         return df
 
     @cache_decorator
-    def query_price_regression_tab(self, ph_data):
-        query = """SELECT stat.* FROM  stat_regression_avg_price_quantity stat
+    def query_price_regression_tab(self):
+        query = """SELECT stat.* FROM  stat_regression_price_quantity stat
                 JOIN (
                     SELECT DISTINCT sku, warehouse_code 
                     FROM stat_forecast_data_quantity 
                 ) fcst ON fcst.sku = stat.sku AND fcst.warehouse_code = stat.warehouse_code"""
         df = pd.read_sql_query(query, engine)
+        df['price_elasticity'] = df['price_elasticity'].astype(float).round(4)
+        ph_data = pd.read_sql_query(query_ph_data, engine)
         df = df.merge(ph_data, on='sku', how='inner')
         return df
 
     @cache_decorator
-    def query_price_reference(self, ph_data):
+    def query_price_reference(self):
         query = f"""SELECT stat.sku, stat.region,stat.price , stat.date
             FROM look_latest_price_reference stat
                 JOIN (
@@ -170,11 +177,12 @@ class CacheManagerJoblib:
                  and date > DATEADD(year, -1, GETDATE()) order by stat.sku, region, date;"""
         df = pd.read_sql_query(query, engine)
         df['date'] = pd.to_datetime(df['date'])
+        ph_data=pd.read_sql_query(query_ph_data, engine)
         df = df.merge(ph_data, on='sku', how='inner')
         return df
 
     @cache_decorator
-    def query_price_recommender_summary(self, ph_data):
+    def query_price_recommender_summary(self):
         query = """
                 SELECT
                   stat.[sku],
@@ -197,11 +205,12 @@ class CacheManagerJoblib:
                 ) fcst ON fcst.sku = stat.sku AND fcst.warehouse_code = stat.warehouse_code
                 """
         df = pd.read_sql_query(query, engine)
+        ph_data = pd.read_sql_query(query_ph_data, engine)
         df = df.merge(ph_data, on='sku', how='inner')
         return df
 
     @cache_decorator
-    def query_price_recommender(self, ph_data):
+    def query_price_recommender(self):
         query = f"""SELECT
             stat.[sku]
             , [ds]
@@ -218,5 +227,6 @@ class CacheManagerJoblib:
             """
         df = pd.read_sql_query(query, engine)
         df['ds'] = pd.to_datetime(df['ds'])
+        ph_data = pd.read_sql_query(query_ph_data, engine)
         df = df.merge(ph_data, on='sku', how='inner')
         return df
