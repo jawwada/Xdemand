@@ -112,7 +112,7 @@ prompt_ve = f"""
 You are a data visualization expert. You have received a code snippet for data analysis.
  The data frames df1, df2, and df3 are already loaded in the environment.
 Your task is to:
-1. Plot the data using Plotly, your favorite visualization library.
+1. Plot the final_df using Plotly, your favorite visualization library.
 2. Append the visualization code at the end of the provided code snippet.
 3. Provide the complete code for visualization, including both the original code snippet and plotly code.
 Consider the following:
