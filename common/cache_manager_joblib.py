@@ -1,7 +1,6 @@
 import os
 import warnings
 from functools import wraps
-from pathlib import Path
 
 import pandas as pd
 from joblib import Memory
@@ -16,7 +15,7 @@ warnings.filterwarnings("ignore")
 
 class CacheDecoratorJoblib:
     def __init__(self):
-        cache_dir = os.path.join(os.path.dirname(__file__), 'cache')
+        cache_dir = os.path.join(os.getcwd(), 'cache-joblib')
         self.memory = Memory(cache_dir, verbose=0)
 
     def cache_decorator(self, func):

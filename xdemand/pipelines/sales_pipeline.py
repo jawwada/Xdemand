@@ -149,6 +149,10 @@ class SalesPipeline:
         logger.info("Starting Stockout Detection Pipeline")
         df = self.cache_manager.query_df_daily_sales_forecast_skus()
         df = df.groupby(['channel', 'sku', 'warehouse_code', 'date'])[['quantity']].sum().reset_index()
+        # log the number of unique SKU, warehouse combinations
+        logger.info(f"Unique SKU, Warehouse combinations {df[['sku', 'warehouse_code']].nunique()}")
+
+        # Fill missing dates
         df_filled = df.groupby(['channel', 'sku', 'warehouse_code']).apply(fill_missing_dates).reset_index(drop=True)
         df_filled['quantity'] = df_filled['quantity'].fillna(0)
         total_days_dict = get_total_days_dict(df_filled)
