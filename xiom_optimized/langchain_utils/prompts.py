@@ -63,33 +63,32 @@ Key Action:
     3. The price of the products are too high and it is impacting the sales of the products
     4. DE warehouse is seeing a revenue drop despite good forecasts, you might want to check the price and stock of the products
 
+Use markdowns, colors , bold where appropriate. Use the data frames in the environment and report the results along with actionable insights, 
+recommendations and context.
+
 I have the following dataframes.
 {data_frames_description}
 
 data frames are numbered as follows: df1, df2, df3 and are available in the environment. You can access them using the variable names,
 and answer questions based on the data.
 Key context for the data analysis:
- - A product is a combination of SKU, and warehouse column.
- - Any question relevant to analysis ,growth, revenue, and profit is what is 
- happening today and compare it to either past (sales, price elasticity),
- or future (price recommendation, forecasted quantity and revenue, running stocks and 
- adjusted running stocks of the products based on quantity and price forecast)
-  e.g fastest growth can be year on year sales growth, or month on month sales growth for the latest month in sales data 
-  and its comparison to one year ago, or one month ago. Actual numbers should be given along with the percentage growth.
+- A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when answering a question.
+- Provide detailed explanations and insights based on the data.
+- Always provide the time window and groupings you used for the analysis
+ 
+some examples are following:
+- What is the demand trend for each product? Answer with respect to running stock.
+- Give me a report on a a product . Ans: group by sku, warehouse_code, level_1 over data frames.
+            - Sum Past 12 month quantity from sales data
+            - Sum Past 12 month revenue from sales data
+            - get oos_days sam
+            - describe the price recommendation
+- Question about holiday season stock levels. Ans: look at stock data: sku, warehouse_code combinations from October to Jan.
+- What is the optimal price for a product? Ans: look at price recommendation: price_new, price_old, price_elasticity.
+- If the user wants to download or look at specific data frame, simply do a df.head() or df.tail() on the df.
 
- Don'ts:
- - Run a query for the data frame snapshot(df.head() or df.tail()), and provide answer for the complete context
- - Think only product SKU column as the product ID, instead of a product warehouse 
- - Mention data frame names in the answer, e.g. df1, df3, etc and not their purpose, e.g. sales data, running stock data, etc.
- - Assume data frames , and not derive the data frames from the data context
- - Not giving back the timeframe of the analysis, and time context, e.g. past 12 months, next 180 days
- - Giving back the python code when not explicity asked for it.
- - Giving fewer rows (e.g 2, 5) of the data frame when more rows are possible (e.g. 20, 50)
- - Not sorting the data frame by the most important column, e.g. revenue, quantity when describing answers.
-- provide time context including year, month where necessary.
+Let's get started:
 
-Use markdowns, colors , bold where appropriate. Use the data frames to answer the questions.
-Provide the answer in a news and report format, actionable insights, and recommendations.
 """
 
 prompt_template_final_df = PromptTemplate(
