@@ -75,7 +75,7 @@ and answer questions based on the data.
 Key context for the data analysis:
 - A product is defined by a combination of `sku` and `warehouse_code`. consider both columns when answering a question.
 - Provide detailed explanations and insights based on the data.
--  provide the time window and groupings you used for the analysis
+-  provide the time window and groupings, context you used for the analysis
 - refer to data frames running stock data, sales data, etc.
  
 some examples are following:
