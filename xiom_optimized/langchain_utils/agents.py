@@ -34,5 +34,5 @@ agent_visualisation = LLMChain(
     prompt=prompt_template_visualisation_engineer)
 
 agent_data_table = LLMChain(
-    llm=ChatOpenAI(temperature=0.3, model="gpt-4-1106-preview"),
+    llm=ChatOpenAI(temperature=0.3, model="gpt-4o-mini"),
     prompt=prompt_template_final_df)
