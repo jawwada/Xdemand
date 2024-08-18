@@ -1,6 +1,6 @@
 default:
   # stock_status_forecast, put sku to null to forecast all skus, otherwise to debug a single sku
   sku: null
-  write_to_db: true
+  write_to_db: false
   plot: false
   amazon_shopify_factor: 1.25

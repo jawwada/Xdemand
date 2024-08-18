@@ -9,7 +9,7 @@ from plotly import graph_objs as go
 from plotly.subplots import make_subplots
 
 from xiom_optimized.app_config_initial import app
-from common.cache_manager import cache_decorator
+from common.cache_manager_joblib import cache_decorator
 from xiom_optimized.utils.data_fetcher import df_daily_sales_da
 from xiom_optimized.utils.data_fetcher import df_price_regression_tab
 from xiom_optimized.utils.data_fetcher import df_price_sensing_tab

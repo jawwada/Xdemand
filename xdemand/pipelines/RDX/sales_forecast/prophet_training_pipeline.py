@@ -1,9 +1,9 @@
 from common.db_connection import write_replace_db
 from common.logger_ import logger
 from config import forecast_settings as cf
-from xdemand.pipelines.RDX.sales_forecast.forecast_utils import add_holidays
-from xdemand.pipelines.RDX.sales_forecast.forecast_utils import forecast_sales
-from xdemand.pipelines.RDX.sales_forecast.forecast_utils import prophet_pipeline_daily_sales_transform
+from xdemand.pipelines.RDX.sales_forecast.porphet_forecaster import add_holidays
+from xdemand.pipelines.RDX.sales_forecast.porphet_forecaster import forecast_sales
+from xdemand.pipelines.RDX.sales_forecast.porphet_forecaster import prophet_pipeline_daily_sales_transform
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection import stockout_detection
 
 

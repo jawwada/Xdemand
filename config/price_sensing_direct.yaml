@@ -1,11 +1,20 @@
 default:
   plot: true
+  write_to_db: false
+  days_before: 365
+  price_col: price
+  date_col: date
   log_normal_regression: true
   regressor_lower_bound: 2
   regressor_upper_bound: 2
   target_lower_bound: 1
   target_upper_bound: 2
   target: quantity
-  write_to_db: true
-  regressor: avg_price
-  days_before: 365
+  regressor: price
+
+  price_elasticity:
+    plot: true
+    period: 7
+    model: multiplicative
+    remove_months: true
+    remove_months_window: [5, 6, 7, 8]

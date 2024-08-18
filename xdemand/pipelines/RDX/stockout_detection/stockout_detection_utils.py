@@ -53,6 +53,7 @@ def get_total_days_dict(df_filled: pd.DataFrame) -> dict:
         for sku, warehouse in total_days_dict.keys():
             if total_days_dict[(sku, warehouse)] == 0:
                 logger.info(f"sku {sku} warehouse {warehouse} with 0 days")
+    logger.info('Total days calculated with total_days_dict size: ' + str(len(total_days_dict)))
     return total_days_dict
 
 
@@ -105,6 +106,7 @@ def process_sku_warehouse_combinations(grid_df: pd.DataFrame, total_days_dict: d
     grid_df['sale_prob'] = pd.concat(p_list)
     grid_df['gap_e_log10'] = np.log10((grid_df['gap_e'].values + 1))
     grid_df.loc[grid_df['gap_e_log10'] > 2, 'gap_e_log10'] = 2
+
 
     return grid_df
 

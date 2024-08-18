@@ -14,7 +14,7 @@ from plotly.subplots import make_subplots
 from prophet import Prophet
 
 from xiom_optimized.app_config_initial import app
-from common.cache_manager import cache_decorator
+from common.cache_manager_joblib import cache_decorator
 from xiom_optimized.utils.config_constants import sample_rate_dict
 from xiom_optimized.utils.data_fetcher import df_fc_qp
 from xiom_optimized.utils.data_fetcher import df_sales

@@ -1,5 +1,5 @@
 default:
-  write_to_db: true
+  write_to_db: false
   plot: false
   min_rows_per_sku: 365
   forecast_periods: 180

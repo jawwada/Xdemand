@@ -7,7 +7,7 @@ from common.db_connection import engine
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection_utils import fill_missing_dates, \
     process_sku_warehouse_combinations, visualize_stockout, get_total_days_dict, preprocess_dataframe
 
-from common.cache_manager import CacheManager
+from common.cache_manager_joblib import CacheManager
 
 # Ignore warnings
 warnings.filterwarnings('ignore')
