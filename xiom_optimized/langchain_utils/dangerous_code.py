@@ -7,7 +7,8 @@ from xiom_optimized.utils.data_fetcher import df_agg_monthly_3years as df2
 from xiom_optimized.utils.data_fetcher import df_price_rec_summary as df3
 from xiom_optimized.utils.data_fetcher import df_running_stock as df1
 from xiom_optimized.utils.data_fetcher import ph_data as df4
-
+import logging
+logger = logging.getLogger(__name__)
 
 def get_fig_from_code(code):
     local_variables = {}
@@ -51,6 +52,7 @@ def generate_graph(response_code):
     print(response_code)
     try:
         plotly_agent_response = agent_visualisation.invoke(response_code)
+        logger.info(f"Plotly agent response: {plotly_agent_response}")
         fig = get_fig_from_code(plotly_agent_response["text"])
         return dcc.Graph(figure=fig)
     except Exception as e:

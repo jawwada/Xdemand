@@ -149,7 +149,6 @@ def update_graph_table_container(table_clicks, graph_clicks, response_code_final
         return None
     final_df_code = response_code_final_df
     ctx = dash.callback_context
-    print("Callback context:", ctx.triggered)
     if not ctx.triggered:
         return None
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
