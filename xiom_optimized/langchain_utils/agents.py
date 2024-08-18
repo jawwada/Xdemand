@@ -20,7 +20,7 @@ dataframes = [
 ]
 
 agent_running_stock = create_pandas_dataframe_agent(
-    ChatOpenAI(temperature=0.1, model="gpt-4o-mini"),
+    ChatOpenAI(temperature=0.2, model="gpt-4-1106-preview"),
     dataframes,
     verbose=False,
     agent_type=AgentType.OPENAI_FUNCTIONS,
@@ -34,5 +34,5 @@ agent_visualisation = LLMChain(
     prompt=prompt_template_visualisation_engineer)
 
 agent_data_table = LLMChain(
-    llm=ChatOpenAI(temperature=0.2, model="gpt-4o-mini"),
+    llm=ChatOpenAI(temperature=0.2, model="gpt-4-1106-preview"),
     prompt=prompt_template_final_df)
