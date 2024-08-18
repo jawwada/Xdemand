@@ -1,3 +1,4 @@
+import logging
 import os
 import warnings
 from functools import wraps
@@ -7,11 +8,12 @@ from joblib import Memory
 
 from common.db_connection import engine
 from common.local_constants import region_warehouse_codes
-import logging
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 warnings.filterwarnings("ignore")
+
 
 class CacheDecoratorJoblib:
     def __init__(self):
@@ -22,6 +24,7 @@ class CacheDecoratorJoblib:
         @wraps(func)
         def wrapper(*args, **kwargs):
             return self.memory.cache(func)(*args, **kwargs)
+
         return wrapper
 
 
@@ -77,7 +80,7 @@ class CacheManagerJoblib:
 
         query_ph_data = ("""SELECT * FROM look_product_level_1""")
         ph_data = pd.read_sql_query(query_ph_data, engine)
-        daily_sales = daily_sales.merge(ph_data, on='sku', how='inner')
+        daily_sales = daily_sales.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
         return daily_sales
 
     @cache_decorator
@@ -93,7 +96,8 @@ class CacheManagerJoblib:
         df['warehouse_code'] = df['region'].map(region_warehouse_codes)
 
         ph_data = pd.read_sql_query(query_ph_data, engine)
-        df = df.merge(ph_data, on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku',
+                      how='inner')
         return df
 
     @cache_decorator
@@ -105,7 +109,8 @@ class CacheManagerJoblib:
         df = pd.read_sql_query(query, engine)
         df['ds'] = pd.to_datetime(df['ds'])
         ph_data = pd.read_sql_query(query_ph_data, engine)
-        df = df.merge(ph_data, on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku',
+                      how='inner')
         return df
 
     @cache_decorator
@@ -122,7 +127,8 @@ class CacheManagerJoblib:
         df.date = pd.to_datetime(df.ds).dt.date
         df['ds'] = pd.to_datetime(df['ds'])
         ph_data = pd.read_sql_query(query_ph_data, engine)
-        df = df.merge(ph_data, on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku',
+                      how='inner')
         return df
 
     @cache_decorator
@@ -135,7 +141,8 @@ class CacheManagerJoblib:
         df = pd.read_sql_query(query, engine)
         df.date = pd.to_datetime(df.date)
         ph_data = pd.read_sql_query(query_ph_data, engine)
-        df = df.merge(ph_data, on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku',
+                      how='inner')
         return df
 
     @cache_decorator
@@ -149,7 +156,8 @@ class CacheManagerJoblib:
         df = pd.read_sql_query(query, engine)
         df['price_elasticity'] = df['price_elasticity'].astype(float).round(4)
         ph_data = pd.read_sql_query(query_ph_data, engine)
-        df = df.merge(ph_data, on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku',
+                      how='inner')
         return df
 
     @cache_decorator
@@ -162,7 +170,8 @@ class CacheManagerJoblib:
         df = pd.read_sql_query(query, engine)
         df['price_elasticity'] = df['price_elasticity'].astype(float).round(4)
         ph_data = pd.read_sql_query(query_ph_data, engine)
-        df = df.merge(ph_data, on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku',
+                      how='inner')
         return df
 
     @cache_decorator
@@ -177,8 +186,9 @@ class CacheManagerJoblib:
                  and date > DATEADD(year, -1, GETDATE()) order by stat.sku, region, date;"""
         df = pd.read_sql_query(query, engine)
         df['date'] = pd.to_datetime(df['date'])
-        ph_data=pd.read_sql_query(query_ph_data, engine)
-        df = df.merge(ph_data, on='sku', how='inner')
+        ph_data = pd.read_sql_query(query_ph_data, engine)
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku',
+                      how='inner')
         return df
 
     @cache_decorator
@@ -206,7 +216,7 @@ class CacheManagerJoblib:
                 """
         df = pd.read_sql_query(query, engine)
         ph_data = pd.read_sql_query(query_ph_data, engine)
-        df = df.merge(ph_data, on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
         return df
 
     @cache_decorator
@@ -228,5 +238,5 @@ class CacheManagerJoblib:
         df = pd.read_sql_query(query, engine)
         df['ds'] = pd.to_datetime(df['ds'])
         ph_data = pd.read_sql_query(query_ph_data, engine)
-        df = df.merge(ph_data, on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
         return df

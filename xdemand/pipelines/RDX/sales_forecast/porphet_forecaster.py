@@ -24,7 +24,7 @@ class ProphetForecaster:
                         weekly_seasonality=True,
                         seasonality_mode=seasonality_mode)
         model.add_country_holidays(country_name=region)
-
+        last_data_seen = prophet_data['ds'].max()
         try:
             # Fit the model to the data
             model.fit(prophet_data)
@@ -40,12 +40,11 @@ class ProphetForecaster:
 
             # select only the required columns, there are a lot holiday columns that are not needed
             forecast = forecast[[
-                'ds', 'trend', 'yhat_lower', 'yhat_upper', 'trend_lower', 'trend_upper',
-                'additive_terms', 'additive_terms_lower', 'additive_terms_upper',
-                'weekly', 'weekly_lower', 'weekly_upper', 'yearly', 'yearly_lower',
-                'yearly_upper', 'multiplicative_terms', 'multiplicative_terms_lower',
-                'multiplicative_terms_upper', 'yhat', 'sku', 'region', 'last_data_seen'
+                'ds', 'sku', 'region', 'yhat',
+                'yhat_lower', 'yhat_upper',
+                'trend', 'weekly', 'yearly',
             ]]
+            forecast['last_data_seen'] = last_data_seen
 
         except Exception as e:
             logger.error(f"Error in forecasting SKU {sku}: {e}")

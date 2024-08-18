@@ -55,12 +55,12 @@ def main(
     logger.info("Running the sales forecasting pipeline...")
     sales_pipeline.run_prophet_training_pipeline()  # Execute the Prophet training pipeline
     logger.info("Completed the sales forecasting pipeline.")
-
+    """
     # Run the stockout detection pipeline
     logger.info("Running the stockout detection pipeline...")
     sales_pipeline.run_stockout_detection()  # Execute the stockout detection pipeline
     logger.info("Completed the stockout detection pipeline.")
-
+    """
     # Run the price sensing pipeline
     logger.info("Running the price sensing pipeline...")
     sales_pipeline.run_price_sensing()  # Execute the price sensing pipeline
