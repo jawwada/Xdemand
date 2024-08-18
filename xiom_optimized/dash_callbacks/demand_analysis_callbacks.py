@@ -98,12 +98,12 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         )
         # Convert the 'date' column back to datetime (from Period)
 
-        df_tree_map = pd.merge(df_tree_map, ph_data[['channel', 'sku', 'region']].drop_duplicates(),
-                               on=['channel', 'sku', 'region'], how='left')
+        df_tree_map = pd.merge(df_tree_map, ph_data[['channel', 'sku', 'region', "level_1"]].drop_duplicates(),
+                               on=['channel', 'sku', 'region', "level_1"], how='left')
         # Create the treemap
-        df_tree_map = df_tree_map.groupby(['channel', 'region', 'sku'])[
+        df_tree_map = df_tree_map.groupby(['channel', 'region',"level_1" ,'sku'])[
             quantity_sales_radio].sum().reset_index()
-        fig_tree = px.treemap(df_tree_map, path=['channel', 'region', 'sku'],
+        fig_tree = px.treemap(df_tree_map, path=['channel', 'region',"level_1", 'sku'],
                               color='sku', values=quantity_sales_radio, title='Sales')
 
         num_skus = len(df_tree_map['sku'].unique())
