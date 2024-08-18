@@ -19,7 +19,6 @@ from xiom_optimized.utils.config_constants import sample_rate_dict
 from xiom_optimized.utils.data_fetcher import df_fc_qp
 from xiom_optimized.utils.data_fetcher import df_sales
 
-cache_decorator
 
 
 @app.callback(
@@ -130,7 +129,8 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
             # Assuming filtered_data is another DataFrame you want to merge with
             # perform cascading merge on warehouse_code and region
             # Merge the filtered DataFrame with filtered_data
-            df_fc_qp_filtered = df_fc_qp_filtered.merge(filtered_data, on=['warehouse_code', 'region'],
+            filtered_data = filtered_data[['warehouse_code', 'region','level_1']].drop_duplicates()
+            df_fc_qp_filtered = df_fc_qp_filtered.merge(filtered_data, on=['warehouse_code', 'region','level_1'],
                                                         how='inner')
 
             # Decide which set of columns to aggregate based on the value of quantity_sales_radio
@@ -150,12 +150,21 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
                 pd.Grouper(freq=sample_rate_dict[time_window], key='ds')
             ]).agg(agg_dict).reset_index()
 
+            # drop first and last period to avoid missing data
+
+
             # Inside your update_demand_forecast_graph function, after you define df_ds and set 'date' as its index:
 
             today = datetime.now()
 
             df_ds['ds'] = pd.to_datetime(df_ds['ds'], errors='coerce')
 
+            # Identify the maximum and minimum values of the 'ds' column
+            max_ds = df_ds['ds'].max()
+            min_ds = df_ds['ds'].min()
+
+            # Drop rows where 'ds' is equal to the maximum or minimum
+            df_ds = df_ds[(df_ds['ds'] != max_ds) & (df_ds['ds'] != min_ds)]
             # Create subplots: use 'domain' type for Pie subplot
             fig_components = make_subplots(rows=2, cols=1)
             fig_components.update_layout(title_text="Forecasting Model Components")

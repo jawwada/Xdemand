@@ -123,7 +123,7 @@ class CacheManager:
     def query_df_fc_qp(self, ph_data):
         query = f"""SELECT stat.*
                     FROM stat_forecast_quantity_revenue stat
-                    WHERE ds > DATEADD(day, -400, GETDATE()) 
+                    WHERE ds >= DATEADD(day, -350, GETDATE()) 
                     ORDER BY ds, warehouse_code, region;"""
         df = pd.read_sql_query(query, cnxn)
         df['ds'] = pd.to_datetime(df['ds'])
