@@ -88,8 +88,10 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         df_tree_map = (
             df_sales_filtered.groupby([
                 'channel',
+                "warehouse_code",
                 'region',
-                'sku'
+                'sku',
+                "level_1"
             ])
             [[quantity_sales_radio]]
             .sum()
