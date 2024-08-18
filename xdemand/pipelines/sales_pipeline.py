@@ -6,8 +6,7 @@ import pandas as pd
 
 from common.db_connection import engine
 from common.db_connection import write_replace_db
-from xdemand.pipelines.RDX.price_sensing.price_elasticity_calculator import PriceElasticityCalculator
-from xdemand.pipelines.RDX.price_sensing.price_sensor import PriceSensor
+
 from xdemand.pipelines.RDX.sales_forecast.execute_preprocessing_sql import preprocess_marketplace_sales_to_im_sales
 from xdemand.pipelines.RDX.sales_forecast.porphet_forecaster import ProphetForecaster
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection_utils import fill_missing_dates
@@ -43,7 +42,6 @@ class SalesPipeline:
                  target_upper_bound: int = 2,
                  price_target: str = 'quantity',
                  price_write_to_db: bool = True,
-                 regressor: str = 'price',
                  days_before: int = 365,
                  # Price elasticity parameters
                  date_col: str = 'date',
@@ -72,7 +70,6 @@ class SalesPipeline:
         self.target_upper_bound = target_upper_bound
         self.price_target = price_target
         self.price_write_to_db = price_write_to_db
-        self.regressor = regressor
         self.days_before = days_before
 
         # Initialize the cache manager
@@ -87,7 +84,7 @@ class SalesPipeline:
         # Initialize PriceElasticityCalculator with parameters
         self.price_elasticity_calculator = PriceElasticityCalculator(
             date_col=date_col,
-            quantity_col=quantity_col,
+            quantity_col=price_target,
             price_col=price_col,
             period=period,
             model=model,
@@ -128,7 +125,7 @@ class SalesPipeline:
             ['quantity', 'revenue', 'promotional rebates']].sum().reset_index()
         df_dsa = self.price_sensor.daily_sales_price_sensing_transform(df_dsa)  # Use self.price_sensor
         logger.info(
-            f"Parameters for regression,  {self.regressor} regressors, {self.price_target} target")
+            f"Parameters for regression,  {self.price_col} regressors, {self.price_target} target")
         max_date = max(df_dsa['date'])
         df_dsa['date_part'] = df_dsa['date'].dt.date
         logger.info(f"Max date {max_date} and min date {df_dsa['date'].min()}")
@@ -141,10 +138,10 @@ class SalesPipeline:
         logger.info(f"log_normal_regressions.head() {log_normal_regressions.head()}")
 
         if self.price_write_to_db:
-            write_replace_db(reg_coef_df, f'stat_regression_coeff_{self.regressor}_{self.price_target}')
-            write_replace_db(log_normal_regressions, f'stat_regression_{self.regressor}_{self.price_target}')
+            write_replace_db(reg_coef_df, f'stat_regression_coeff_{self.price_col}_{self.price_target}')
+            write_replace_db(log_normal_regressions, f'stat_regression_{self.price_col}_{self.price_target}')
         logger.info(
-            f"Saved regression results to database for regressor {self.regressor} and target {self.price_target}")
+            f"Saved regression results to database for regressor {self.price_col} and target {self.price_target}")
 
 
     def run_stockout_detection(self):

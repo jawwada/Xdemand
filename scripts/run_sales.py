@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 
 @app.command(name='run-sales-pipeline', help='Run the sales forecasting pipeline with specified parameters.')
 def main(
-        top_n: int = typer.Option(3, help='Top N SKUs to consider.')  # Command-line option for top N SKUs
+        top_n: int = typer.Option(5, help='Top N SKUs to consider.')  # Command-line option for top N SKUs
 ):
     """Main entry point for running the sales pipeline with command line arguments."""
 
@@ -33,19 +33,17 @@ def main(
         # Price sensing parameters from the configuration
         price_plot=ps_cf.plot,  # Set price_plot from price sensing config
         price_col=ps_cf.price_col,  # Price column name for price elasticity calculations
+        date_col=ps_cf.date_col,  # Date column name for price elasticity calculations
+        price_target=ps_cf.target,  # Price target for price sensing
         log_normal_regression=ps_cf.log_normal_regression,  # Set log_normal_regression from price sensing config
         regressor_lower_bound=ps_cf.regressor_lower_bound,  # Set regressor_lower_bound from price sensing config
         regressor_upper_bound=ps_cf.regressor_upper_bound,  # Set regressor_upper_bound from price sensing config
         target_lower_bound=ps_cf.target_lower_bound,  # Set target_lower_bound from price sensing config
         target_upper_bound=ps_cf.target_upper_bound,  # Set target_upper_bound from price sensing config
-        price_target=ps_cf.target,  # Set price_target from price sensing config
         price_write_to_db=ps_cf.write_to_db,  # Set price_write_to_db from price sensing config
-        regressor=ps_cf.regressor,  # Set regressor from price sensing config
         days_before=ps_cf.days_before,  # Set days_before from price sensing config
 
         # Price elasticity parameters from the configuration
-        date_col=ps_cf.price_elasticity.date_col,  # Date column name for price elasticity calculations
-        quantity_col=ps_cf.price_elasticity.quantity_col,  # Quantity column name for price elasticity calculations
 
         period=ps_cf.price_elasticity.period,  # Period for seasonal decomposition
         model=ps_cf.price_elasticity.model,  # Model type for seasonal decomposition
