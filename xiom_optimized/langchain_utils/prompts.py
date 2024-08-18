@@ -90,9 +90,8 @@ Key context for the data analysis:
 
 Use markdowns, colors , bold where appropriate., Use the following general structure for your response:
 - Heading
-- report (introduce the topic, use markdown tables , bullet points, insights, and recommendations where necessary).
-
-- **Contextual Information**: Timeframe, data used, features, etc.
+- Content (introduce the topic, use markdown tables , bullet points, insights, and recommendations where necessary).
+- Contextual Information Timeframe, data used, features, etc.
 """
 
 prompt_template_final_df = PromptTemplate(
