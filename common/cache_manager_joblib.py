@@ -15,7 +15,7 @@ warnings.filterwarnings("ignore")
 
 class CacheDecoratorJoblib:
     def __init__(self):
-        cache_dir = os.path.join(os.getcwd(), 'cache-joblib')
+        cache_dir = os.path.join(os.getcwd(), 'cache/cache-joblib')
         self.memory = Memory(cache_dir, verbose=0)
 
     def cache_decorator(self, func):
@@ -136,7 +136,7 @@ class CacheManagerJoblib:
 
     @cache_decorator
     def query_price_sensing_tab(self, ph_data):
-        query = """SELECT stat.* FROM stat_regression_coeff_avg_price_quantity stat
+        query = """SELECT stat.* FROM stat_regression_coeff_price_quantity stat
                 JOIN (
                     SELECT DISTINCT sku, warehouse_code 
                     FROM stat_forecast_data_quantity 

@@ -6,6 +6,7 @@ import pandas as pd
 
 from common.db_connection import engine
 from common.db_connection import write_replace_db
+from common.local_constants import region_warehouse_codes
 
 from xdemand.pipelines.RDX.sales_forecast.execute_preprocessing_sql import preprocess_marketplace_sales_to_im_sales
 from xdemand.pipelines.RDX.sales_forecast.porphet_forecaster import ProphetForecaster
@@ -63,6 +64,7 @@ class SalesPipeline:
 
         # Price sensing parameters
         self.price_plot = price_plot
+        self.price_col = price_col
         self.log_normal_regression = log_normal_regression
         self.regressor_lower_bound = regressor_lower_bound
         self.regressor_upper_bound = regressor_upper_bound
@@ -109,6 +111,7 @@ class SalesPipeline:
 
         for target in self.target_cols:
             forecasts = self.forecaster.forecast_sales(grouper, max_date, target)
+            forecasts['warehouse_code'] = forecasts['region'].map(region_warehouse_codes)
             if self.write_to_db:
                 write_replace_db(forecasts, f"stat_forecast_data_{target}")
             logger.info(f"Saved forecasts to database for target {target}")

@@ -5,9 +5,9 @@ from common.db_connection import params
 from sqlalchemy import create_engine, text
 import diskcache as dc
 from common.local_constants import region_warehouse_codes
+from common.cache_manager_joblib import CacheManagerJoblib
 
-cache = dc.Cache('cache-price-recommender')
-
+cache_manager = CacheManagerJoblib()
 def top_n_skus_revenue_last_3_months():
     engine =  create_engine(f"mssql+pyodbc:///?odbc_connect={params}", echo=False)
     query = """
@@ -26,33 +26,21 @@ def top_n_skus_revenue_last_3_months():
     return df_sku_sales_sorted
 
 def get_data_price_recommender():
-    engine = create_engine(f"mssql+pyodbc:///?odbc_connect={params}", echo=False)
-    query = """
-    select * from stat_running_stock_forecast 
-    WHERE ds >= CAST(GETDATE() AS DATE) 
-    AND sku in (SELECT DISTINCT sku FROM stat_forecast_data_quantity);
-    """
-    with engine.connect() as con:
-        df_running_stock= pd.read_sql(text(query),con)
+
+    df_running_stock = cache_manager.query_df_running_stock()
 
     df_running_stock['ds'] = pd.to_datetime(df_running_stock['ds'])
     df_running_stock=df_running_stock[pd.notna(df_running_stock['running_stock_after_forecast'])]
     df_running_stock=df_running_stock.drop(columns=['Expected_Arrival_Date','status_date'])
     df_running_stock.sort_values(['sku','warehouse_code','ds'],inplace=True)
 
-    query = """
-    select sku, region, avg(price) as ref_price from look_latest_price_reference group by sku, region"""
-    with engine.connect() as con:
-        df_price_reference = pd.read_sql(text(query),con)
+
+    df_price_reference = cache_manager.query_price_reference()
     df_price_reference['warehouse_code'] = df_price_reference['region'].replace(region_warehouse_codes)
     df_price_reference.drop(columns=['region'], inplace=True)
     df_price_reference = df_price_reference.groupby(['sku', 'warehouse_code']).agg({'ref_price': 'mean'}).reset_index()
 
-    query = """
-    select * from stat_regression_coeff_avg_price_quantity"""
-
-    with engine.connect() as con:
-        df_price_elasticity = pd.read_sql(text(query),con)
+    df_price_elasticity = cache_manager.query_price_sensing_tab()
     df_running_stock = pd.merge(df_running_stock, df_price_reference, how='left', on=['sku', 'warehouse_code'])
     df_price_recommender = pd.merge(df_running_stock, df_price_elasticity, how='left', on=['sku', 'warehouse_code'])
     return df_price_recommender

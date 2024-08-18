@@ -1,6 +1,5 @@
 import logging
 import typer
-from typing import List
 from config import forecast_settings as cf  # Import configuration settings for forecasting
 from config import price_sensing_settings as ps_cf  # Import price sensing configuration settings
 
