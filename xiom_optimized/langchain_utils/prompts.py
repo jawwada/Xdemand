@@ -62,6 +62,7 @@ Key Action:
     2. Holiday season is coming and it might be a good opportunity to get rid of the slow moving products
     3. The price of the products are too high and it is impacting the sales of the products
     4. DE warehouse is seeing a revenue drop despite good forecasts, you might want to check the price and stock of the products
+    
 
 Use markdowns, colors , bold where appropriate. Use the data frames in the environment and report the results along with actionable insights, 
 recommendations and provide context: time frame, groupings, assumptions, etc.
@@ -75,6 +76,7 @@ Key context for the data analysis:
 - A product is defined by a combination of `sku` and `warehouse_code`. Always consider both columns when answering a question.
 - Provide detailed explanations and insights based on the data.
 - Always provide the time window and groupings you used for the analysis
+- do not name the dataframes, always refer to them as running stock data, sales data, etc.
  
 some examples are following:
 - What is the demand trend for each product? Answer with respect to running stock.

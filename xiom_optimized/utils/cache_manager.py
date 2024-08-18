@@ -56,18 +56,22 @@ class CacheManager:
 
     @cache_decorator
     def query_ph_data(self):
-        query = ("""SELECT * FROM look_product_level_1
-                 where sku in (select distinct sku from stat_forecast_data_quantity)""")
+        query = ("""SELECT * FROM look_product_hierarchy lph
+            JOIN (
+                SELECT DISTINCT sku, warehouse_code 
+                FROM stat_forecast_data_quantity
+            ) fcst ON fcst.sku = lph.sku AND fcst.region = lph.region
+                 """)
         df = pd.read_sql_query(query, cnxn)
+
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
     def query_df_daily_sales_oos(self,ph_data):
         query = """
         SELECT * FROM agg_im_sku_daily_sales_oos
-        WHERE sku IN (SELECT DISTINCT sku FROM stat_forecast_data_quantity) 
-        AND date > DATEADD(year, -3, GETDATE()) 
-        ORDER BY sku, region, date;
+        Where date > DATEADD(year, -3, GETDATE()) 
+        ORDER BY sku, warehouse_code, region, date;
         """
         with cnxn.connect() as con:
             daily_sales = pd.read_sql_query(query, con)
@@ -103,7 +107,7 @@ class CacheManager:
     @cache_decorator
     def query_df_daily_sales(self, ph_data):
         query = """
-        SELECT * FROM agg_im_sku_daily_sales 
+        SELECT * FROM agg_im_sku_daily_sales_oos
         WHERE sku IN (SELECT DISTINCT sku FROM look_product_hierarchy) 
         AND date > DATEADD(year, -3, GETDATE()) 
         ORDER BY sku, region, date;
@@ -155,7 +159,7 @@ class CacheManager:
 
     @cache_decorator
     def query_price_sensing_tab(self,ph_data):
-        query = """SELECT stat.* FROM stat_regression_coeff_avg_price_quantity stat
+        query = """SELECT stat.* FROM stat_regression_coeff_price_quantity stat
             JOIN (
                 SELECT DISTINCT sku, warehouse_code 
                 FROM stat_forecast_data_quantity 
@@ -168,7 +172,7 @@ class CacheManager:
 
     @cache_decorator
     def query_price_regression_tab(self,ph_data):
-        query = """SELECT stat.* FROM  stat_regression_avg_price_quantity stat
+        query = """SELECT stat.* FROM  stat_regression_price_quantity stat
             JOIN (
                 SELECT DISTINCT sku, warehouse_code 
                 FROM stat_forecast_data_quantity 
