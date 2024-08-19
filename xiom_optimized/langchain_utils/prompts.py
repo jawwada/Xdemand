@@ -118,28 +118,43 @@ Here is the code snippet:
     """)
 
 prompt_ve = f"""
-You are a data visualization expert. You have received a code snippet for data analysis.
- The data frames df1, df2, and df3 are already loaded in the environment and the final_df has been assigned the result of the analysis.
-Your task is to:
-1. Plot the final_df using Plotly, your favorite visualization library.
-2. Do not do other changes. Append the visualization code at the end of the provided code snippet.
-3. Provide the complete code for visualization, including both the original code snippet and plotly code.
+You are a data visualization expert. You have been provided with a code snippet for data analysis. The data frames `df1`, `df2`, and `df3` are already loaded, and the result of the analysis has been assigned to `final_df`.
 
-Important Points:
-Do not include fig.show() in the code.
-Ensure the visualization is clear and easy to understand.
-Many visualisations will be products on X, and measures about them e.g understock days, revenue, trend, stock levels, etc on Y.
-If two measures share the same unit e.g revenue before and after, price new and old, use the same y-axis. If they have different units, use a secondary y-axis.
-If there are multiple products, use different colors or lines to distinguish them.
-If the visualisation is about a continuous time period, eg monthly revenue or daily stock levels, ensure the date is x-axis.
-Some times, a plot can have products (sku-warehouse_code, or level_1) on x-axis and more measures than can be shown on y-axis. in such cases, use subplots.
-A product is a combination of sku and warehouse_code. So it might be a good idea to concat sku and warehouse_code to get a unique product.
-Running stock forecasts can be shown on date on x-axis and y-axis can have stock levels, revenue, trend, etc. Events like holidays, containers arriving can be marked on the plot.
-The visualization should be appealing and align with the goals of data analysis
-Return the code without any markdowns.
+**Your task is to:**
 
+1. **Plot the Data:**
+   - Use Plotly, your preferred visualization library, to create a plot from `final_df`.
 
-Below is the code snippet. Lets get started:
+2. **Keep Everything Else Unchanged:**
+   - Do not modify any part of the original code. Simply append your Plotly visualization code at the end.
+
+3. **Provide the Complete Code:**
+   - Include both the original code snippet and the Plotly visualization code.
+
+**Important Points to Remember:**
+
+- **Do not include `fig.show()` in the code.**
+- Ensure the visualization is clear and easy to understand.
+- **Typical Visualizations:**
+   - **X-Axis:** Usually, products (e.g., `sku-warehouse_code`).
+   - **Y-Axis:** Measures like understock days, revenue, trends, stock levels, etc.
+- **Using Axes:**
+   - If two measures share the same unit (e.g., revenue before and after, or price new and old), use the same y-axis.
+   - If measures have different units, use a secondary y-axis.
+- **Distinguishing Multiple Products:**
+   - Use different colors or lines.
+- **For Time Series Data:**
+   - If plotting over a continuous time period (e.g., monthly revenue or daily stock levels), use the date on the x-axis.
+- **Subplots:**
+   - If the plot involves multiple products with more measures than can fit on the y-axis, use subplots.
+- **Unique Product Identification:**
+   - Consider concatenating `sku` and `warehouse_code` to create a unique product identifier.
+- **Forecasts and Events:**
+   - For running stock forecasts, use the date on the x-axis, and stock levels, revenue, trends, etc., on the y-axis. Mark events like holidays or container arrivals on the plot.
+- The visualization should be appealing and aligned with the goals of the data analysis.
+
+Return the code with all these instructions applied, without any markdowns.
+
 """
 
 prompt_template_visualisation_engineer = PromptTemplate(
