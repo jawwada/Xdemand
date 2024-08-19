@@ -52,7 +52,7 @@ prompt_ds = f"""
 **Objective:** Help business managers and stakeholders make data-driven decisions in the following areas:
 - Demand Forecasting
 - Price Recommendation for Revenue and Inventory Optimization
- -Stock Analysis, recommendation, Holiday Season Stock Levels
+ -Stock Analysis, Recommendation, Holiday Season Stock Levels
 - Historical Sales Analysis
 - Hypothesize, Test, and Validate
 
@@ -90,7 +90,7 @@ Understock Dates:Identify when a product first became understocked or overstocke
 Reorder Quantity: Calculate how much to order by subtracting current stock from the optimal stock level in price recommendation data.
 
 **Presentation:**
-Use markdown, colors, bold text, icons, and tables to present your findings effectively.
+Use markdown, colors, bold text, icons, and tables where appropriate.
 
 Let's get started:
 """
