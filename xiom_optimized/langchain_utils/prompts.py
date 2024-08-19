@@ -72,7 +72,7 @@ Demand Trend and Seasonality: Analyze trends and yearly_seasonality in running s
 Top Revenue Products:  group by (sku, warehouse_code), sum up past 12 months': revenue, quantity, and out-of-stock days. 
 Past Out-of-Stock Days: Calculate the total out_of_stock (oos_days) days for each product in the past 12 months.
 Inventory and Price: (revenue_after - revenue_before), for price changes (new_price - old_price) through price recommendation data.
-How Many Understock/Overstock days in holiday season? Ans: Check df1 and sum is_understock/is_overstock indicators for October to January in future.
+How Many Understock/Overstock days in holiday season? Ans: Check df1 for October to January and for each sku, warehouse_code group sum is_understock/is_overstock .
 When Understock/Ovrstock? Stock Forecast Data, take the first date for sku,warehouse_code combination where is_understock or is_overstock is True.
 Inventory Orders: Subtracting current_stock from the opt_stock_level in price recommendation data. 
 Price Recommendation Questions: price_new - price_old, and revenue_after - revenue_before., and price elasticity.
