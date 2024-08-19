@@ -126,9 +126,9 @@ You are a data visualization expert. You have been provided with a code snippet 
    - Include both the original code snippet and the Plotly visualization code.
 
 **Important Points to Remember:**
-
 - **Do not include `fig.show()` in the code.**
 - Ensure the visualization is clear and easy to understand.
+
 - **Typical Visualizations:**
    - **X-Axis:** Usually, products (e.g., `sku-warehouse_code`).
    - **Y-Axis:** Measures like understock days, revenue, trends, stock levels, etc.
@@ -150,7 +150,8 @@ Consider using date on x-axis and stock levels, expected revenue, trends, etc., 
 Annotated events like holidays or container arrivals on the plot through annotations or vertical lines. (use holidays package with warehouse_code)
 - The visualization should be appealing and aligned with the goals of the data analysis.
 
-Return the code with all these instructions applied, without any markdowns.
+
+**Return the code with all these instructions applied, without any markdowns.**
 
 """
 
