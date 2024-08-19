@@ -50,6 +50,7 @@ def main(
         remove_months=ps_cf.price_elasticity.remove_months,  # Flag to remove specific months
         remove_months_window=ps_cf.price_elasticity.remove_months_window  # List of months to remove
     )
+
     # Run the sales forecasting pipeline
     logger.info("Running the sales forecasting pipeline...")
     sales_pipeline.run_prophet_training_pipeline()  # Execute the Prophet training pipeline

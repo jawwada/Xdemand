@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class PriceElasticityCalculator:
     def __init__(self, date_col='date', quantity_col='quantity', price_col='price',
-                 period=365, model='additive', remove_months=True,
+                 period=None, model=None, remove_months=True,
                  remove_months_window=(5, 6, 7, 8)):
         self.date_col = date_col
         self.quantity_col = quantity_col
@@ -30,17 +30,15 @@ class PriceElasticityCalculator:
         # Extract the trend and seasonal components
         trend = decomposition.trend
         seasonal = decomposition.seasonal
-        if self.model == 'additive':
-            group['Seasonally_Trend_Adjusted_Quantity'] = group[self.quantity_col] -  seasonal
-        else:
-            group['Seasonally_Trend_Adjusted_Quantity'] = group[self.quantity_col] / seasonal
 
         # Adjust the quantity by removing both trend and seasonality
-
+        group['Seasonally_Trend_Adjusted_Quantity'] = group[self.quantity_col] / (trend * seasonal)
 
         # Handle missing values after decomposition
         group['Seasonally_Trend_Adjusted_Quantity'].fillna(method='bfill', inplace=True)
         group['Seasonally_Trend_Adjusted_Quantity'].fillna(method='ffill', inplace=True)
+
+        return group
 
         return group
 
@@ -85,6 +83,9 @@ class PriceElasticityCalculator:
                 elasticity = beta_1 * (mean_price / mean_quantity)
                 logger.info(f"SKU {sku}, Warehouse {warehouse_code}: Price Elasticity = {elasticity}")
                 # Store the SKU, warehouse code, and the calculated elasticity
+
+                # make the max elasticity -0.1
+                elasticity = min(1, elasticity) - 1.1
                 elasticity_results.append({'sku': sku, 'warehouse_code': warehouse_code, 'price_elasticity': elasticity})
 
                 if plot_parameters:

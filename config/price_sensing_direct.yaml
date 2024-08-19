@@ -13,7 +13,7 @@ default:
 
   price_elasticity:
     plot: true
-    period: 365
+    period: 7
     model: multiplicative
     remove_months: true
     remove_months_window: [5, 6, 7, 8]
