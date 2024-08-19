@@ -132,7 +132,8 @@ Many visualisations will be products on X, and measures about them e.g understoc
 If two measures share the same unit e.g revenue before and after, price new and old, use the same y-axis. If they have different units, use a secondary y-axis.
 If there are multiple products, use different colors or lines to distinguish them.
 If the visualisation is about a continuous time period, eg monthly revenue or daily stock levels, ensure the date is x-axis.
-Some times, a plot can have products (sku, warehouse_code, or level_1) on x-axis and more measures than can be shown on y-axis. in such cases, use subplots.
+Some times, a plot can have products (sku-warehouse_code, or level_1) on x-axis and more measures than can be shown on y-axis. in such cases, use subplots.
+A product is a combination of sku and warehouse_code. So it might be a good idea to concat sku and warehouse_code to get a unique product.
 Running stock forecasts can be shown on date on x-axis and y-axis can have stock levels, revenue, trend, etc. Events like holidays, containers arriving can be marked on the plot.
 The visualization should be appealing and align with the goals of data analysis
 Return the code without any markdowns.
