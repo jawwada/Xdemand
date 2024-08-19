@@ -8,15 +8,13 @@ from xiom_optimized.langchain_utils.prompts import prompt_template_visualisation
 from xiom_optimized.utils.data_fetcher import df_agg_monthly_3years
 from xiom_optimized.utils.data_fetcher import df_price_rec_summary
 from xiom_optimized.utils.data_fetcher import df_running_stock
-from xiom_optimized.utils.data_fetcher import ph_data
+
 
 # create agent
 dataframes = [
     df_running_stock,  # df1
     df_agg_monthly_3years,  # df2
     df_price_rec_summary,  # df3
-    ph_data,  # df4
-
 ]
 
 agent_running_stock = create_pandas_dataframe_agent(
@@ -29,12 +27,8 @@ agent_running_stock = create_pandas_dataframe_agent(
     allow_dangerous_code=True,
 )
 
-agent_data_table = LLMChain(
-    llm=ChatOpenAI(temperature=0.2, model="gpt-4o-mini"),
-    prompt=prompt_template_final_df)
-
-agent_visualisation = LLMChain(
-    llm=ChatOpenAI(temperature=0.2, model="gpt-4o-mini"),
-    prompt=prompt_template_visualisation_engineer)
-
+llm=ChatOpenAI(temperature=0.3, model="gpt-4o-mini")
+agent_data_table= LLMChain(llm=llm, prompt=prompt_template_final_df)
+# create agent
+agent_visualisation = LLMChain(llm=llm,prompt=prompt_template_visualisation_engineer)
 

@@ -60,7 +60,6 @@ How to Use Data:
 Group by SKU and warehouse_code to analyze product trends.
 Use meaningful names for data sets in reports (e.g., "running stock data," "sales data," "price recommendation data").
 If specific data views, downloads are needed, use functions like .head() or .tail() to preview the data.
-Product categories look good in reports for high-level insights.
 Give Actionable Insights:
 "Top 10 revenue products are at risk of running out of stock in the next 30 days."
 "With the holiday season approaching, it might be a good time to clear slow-moving products."
@@ -68,16 +67,18 @@ Give Actionable Insights:
 "Revenue is dropping in X warehouse despite good forecasts; check the pricing and stock levels."
 
 **Analysis Guidelines:**
-Demand Trend and Seasonality: Analyze trends and seasonality in running stock data, especially yearly patterns.
-Top Revenue Products: for each product, sum up past 12 months' quantity and revenue from sales data and sort. sum any days products were out of stock.
-Inventory and Price: for each product, compare current stock with optimal levels and examine the impact of price changes on revenue through price recommendation data.
-Understock/Overstock days: Check df1 and sum is_understock/is_overstock indicators for October to January in future.
-When Understock/Ovrstock? In running stock forecasts, take the first date for sku,warehouse_code combination where is_understock or is_overstock is True.
-Reorder Quantity: Calculate how much to order by subtracting current stock from the optimal stock level in price recommendation data.
+Demand Trend and Seasonality: Analyze trends and yearly_seasonality in running stock data. 
+Top Revenue Products:  group by (sku, warehouse_code), sum up past 12 months' quantity and revenue from sales data and sort.
+Past Out-of-Stock Days: Calculate the total out-of-stock days for each product in the past 12 months.
+Inventory and Price: (revenue_after - revenue_before), for price changes (new_price - old_price) through price recommendation data.
+How Many Understock/Overstock days in holiday season: Check df1 and sum is_understock/is_overstock indicators for October to January in future.
+When Understock/Ovrstock? Stock Forecast Data, take the first date for sku,warehouse_code combination where is_understock or is_overstock is True.
+Product Order/Restocking: Subtracting current_stock from the opt_stock_level in price recommendation data.
 
 **Presentation:**
 Share insights in a news or report style. 
 Provide insights and the potential impact of your analysis in a clear, actionable way.
+Product categories look good in reports for high-level insights.
 Offer in-depth insights so business managers can make informed decisions.
 Provide Context: Always include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
 
@@ -112,7 +113,6 @@ Here is the code snippet:
 prompt_ve = f"""
 You are a data visualization expert. You have been provided with a code snippet for data analysis.
  The data frames `df1`, `df2`, and `df3` are already loaded, and the result of the analysis has been assigned to `final_df`.
- {data_frames_description}
 
 **Your task is to:**
 
