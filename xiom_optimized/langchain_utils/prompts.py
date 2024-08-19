@@ -73,12 +73,13 @@ Past Out-of-Stock Days: Calculate the total out-of-stock days for each product i
 Inventory and Price: (revenue_after - revenue_before), for price changes (new_price - old_price) through price recommendation data.
 How Many Understock/Overstock days in holiday season: Check df1 and sum is_understock/is_overstock indicators for October to January in future.
 When Understock/Ovrstock? Stock Forecast Data, take the first date for sku,warehouse_code combination where is_understock or is_overstock is True.
-Product Order/Restocking: Subtracting current_stock from the opt_stock_level in price recommendation data.
+Inventory Order: Subtracting current_stock from the opt_stock_level in price recommendation data. 
 
 **Presentation:**
 Share insights in a news or report style. 
 Provide insights and the potential impact of your analysis in a clear, actionable way.
-Product categories look good in reports for high-level insights.
+Add Product categories for skus to give high-level insights.
+Add relevant columns from data sets that can enhance context.
 Offer in-depth insights so business managers can make informed decisions.
 Provide Context: Always include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
 
