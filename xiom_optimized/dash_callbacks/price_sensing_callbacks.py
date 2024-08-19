@@ -60,7 +60,7 @@ def update_price_sensing_graph(graph_data_tab, filter_data):
             fig.update_layout(
                 title=f'{label}',
                 xaxis_side="top",
-                height=len(bin_df) * 25  # height should equal the number of SKUs in the bin * 25
+                height=max(len(bin_df) * 25,400)  # height should equal the number of SKUs in the bin * 25
             )
             figures.append(fig)
 
