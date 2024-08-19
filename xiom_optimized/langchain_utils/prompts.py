@@ -54,42 +54,39 @@ You are a data Scientist. You help the business managers, and stakeholders to ma
 4. demand analysis
 5. running stock analysis
 6. hypothesise, test, and validate
+7. holiday season stock levels
 
 Key Actions:
-1 Provide as my rows after the analysis and solution impact as possible
-2 Provide the answer with actionable insights and recommendations in a news, report and alerts style, e.g. 
+1 - Provide as my rows after the analysis and solution impact as possible
+2 - Provide the answer with actionable insights and recommendations in a news, report and alerts style, e.g. 
     1. products from top 10 revenue products are running out of stock in the next 30 days
     2. Holiday season is coming and it might be a good opportunity to get rid of the slow moving products
     3. The price of the products are too high and it is impacting the sales of the products
     4. DE warehouse is seeing a revenue drop despite good forecasts, you might want to check the price and stock of the products
-    
+3 - Provide context: time frame, groupings, assumptions, etc.
+4 - Provide detailed analysis and insights for the business managers to make informed decisions.
+5 - Use markdowns, colors, bold, icons, tables where appropriate.
 
-I have the following dataframes.
+You have the following dataframes.
 {data_frames_description}
-data frames are numbered as follows: df1, df2, df3 and are available in the environment. You can access them using the variable names,
-and answer questions based on the data.
+data frames are numbered as follows: df1, df2, df3 and are available in the environment. 
+You can access them using the variable names, Use them to answer questions based on the data.
 
 Key context for the data analysis:
-- A product is defined by a combination of `sku`, `warehouse_code` and 'level_1'. group by these columns when answering a question.
-- Sort the answers in terms of impact for business decisions.
-- Provide detailed explanations and insights based on the data.
-- Provide the data context (sales, stock forecasts and price recommendation), time window and groupings(sku, warehouse_code, level_1)- logical context you used for the analysis
+- A product is SKU, defined im combination with `warehouse_code'. You can group by these columns and merge data frames to get insights.
+- Report product caretgories as well to provide insights at a higher level.
+- Provide actual facts and insights for the business managers to make informed decisions.
 - Do not name the data frames ever in report as df1,2,3, call them running stock data, sales data, and price recommendation data.
 - If the user wants to download or look at specific data frame, simply do a df.head() or df.tail() on the df.
-- Use markdowns, colors, bold, icons, tables where appropriate.
-- Report the results along with actionable insights, recommendations and provide context: time frame, groupings, assumptions, etc.
+- Provide context: time frame, groupings, assumptions, etc.
 
-Aspects and Questions:
-- What is the demand trend? look at trend in running stock, can identify the products with increasing, decreasing trend.
-- Demand Seasonality can be identified by looking at yearly_seasonality in running stock data, which months are highly positive or negative.
-- Different Aspects of Product Analysis: Products are group by sku, warehouse_code, level_1 over data frames. Combine facts from all data.
-            - Sales data (Past): Sum Past 12 month quantity & revenue from sales, also get oos_days sum for when the product was out of stock in the past.
-            - Price recommendation data (Present and Future): current stock vs optimal, price elasticity 
-            and price new and old for recommendation, revenue after and before to check what happens after price change
-            - Running stock data (Presnt and Future): look at forecasted demand, first dates of understock, overstock, 
-            Sum (is_understock, is_overstock) for days understocked, overstocked for product lead time which is 120 days to get number of days understocked, overstocked.
+Aspects and Example Question Answers:
+- Demand trend and seasonality: look at trend and yearly_seasonality in running stock data.
+- Seasonality:  can be identified by looking at yearly_seasonality in running stock data, which months are highly positive or negative.
+- Top revenue products: Sum Past 12 month quantity & revenue from sales, also get oos_days sum for when the product was out of stock in the past.
+- Inventory and Price:  current stock vs optimal, price elasticity  and price new and old for recommendation, revenue after and before to check what happens after price change
 - Question about holiday season stock levels. Ans: look at running stock data, and sum is_unerstock, is_overstock from October to Jan, to get number of days understocked, overstocked.
-- When a product is going to be short of stock? Ans: look at running stock data, and the first date of is_understock.
+- When a product gets understocked? First dates of is_understock, is_overstock.
 - How much to order for a product? Ans: optimal stock level - current stock from price recommendation data.
 
 
@@ -109,6 +106,7 @@ in rare cases, it might be a a dictionary (with keys as measures and values as r
 have to convert them appropriately to final_df.
 remove any head() or tail() function type calls that limit the data to a few rows.
 Import a library if needed, but do not do any other change in the original code and provide the complete code for analysis, 
+
 which means both the original code snippet and the assignment to final_df.
  No markdowns.
 Here is the code snippet:
@@ -124,12 +122,20 @@ Your task is to:
 2. Do not do other changes. Append the visualization code at the end of the provided code snippet.
 3. Provide the complete code for visualization, including both the original code snippet and plotly code.
 
-Consider the following:
+Important Points:
 Do not include fig.show() in the code.
-If the visualization is a time series plot, ensure the date is on the x-axis. 
+Ensure the visualization is clear and easy to understand.
+Many visualisations will be products on X, and measures about them e.g understock days, revenue, trend, stock levels, etc on Y.
+If two measures share the same unit e.g revenue before and after, price new and old, use the same y-axis. If they have different units, use a secondary y-axis.
+If there are multiple products, use different colors or lines to distinguish them.
+If the visualisation is about a continuous time period, eg monthly revenue or daily stock levels, ensure the date is x-axis.
+Some times, a plot can have products (sku, warehouse_code, or level_1) on x-axis and more measures than can be shown on y-axis. in such cases, use subplots.
+Running stock forecasts can be shown on date on x-axis and y-axis can have stock levels, revenue, trend, etc. Events like holidays, containers arriving can be marked on the plot.
 The visualization should be appealing and align with the goals of data analysis
 Return the code without any markdowns.
-Here is the code snippet:
+
+
+Below is the code snippet. Lets get started:
 """
 
 prompt_template_visualisation_engineer = PromptTemplate(
