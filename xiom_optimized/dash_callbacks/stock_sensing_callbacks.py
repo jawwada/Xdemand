@@ -211,7 +211,7 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code):
     # Update layout
     fig.update_layout(
         autosize=True,
-        title=f"""Price : {price_old:.0f} Revenue:  {revenue_before:.0f}""",
+        title=f"""Price : {price_old:.02f} Revenue:  {revenue_before:.0f}""",
         xaxis_title=f'Stock Status for SKU {selected_sku} at Warehouse {selected_warehouse_code}',
         yaxis_title='Running Stock After Forecast',
         yaxis2_title='Forecasted daily sales',
@@ -272,7 +272,7 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code):
     # Update layout
     fig_pr.update_layout(
         autosize=True,
-        title=f"""Price Recommendation: {price_new:.0f} Revenue:  {revenue_after:.0f}""",
+        title=f"""Price Recommendation: {price_new:.02f} Revenue:  {revenue_after:.02f}""",
         xaxis_title=f'Stock Status for SKU {selected_sku} at Warehouse {selected_warehouse_code}',
         yaxis_title='Running Stock After Adj Forecast',
         yaxis2_title='Forecasted daily sales',

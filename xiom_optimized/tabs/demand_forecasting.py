@@ -7,7 +7,7 @@ content = html.Div([
             {'label': 'Multiplicative', 'value': 'multiplicative'},
             {'label': 'Additive', 'value': 'additive'}
         ],
-        value='multiplicative',  # Default value set to 'multiplicative'
+        value='additive',  # Default value set to 'multiplicative'
         labelStyle={'display': 'inline-block'}
     ),
     dcc.Tabs(id="demand-tabs", value='tab-1', children=[
