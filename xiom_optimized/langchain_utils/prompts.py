@@ -31,16 +31,16 @@ df1, df2 and df3 are available in the environment. And required libraries can be
     - `warehouse_code`: Warehouse region code.
     - `level_1`: Product category.
     - `ref_price`: Reference price.
-    - `mean_demand`: Average demand.
-    - `current_stock`: Beginning stock level for 6 month period.
-    - `understock_days`: Total Understock Days in 6 months 
-    - `overstock_days`: Total Overstock Days in 6 months 
+    - `mean_demand`: Average demand for 6 months period (From df1).
+    - `current_stock`: Beginning stock level for 6 month period (From df1).
+    - `understock_days`: Total Understock Days in 6 months (sum of is_understock from df1).
+    - `overstock_days`: Total Overstock Days in 6 months  (sum of is_overstock from df1).
     - `price_elasticity`: Demand response to price change.
     - `revenue_before`: Total Expected Revenue before price recommendation.
     - `revenue_after`: Total Expected Revenue after price recommendation.
     - `price_new`: New recommended price.
     - `price_old`: Old price, same as `ref_price`.
-    - `opt_stock_level`: Optimal stock level for 6 months.
+    - `opt_stock_level`: Optimal stock level for 6 months (120 days * mean_demand).
 
 Data frames connect via `sku`, `warehouse_code`, and `level_1`. Use these for context.
 """
@@ -70,9 +70,9 @@ Give Actionable Insights:
 **Analysis Guidelines:**
 Demand Trend and Seasonality: Analyze trends and seasonality in running stock data, especially yearly patterns.
 Top Revenue Products: for each product, sum up past 12 months' quantity and revenue from sales data and sort. sum any days products were out of stock.
-Inventory and Price: Compare current stock with optimal levels and examine the impact of price changes on revenue.
-Holiday Season Stock situation: Check running stock data and sum/count non zero stock indicators for October to January in future.
-Understock/Ovrstock Dates: In running stock forecasts, take the first date for sku,warehouse_code combination where is_understock or is_overstock is True.
+Inventory and Price: for each product, compare current stock with optimal levels and examine the impact of price changes on revenue through price recommendation data.
+Understock/Overstock days: Check df1 and sum is_understock/is_overstock indicators for October to January in future.
+When Understock/Ovrstock? In running stock forecasts, take the first date for sku,warehouse_code combination where is_understock or is_overstock is True.
 Reorder Quantity: Calculate how much to order by subtracting current stock from the optimal stock level in price recommendation data.
 
 **Presentation:**
@@ -110,7 +110,9 @@ Here is the code snippet:
     """)
 
 prompt_ve = f"""
-You are a data visualization expert. You have been provided with a code snippet for data analysis. The data frames `df1`, `df2`, and `df3` are already loaded, and the result of the analysis has been assigned to `final_df`.
+You are a data visualization expert. You have been provided with a code snippet for data analysis.
+ The data frames `df1`, `df2`, and `df3` are already loaded, and the result of the analysis has been assigned to `final_df`.
+ {data_frames_description}
 
 **Your task is to:**
 
@@ -134,7 +136,7 @@ You are a data visualization expert. You have been provided with a code snippet 
    - If two measures share the same unit (e.g., revenue before and after, or price new and old), use the same y-axis.
    - If measures have different units, use a secondary y-axis.
 - **Distinguishing Multiple Products:**
-   - Use different colors or lines.
+   - Use different colors or lines. Consider using same color for same category (level_1)
 - **For Time Series Data:**
    - If plotting over a continuous time period (e.g., monthly revenue or daily stock levels), use the date on the x-axis.
 - **Subplots:**
@@ -142,7 +144,10 @@ You are a data visualization expert. You have been provided with a code snippet 
 - **Unique Product Identification:**
    - Consider concatenating `sku` and `warehouse_code` to create a unique product identifier.
 - **Forecasts and Events:**
-   - For running stock forecasts, use the date on the x-axis, and stock levels, revenue, trends, etc., on the y-axis. Mark events like holidays or container arrivals on the plot.
+   - For running stock forecasts, use the date on the x-axis, and stock levels, expected revenue, trends, etc., on the y-axis. 
+   Mark events like holidays or container arrivals on the plot through annotations or vertical lines.
+Consider using date on x-axis and stock levels, expected revenue, trends, etc., on y-axis as well.
+Annotated events like holidays or container arrivals on the plot through annotations or vertical lines. (use holidays package with warehouse_code)
 - The visualization should be appealing and aligned with the goals of the data analysis.
 
 Return the code with all these instructions applied, without any markdowns.
