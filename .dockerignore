@@ -59,7 +59,6 @@ research/
 # Allow specific files
 !.py
 !.*ignore
-!logging_logs/test_model.log
 !xiom_optimized/assets/
 !common.cache_manager.py
 !xdemand/utils/cache_manager.py

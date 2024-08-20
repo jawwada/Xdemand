@@ -24,7 +24,6 @@ def run_stock_status_forecast():
     print("Stock Status Forecasting Tables Done")
 
 def run_price_recommender():
-    n_trials = pr_cf.n_trials
 
     # Get the data
     df_price_recommender= get_data_price_recommender()
