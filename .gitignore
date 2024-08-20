@@ -48,7 +48,6 @@ data/
 !xiom_optimized/utils/cache_manager_flask.py
 
 .idea/
-*.pyc
 /cache-price-recommender/
 /.run/
 /.venv/
