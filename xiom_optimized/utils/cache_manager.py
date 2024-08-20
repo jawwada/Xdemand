@@ -194,16 +194,10 @@ class CacheManager:
     def query_price_reference(self, ph_data):
         query = f"""SELECT stat.sku, stat.region,stat.price , stat.date
         FROM look_latest_price_reference stat
-             where date > DATEADD(year, -1, GETDATE()) order by stat.sku, region, date;"""
+             where date > DATEADD(year, -1, GETDATE()) order by stat.sku, warehouse_code, date;"""
         df = pd.read_sql_query(query, cnxn)
         df['date'] = pd.to_datetime(df['date'])
-        df['warehouse_code'] = df['region'].map(region_warehouse_codes)
-        df= df.groupby(['sku', 'warehouse_code'])['price'].mean().reset_index()
         df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
-        query_2 = ("""SELECT sku, warehouse_code from stat_forecast_data_quantity""")
-        df_2 = pd.read_sql_query(query_2, cnxn)
-        df = df.merge(df_2, on=['sku','warehouse_code'], how='inner')
-
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
