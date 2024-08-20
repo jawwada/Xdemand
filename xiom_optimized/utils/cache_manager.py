@@ -192,7 +192,7 @@ class CacheManager:
 
     @cache_decorator
     def query_price_reference(self, ph_data):
-        query = f"""SELECT stat.sku, stat.region,stat.price , stat.date
+        query = f"""SELECT stat.sku, stat.warehouse_code,,stat.price , stat.date
         FROM look_latest_price_reference stat
              where date > DATEADD(year, -1, GETDATE()) order by stat.sku, warehouse_code, date;"""
         df = pd.read_sql_query(query, cnxn)
