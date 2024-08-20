@@ -73,7 +73,6 @@ def create_amazon_reviews_store():
     # Initialize Chroma DB client
     client = chromadb.PersistentClient(path=db_path)  # Initialize the client with settings
 
-    reviews= reviews.head(10)
     # Create a new collection for Amazon reviews
     collection = client.get_or_create_collection(db_path)
 
