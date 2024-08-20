@@ -12,6 +12,8 @@ data/
 *.bin
 *.rar
 *.db
+*.pyc
+*.zip
 
 # Ignore image files
 *.png
@@ -25,6 +27,8 @@ logs/
 .history/
 **__pycache__/
 common/cache/
+logging_logs/
+cache/
 
 # Ignore Jupyter notebook checkpoints
 **.ipynb_checkpoints/
@@ -54,6 +58,7 @@ tmp*
 plots*/**
 nbeats*/**
 research/
+amazon_reviews/
 
 
 # Allow specific files
