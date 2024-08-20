@@ -91,9 +91,6 @@ def create_amazon_reviews_store():
     # Upload SQLite file to Azure Blob Storage
     upload_to_azure_blob(sqlite_file_path)
 
-    # Close the database connection
-    conn.close()
-
 def translate_review(body, from_code, to_code):
     logger.info(f"Translating review body: {body[:30]}... from {from_code} to {to_code}.")  # Log message
     # Translate the review body using Argos Translate
@@ -103,7 +100,7 @@ def translate_review(body, from_code, to_code):
 def upload_to_azure_blob(file_path):
     # Create a BlobServiceClient
     blob_service_client = BlobServiceClient.from_connection_string(AZURE_CONNECTION_STRING)
-    blob_client = blob_service_client.get_blob_client(container="your-container-name", blob=BLOB_NAME)
+    blob_client = blob_service_client.get_blob_client(container="amazon-reviews", blob=BLOB_NAME)
 
     # Upload the SQLite file
     with open(file_path, "rb") as data:

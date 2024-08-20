@@ -8,6 +8,9 @@ from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import get_f
 from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import merge_shiptment_stocks_forecast
 from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import write_replace_stat_running_stock_forecast
 
+from xdemand.pipelines.RDX.index_reviews import create_amazon_reviews_store, install_argos_packages
+
+
 
 def run_stock_status_forecast():
     logger.info("Starting Stock Status Forecast Pipeline")
@@ -45,3 +48,6 @@ if __name__ == '__main__':
     logger.info("Starting RDX Stock and PR Pipeline")
     run_stock_status_forecast()
     run_price_recommender()
+    # Create Amazon reviews store
+    install_argos_packages()
+    create_amazon_reviews_store()

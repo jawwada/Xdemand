@@ -5,7 +5,7 @@ default:
   forecast_stock_level: 120
   opt_stock_level: 20
   stockout_penalty: 5
-  n_trials: 50
+  n_trials: 20
   n_jobs: 1
   write_to_db: false
 
