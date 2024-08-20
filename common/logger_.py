@@ -1,4 +1,5 @@
 import logging
+import os
 
 def get_logger():
     # Create a logger
@@ -6,6 +7,12 @@ def get_logger():
     logger.setLevel(logging.INFO)  # set logger level
 
     # Create a file handler and set level to debug
+    # create directory and file if not exist
+    if not os.path.exists('logging_logs'):
+        os.makedirs('logging_logs')
+    # create file
+    open('logging_logs/test_model.log', 'a').close()
+
     file_handler = logging.FileHandler('logging_logs/test_model.log')
     file_handler.setLevel(logging.DEBUG)
 

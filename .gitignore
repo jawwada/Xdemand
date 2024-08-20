@@ -38,6 +38,7 @@ data/
 .run/
 .venv/
 **__pycache__/
+project_tools/
 # Exceptions
 !.py
 !.ipynb
