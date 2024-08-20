@@ -35,7 +35,9 @@ def run_price_recommender():
     # Run the Optuna trials
     price_adjustments, df_sku_warehouse_pr = price_optimizer(df_price_recommender, pr_cf)
 
+    # Write to the database
     price_adjustments.reset_index().to_sql('stat_price_recommender',con=engine,if_exists='replace')
+
     df_sku_warehouse_pr.reset_index().to_sql('stat_price_recommender_summary',con=engine,if_exists='replace')
 
     print("Price Recommendation Tables Done")

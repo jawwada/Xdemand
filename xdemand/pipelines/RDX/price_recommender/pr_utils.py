@@ -78,6 +78,8 @@ def get_price_adjustments(name,group, p0, price_rec, r, cf):
         'ref_price': group['ref_price'].mean(),
         'mean_demand': group['yhat'].mean(),
         'current_stock': group['running_stock_after_forecast'].head(1).item(),
+        'opt_stock_level': 0.0,
+        'inventory_orders': 0.0,
         'understock_days': group['is_understock'].sum(),
         'overstock_days': group['is_overstock'].sum(),
         'price_elasticity': group['price_elasticity'].mean()
@@ -90,12 +92,18 @@ def get_price_adjustments(name,group, p0, price_rec, r, cf):
     revenue_after = group['q_prime_adj'].sum() * price_rec
     # set up the df_sku_warehouse_info
 
+
+    # prepare inventory orders , fir
+    group_info['opt_stock_level'] = group_info['mean_demand'] * cf.forecast_stock_level
+    # sum up the in trainst quantity for next cf.forecast_stock_level days
+    in_transit_sum = group['InTransit_Quantity'].head(cf.forecast_stock_level).sum()
+    group['inventory_orders'] = group['opt_stock_level'] - group['current_stock'] - in_transit_sum
+
     # Add new columns to the aggregated DataFrame
     group_info['revenue_before'] = revenue_before
     group_info['revenue_after'] = revenue_after
     group_info['price_new'] = price_rec
     group_info['price_old'] = p0
-    group_info['opt_stock_level'] = group_info['mean_demand'] * cf.forecast_stock_level
     df_group_info = pd.DataFrame(group_info, index=[0])
     print(revenue_before, revenue_after)
     return group, df_group_info

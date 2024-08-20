@@ -6,7 +6,7 @@
 *.rar
 *.xlsx
 *.db
-*.py{c,o,d}
+*.py[cod]
 *.xml
 
 # Logs
