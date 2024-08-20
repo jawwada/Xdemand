@@ -29,7 +29,6 @@ def fill_missing_dates(df_sku: pd.DataFrame) -> pd.DataFrame:
     df_sku = df_sku.set_index('date').reindex(idx).rename_axis('date').reset_index()
     df_sku['sku'] = df_sku['sku'].fillna(method='ffill')
     df_sku['warehouse_code'] = df_sku['warehouse_code'].fillna(method='ffill')
-    df_sku['channel'] = df_sku['channel'].fillna(method='ffill')
     df_sku['quantity'] = df_sku['quantity'].fillna(0)
     return df_sku
 

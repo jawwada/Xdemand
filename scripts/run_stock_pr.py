@@ -1,5 +1,7 @@
 from common.db_connection import engine
 from common.logger_ import logger
+from sqlalchemy.exc import PendingRollbackError
+
 from config import price_recommendation_settings as pr_cf
 from config import stock_status_settings as ss_cf
 from xdemand.pipelines.RDX.price_recommender.price_optimizer import price_optimizer
@@ -36,10 +38,24 @@ def run_price_recommender():
 
     # Run the Optuna trials
     price_adjustments, df_sku_warehouse_pr = price_optimizer(df_price_recommender, pr_cf)
+    try:
+        # Handle the PendingRollbackError by rolling back the transaction
+        with engine.connect() as connection:
+            connection.rollback()
+    except:
+        pass
+    try:
+        # Write to the database
+        price_adjustments.reset_index().to_sql('stat_price_recommender',con=engine,if_exists='replace')
+        df_sku_warehouse_pr.reset_index().to_sql('stat_price_recommender_summary',con=engine,if_exists='replace')
+    except PendingRollbackError as e:
+        # Handle the PendingRollbackError by rolling back the transaction
+        with engine.connect() as connection:
+            connection.rollback()
+        price_adjustments.reset_index().to_sql('stat_price_recommender', con=engine, if_exists='replace')
+        df_sku_warehouse_pr.reset_index().to_sql('stat_price_recommender_summary', con=engine, if_exists='replace')
+        print(f"Transaction rolled back due to error: {e}")
 
-    # Write to the database
-    price_adjustments.reset_index().to_sql('stat_price_recommender',con=engine,if_exists='replace')
-    df_sku_warehouse_pr.reset_index().to_sql('stat_price_recommender_summary',con=engine,if_exists='replace')
 
     print("Price Recommendation Tables Done")
     return

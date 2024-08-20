@@ -97,6 +97,14 @@ class SalesPipeline:
         """Runs the sales forecasting pipeline using the Prophet model."""
         logger.info("Starting Sales Forecasting Pipeline")
         sales_df = self.cache_manager.query_df_daily_sales()
+        sales_df['warehouse_code'] = sales_df['region'].map(region_warehouse_codes)
+
+        sales_df = sales_df.groupby(['date', 'sku', 'warehouse_code']).agg({
+            'promotional rebates': 'sum',
+            'quantity': 'sum',
+            'revenue': 'sum',
+            'price': 'mean'
+        }).reset_index()
         daily_sales = self.forecaster.prophet_daily_sales_transform(sales_df, self.min_rows_per_sku, self.top_n)
         logger.info("SKU count after filtering for {self.min_rows_per} rows and {self.top_n} revenue skus ")
         logger.info(daily_sales['sku'].nunique())
@@ -107,11 +115,11 @@ class SalesPipeline:
         daily_sales = daily_sales[daily_sales['date_part'] < max_date]
         max_date = max(daily_sales['date_part'])
 
-        grouper = daily_sales.groupby(['region', 'sku'])
+
+        grouper = daily_sales.groupby(['sku', 'warehouse_code'])
 
         for target in self.target_cols:
             forecasts = self.forecaster.forecast_sales(grouper, max_date, target)
-            forecasts['warehouse_code'] = forecasts['region'].map(region_warehouse_codes)
             if self.write_to_db:
                 write_replace_db(forecasts, f"stat_forecast_data_{target}")
             logger.info(f"Saved forecasts to database for target {target}")
@@ -124,7 +132,7 @@ class SalesPipeline:
         logger.info("Starting Price Sensing Pipeline")
         df_dsa = self.cache_manager.query_df_daily_sales_forecast_skus()
         logger.info(f"df_dsa head {df_dsa.head()}")
-        df_dsa = df_dsa.groupby(['channel', 'sku', 'warehouse_code', 'level_1', 'date'])[
+        df_dsa = df_dsa.groupby(['sku', 'warehouse_code', 'level_1', 'date'])[
             ['quantity', 'revenue', 'promotional rebates']].sum().reset_index()
         df_dsa = self.price_sensor.daily_sales_price_sensing_transform(df_dsa)  # Use self.price_sensor
         logger.info(
@@ -152,12 +160,12 @@ class SalesPipeline:
         """Detects stockouts based on sales data and fills in missing dates."""
         logger.info("Starting Stockout Detection Pipeline")
         df = self.cache_manager.query_df_daily_sales_forecast_skus()
-        df = df.groupby(['channel', 'sku', 'warehouse_code', 'date'])[['quantity']].sum().reset_index()
+        df = df.groupby(['sku', 'warehouse_code', 'date'])[['quantity']].sum().reset_index()
         # log the number of unique SKU, warehouse combinations
         logger.info(f"Unique SKU, Warehouse combinations {df[['sku', 'warehouse_code']].nunique()}")
 
         # Fill missing dates
-        df_filled = df.groupby(['channel', 'sku', 'warehouse_code']).apply(fill_missing_dates).reset_index(drop=True)
+        df_filled = df.groupby([ 'sku', 'warehouse_code']).apply(fill_missing_dates).reset_index(drop=True)
         df_filled['quantity'] = df_filled['quantity'].fillna(0)
         total_days_dict = get_total_days_dict(df_filled)
         grid_df = df_filled.copy(deep=True)
@@ -166,7 +174,7 @@ class SalesPipeline:
         numeric_columns = ['quantity', 'gaps', 'gap_days', 'gap_e', 'sale_prob', 'gap_e_log10']
         grid_df[numeric_columns] = grid_df[numeric_columns].apply(pd.to_numeric, errors='coerce')
         grid_df = grid_df[
-            ['channel', 'sku', 'warehouse_code', 'date', 'quantity', 'gaps', 'gap_days', 'gap_e', 'sale_prob',
+            ['sku', 'warehouse_code', 'date', 'quantity', 'gaps', 'gap_days', 'gap_e', 'sale_prob',
              'gap_e_log10']]
         grid_df['out_of_stock'] = grid_df['gap_e_log10'] >= 2
         grid_df = preprocess_dataframe(grid_df)

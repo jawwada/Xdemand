@@ -1,29 +1,36 @@
 # Assuming you have a function to connect to your database in common.db_constants.py
-from common.db_connection import engine
-from chromadb import Client  # Make sure to install chromadb
+import shutil
+import platform
+
+# Workaround for the issue with the sqlite3 module
+if platform.system() != "Darwin":
+    __import__('pysqlite3')
+    import sys
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+import chromadb
+
 import argostranslate.package
 import argostranslate.translate
-import sqlite3
-from azure.storage.blob import BlobServiceClient
-from common.local_constants import AZURE_CONNECTION_STRING, BLOB_NAME
-from common.local_constants import region_warehouse_codes
-import pandas as pd  # Add this import at the top
-from common.logger_ import logger  # Add this import at the top
-from openai import OpenAI
 import pandas as pd
-from chromadb.config import Settings
-import chromadb
-import shutil
+from azure.storage.blob import BlobServiceClient
+from openai import OpenAI
+
+from common.db_connection import engine
+from common.local_constants import AZURE_CONNECTION_STRING
+from common.local_constants import region_warehouse_codes
+from common.logger_ import logger  # Add this import at the top
+
+
+
 
 
 # Initialize OpenAI client
-
-
 def get_embedding(text, model="text-embedding-3-small"):
     open_ai_client = OpenAI()
     text = text.replace("\n", " ")
     response = open_ai_client.embeddings.create(input=[text], model=model)
     return response.data[0].embedding
+
 
 # Download and install Argos Translate package
 argostranslate.package.update_package_index()
@@ -40,7 +47,7 @@ def install_argos_packages():
     """, engine)  # Execute the query to get unique regions
 
     unique_regions = set(unique_regions_query['Region'].str.lower()) - {'en'}  # Exclude 'english'
-    
+
     for region in unique_regions:
         logger.info(f"Installing package for region: {region}")  # Log message
         from_code = region  # Set from_code based on the region
@@ -54,6 +61,7 @@ def install_argos_packages():
         )
         if package_to_install:
             argostranslate.package.install_from_path(package_to_install.download())
+
 
 def create_amazon_reviews_store():
     logger.info("Creating Amazon reviews store.")  # Log message
@@ -78,13 +86,13 @@ def create_amazon_reviews_store():
 
     # Process and insert reviews into Chroma DB
     for index, review in reviews.iterrows():  # Iterate over DataFrame rows
-        
+
         date, im_sku, region, title, body, rating = review
         warehouse_code = region_warehouse_codes.get(region, None)  # Use get to fetch the warehouse code
-        
+
         # Set from_code and to_code based on the region
         from_code = region.lower()  # Assuming English is the source language
-        to_code = 'en' # Use the region field as the target language code
+        to_code = 'en'  # Use the region field as the target language code
 
         # Translate the title
         translated_title = translate_review(title, from_code, to_code)  # Pass codes to translation
@@ -125,6 +133,7 @@ def translate_review(body, from_code, to_code):
 
     return translated_text  # Return the translated text
 
+
 def upload_to_azure_blob(db_path):
     # Create a BlobServiceClient
     blob_service_client = BlobServiceClient.from_connection_string(AZURE_CONNECTION_STRING)
@@ -133,6 +142,7 @@ def upload_to_azure_blob(db_path):
     # Upload the SQLite file
     with open(db_path, "rb") as data:
         blob_client.upload_blob(data, overwrite=True)
+
 
 if __name__ == "__main__":
     install_argos_packages()
