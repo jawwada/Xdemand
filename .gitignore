@@ -8,6 +8,7 @@
 *.db
 *.py[cod]
 *.xml
+*.pyc
 
 # Logs
 *.log
