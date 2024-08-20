@@ -41,7 +41,6 @@ data/
 # Exceptions
 !.py
 !.ipynb
-!logging_logs/test_model.log
 !xdemand/machine_learning/ModelCache.py
 !xiom_optimized/assets/img.png
 !common/cache_manager_joblib.py
