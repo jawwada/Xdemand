@@ -59,13 +59,13 @@ class CacheManager:
         query = ("""SELECT lph.im_sku as sku,lph.channel, lph.region, 
                     lph.level_1, lph.level_2, lph.level_3, lph.level_4
                     FROM look_product_hierarchy lph
-                    JOIN (
-                        SELECT DISTINCT sku, region
-                        FROM stat_forecast_data_quantity
-                    ) fcst ON fcst.sku = lph.im_sku AND fcst.region = lph.region
                  """)
         df = pd.read_sql_query(query, cnxn)
         df['warehouse_code']=df['region'].map(region_warehouse_codes)
+
+        query_2 = ("""SELECT sku, warehouse_code from stat_forecast_data_quantity""")
+        df_2 = pd.read_sql_query(query_2, cnxn)
+        df = df.merge(df_2, on=['sku','warehouse_code'], how='inner')
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
@@ -109,9 +109,13 @@ class CacheManager:
     @cache_decorator
     def query_df_daily_sales(self, ph_data):
         query = """
-        SELECT * FROM agg_im_sku_daily_sales_oos
+        SELECT agg.* FROM agg_im_sku_daily_sales agg
+            JOIN (
+                SELECT DISTINCT sku, warehouse_code 
+                FROM stat_forecast_data_quantity 
+            ) fcst ON fcst.sku = agg.sku AND fcst.warehouse_code = agg.warehouse_code
         where date > DATEADD(year, -3, GETDATE()) 
-        ORDER BY sku, region, date;
+        ORDER BY agg.sku, agg.region, agg.date;
         """
         df = pd.read_sql_query(query, cnxn)
         df['date'] = pd.to_datetime(df['date'])
@@ -124,7 +128,7 @@ class CacheManager:
         query = f"""SELECT stat.*
                     FROM stat_forecast_quantity_revenue stat
                     WHERE ds >= DATEADD(day, -350, GETDATE()) 
-                    ORDER BY ds, warehouse_code, region;"""
+                    ORDER BY sku, warehouse_code, ds"""
         df = pd.read_sql_query(query, cnxn)
         df['ds'] = pd.to_datetime(df['ds'])
         df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')

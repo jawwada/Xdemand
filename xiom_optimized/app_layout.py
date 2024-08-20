@@ -132,7 +132,7 @@ def toggle_dropdown_visibility(selected_tab):
 
     # Hide specific dropdowns based on the selected tab
     if selected_tab == '/demand-forecasting':
-        data_chooser_style = default_style
+        region_style = hidden_style
     elif selected_tab == '/':
         data_chooser_style = hidden_style
     elif selected_tab == '/demand-analysis':
