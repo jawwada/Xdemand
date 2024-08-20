@@ -97,7 +97,7 @@ def get_price_adjustments(name,group, p0, price_rec, r, cf):
     group_info['opt_stock_level'] = group_info['mean_demand'] * cf.forecast_stock_level
     # sum up the in trainst quantity for next cf.forecast_stock_level days
     in_transit_sum = group['InTransit_Quantity'].head(cf.forecast_stock_level).sum()
-    group['inventory_orders'] = group['opt_stock_level'] - group['current_stock'] - in_transit_sum
+    group_info['inventory_orders'] = group_info['opt_stock_level'] - group_info['current_stock'] - in_transit_sum
 
     # Add new columns to the aggregated DataFrame
     group_info['revenue_before'] = revenue_before
