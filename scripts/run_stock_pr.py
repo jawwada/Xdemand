@@ -8,7 +8,7 @@ from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import get_f
 from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import merge_shiptment_stocks_forecast
 from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import write_replace_stat_running_stock_forecast
 
-from xdemand.pipelines.RDX.index_reviews import create_amazon_reviews_store, install_argos_packages
+from xdemand.pipelines.RDX.index_reviews.build_chroma import create_amazon_reviews_store, install_argos_packages
 
 
 
