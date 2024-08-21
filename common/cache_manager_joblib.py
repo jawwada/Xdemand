@@ -46,9 +46,8 @@ class CacheManagerJoblib:
     def query_df_daily_sales_oos(self, ph_data):
         query = """
             SELECT * FROM agg_im_sku_daily_sales_oos
-            WHERE sku IN (SELECT DISTINCT sku FROM stat_forecast_data_quantity) 
-            AND date > DATEADD(year, -3, GETDATE()) 
-            ORDER BY sku, region, date;
+             where date > DATEADD(year, -3, GETDATE()) 
+            ORDER BY sku, warehouse_code, date;
             """
         with engine.connect() as con:
             daily_sales = pd.read_sql_query(query, con)
@@ -105,7 +104,7 @@ class CacheManagerJoblib:
         query = f"""SELECT stat.*
                         FROM stat_forecast_quantity_revenue stat
                         WHERE ds > DATEADD(day, -400, GETDATE()) 
-                        ORDER BY ds, warehouse_code, region;"""
+                        ORDER BY ds, warehouse_code;"""
         df = pd.read_sql_query(query, engine)
         df['ds'] = pd.to_datetime(df['ds'])
         ph_data = pd.read_sql_query(query_ph_data, engine)
@@ -176,14 +175,14 @@ class CacheManagerJoblib:
 
     @cache_decorator
     def query_price_reference(self):
-        query = f"""SELECT stat.sku, stat.region,stat.price , stat.date
+        query = f"""SELECT stat.sku, stat.warehouse_code,stat.price , stat.date
             FROM look_latest_price_reference stat
                 JOIN (
-                    SELECT sku, region, count(*) as count
+                    SELECT sku, warehouse_code, count(*) as count
                     FROM stat_forecast_data_quantity 
-                    group by sku, region
-                ) fcst ON fcst.sku = stat.sku and fcst.[region]=stat.region
-                 and date > DATEADD(year, -1, GETDATE()) order by stat.sku, region, date;"""
+                    group by sku, warehouse_code
+                ) fcst ON fcst.sku = stat.sku and fcst.[warehouse_code]=stat.warehouse_code
+                 and date > DATEADD(year, -1, GETDATE()) order by stat.sku, warehouse_code, date;"""
         df = pd.read_sql_query(query, engine)
         df['date'] = pd.to_datetime(df['date'])
         ph_data = pd.read_sql_query(query_ph_data, engine)
