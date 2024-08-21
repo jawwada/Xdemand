@@ -30,7 +30,6 @@ pytz = "2023.3"
 fastdtw = "0.3.4"
 python-dateutil = "2.8.2"
 dynaconf = "3.2.6"
-xgboost = "2.1.1"
 mlxtend = "0.22.0"
 prophet = "1.1.5"
 holidays = "0.50"
@@ -50,14 +49,6 @@ pyodbc = "5.0.1"
 pillow = "^10.4.0"
 typer = "^0.12.4"
 chromadb = "^0.5.5"
-argostranslate = "^1.9.6"
-opentelemetry-exporter-otlp-proto-grpc="1.25.0"
-torch = [
-    {url = "https://download.pytorch.org/whl/cpu/torch-2.2.1%2Bcpu-cp39-cp39-linux_x86_64.whl", markers = "sys_platform == 'linux'"},
-    {url = "https://download.pytorch.org/whl/cpu/torch-2.2.1-cp39-none-macosx_11_0_arm64.whl", markers = "sys_platform == 'darwin' and platform_machine == 'arm64'"},
-    {url = "https://download.pytorch.org/whl/cpu/torch-2.2.1-cp39-none-macosx_10_9_x86_64.whl", markers = "sys_platform == 'darwin' and platform_machine == 'x86_64'"}
-]
-
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
