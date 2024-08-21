@@ -80,11 +80,11 @@ def textbox(text, box="AI", name="RDX"):
      Output("user-input", "value")],
     [Input("submit", "n_clicks"),
      Input("user-input", "n_submit"),
-     Input("clear-chat-button", "n_clicks"),
-     Input("warehouse-code-dropdown", "value"),
-     Input("category-dropdown", "value"),
-     Input("sku-dropdown", "value")],
-    [State("store-conversation", "data"),
+     Input("clear-chat-button", "n_clicks")],
+    [State("warehouse-code-dropdown", "value"),
+     State("category-dropdown", "value"),
+     State("sku-dropdown", "value"),
+     State("store-conversation", "data"),
      State("user-input", "value")],
 )
 def run_chatbot(n_clicks, n_submit, clear_clicks, warehouse_code, category, sku, chat_history, user_input):
@@ -93,7 +93,7 @@ def run_chatbot(n_clicks, n_submit, clear_clicks, warehouse_code, category, sku,
     if ctx.triggered[0]["prop_id"] == "clear-chat-button.n_clicks":
         return "", "", "", None  # Reset user input to None
 
-    if ctx.triggered[0]["prop_id"] != "submit.n_clicks":
+    if user_input is None or user_input == "":
         return "", "", chat_history, None  # Reset user input to None
 
     focus_area = []

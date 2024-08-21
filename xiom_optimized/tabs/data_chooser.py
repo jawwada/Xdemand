@@ -87,7 +87,7 @@ data_chooser = html.Div([
     html.Div([
         dcc.Store(id='filter-data', data=ph_data.to_json(date_format='iso', orient='split'), storage_type='session'),
         # Sales Data Radio Buttonns
-        html.H5('   Selection Criteria'),
+        html.H5('   Focus Area'),
         dim_selector,
         ph_selector,
         # time_range_selector,
