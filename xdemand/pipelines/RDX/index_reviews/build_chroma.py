@@ -1,6 +1,7 @@
 # Assuming you have a function to connect to your database in common.db_constants.py
 import shutil
 import platform
+import logging
 
 # Workaround for the issue with the sqlite3 module
 if platform.system() != "Darwin":
@@ -18,11 +19,9 @@ from openai import OpenAI
 from common.db_connection import engine
 from common.local_constants import AZURE_CONNECTION_STRING
 from common.local_constants import region_warehouse_codes
-from common.logger_ import logger  # Add this import at the top
 
-
-
-
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 # Initialize OpenAI client
 def get_embedding(text, model="text-embedding-3-small"):
@@ -128,7 +127,7 @@ def create_amazon_reviews_store():
 def translate_review(body, from_code, to_code):
     # Translate the review body using Argos Translate
     translated_text = argostranslate.translate.translate(body, from_code, to_code)
-    logger.info(f"Translating review body: {body[:100]}... from {from_code} to {to_code}.")  # Log message
+    logger.info(f"Translating review : {body[:100]}... from {from_code} to {to_code}.")  # Log message
     logger.info(f"Translation: {translated_text[:100]}... from {from_code} to {to_code}.")  # Log message
 
     return translated_text  # Return the translated text

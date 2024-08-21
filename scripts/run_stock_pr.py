@@ -1,8 +1,5 @@
-from common.db_connection import engine
-from common.logger_ import logger
+import logging
 from common.db_connection import write_replace_db
-
-
 from config import price_recommendation_settings as pr_cf
 from config import stock_status_settings as ss_cf
 from xdemand.pipelines.RDX.price_recommender.price_optimizer import price_optimizer
@@ -12,6 +9,8 @@ from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import merge
 
 from xdemand.pipelines.RDX.index_reviews.build_chroma import create_amazon_reviews_store, install_argos_packages
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def run_stock_status_forecast():

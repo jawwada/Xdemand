@@ -8,14 +8,15 @@ from xdemand.pipelines.sales_pipeline import SalesPipeline  # Import the SalesPi
 
 # Create a Typer application for command-line interface
 app = typer.Typer(pretty_exceptions_enable=False)
-logger = logging.getLogger(__name__)  # Set up a logger for this module
 
+
+logger = logging.getLogger(__name__)  # Set up a logger for this module
 # Configure logging to display INFO level messages
 logging.basicConfig(level=logging.INFO)
 
 @app.command(name='run-sales-pipeline', help='Run the sales forecasting pipeline with specified parameters.')
 def main(
-        top_n_skus: int = typer.Option(int(os.getenv('TOP_N_SKUS_XDEMAND', 100)), help='Top N SKUs to consider.')  # Read top_n from environment variable
+        top_n_skus: int = typer.Option(int(os.getenv('TOP_N_SKUS_XDEMAND', 5)), help='Top N SKUs to consider.')  # Read top_n from environment variable
 ):
     """Main entry point for running the sales pipeline with command line arguments."""
 

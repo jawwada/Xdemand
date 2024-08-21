@@ -4,7 +4,6 @@ import logging
 
 import pandas as pd
 
-from common.db_connection import engine
 from common.db_connection import write_replace_db
 from common.local_constants import region_warehouse_codes
 

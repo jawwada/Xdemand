@@ -1,3 +1,4 @@
+import logging
 import warnings
 
 from datetime import datetime, timedelta
@@ -7,11 +8,10 @@ import numpy as np
 import pandas as pd
 import seaborn as sns  # data visualization library
 from tqdm import tqdm
-from common.local_constants import region_warehouse_codes
-from common.logger_ import logger
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 warnings.filterwarnings('ignore')
-
 
 def fill_missing_dates(df_sku: pd.DataFrame) -> pd.DataFrame:
     """
