@@ -192,9 +192,10 @@ class CacheManager:
 
     @cache_decorator
     def query_price_reference(self, ph_data):
-        query = f"""SELECT stat.sku, stat.warehouse_code,,stat.price , stat.date
+        query = f"""SELECT stat.sku, stat.warehouse_code,stat.price 
         FROM look_latest_price_reference stat
-             where date > DATEADD(year, -1, GETDATE()) order by stat.sku, warehouse_code, date;"""
+             where date > DATEADD(year, -1, GETDATE()) 
+             order by stat.sku, warehouse_code"""
         df = pd.read_sql_query(query, cnxn)
         df['date'] = pd.to_datetime(df['date'])
         df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
