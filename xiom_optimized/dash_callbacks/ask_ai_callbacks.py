@@ -11,6 +11,7 @@ from dash import html
 from dash.dependencies import Input
 from dash.dependencies import Output
 from dash.dependencies import State
+from sqlalchemy import text
 
 from xiom_optimized.app_config_initial import app
 from xiom_optimized.langchain_utils.agent_executor_custom_call_backs import CustomHandler
@@ -20,6 +21,7 @@ from xiom_optimized.langchain_utils.dangerous_code import generate_graph
 from xiom_optimized.langchain_utils.dangerous_code import generate_table
 from xiom_optimized.langchain_utils.dangerous_code import get_final_df_from_code
 from xiom_optimized.langchain_utils.prompts import prompt_ds
+from common.db_connection import engine
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -72,54 +74,48 @@ def textbox(text, box="AI", name="RDX"):
 
 
 @app.callback(
-    Output("display-conversation", "children"),
-    [Input("store-conversation", "data")]
-)
-def update_display(chat_history):
-    if chat_history != "":
-        return [
-            textbox(x, box="user") if i % 2 == 0 else textbox(x, box="AI")
-            for i, x in enumerate(chat_history.split("<split>")[:-1])
-        ]
-    else:
-        return None
-
-
-@app.callback(
-    Output("user-input", "value"),
+    [Output("display-conversation", "children"),
+     Output("response-code", "data"),
+     Output("store-conversation", "data")],
     [Input("submit", "n_clicks"),
-     Input("user-input", "n_submit")],
+     Input("user-input", "n_submit"),
+     Input("clear-chat-button", "n_clicks")],
+     [State("store-conversation", "data"),
+      State("user-input", "value")],
 )
-def clear_input(n_clicks, n_submit):
-    return ""
-
-
-@app.callback(
-    [Output("store-conversation", "data"),
-     Output("loading-component", "children"),
-     Output("response-code", "data")],
-    [Input("submit", "n_clicks"),
-     Input("user-input", "n_submit")],
-    [State("user-input", "value"),
-     State("store-conversation", "data")],
-)
-def run_chatbot(n_clicks, n_submit, user_input, chat_history):
-    if n_clicks == 0 and n_submit is None:
-        return "", None, ""
+def run_chatbot(n_clicks, n_submit, clear_clicks, chat_history, user_input):
+    ctx = dash.callback_context
+    # check if the callback was triggered by the clear chat button
+    if ctx.triggered[0]["prop_id"] == "clear-chat-button.n_clicks":
+        return "", "", ""
 
     if user_input is None or user_input == "":
-        return chat_history, None, ""
+        return "", "", chat_history
 
     name = "Xd"
-    # First add the user input to the chat history
     chat_history += f"You : {user_input} <split>"
     model_input = f"{prompt_ds}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
     chat_response = agent_running_stock.run(model_input, callbacks=[custom_callback])
     response_code = custom_callback.response_code
-    logger.info(f"Response code: {response_code}")
-    # Access the response code from the custom callback
+
+    if chat_response:
+        # Assuming `engine` is already defined and connected
+        data = {
+            "UserName": ["User"],
+            "Question": [user_input],
+            "response_code": [response_code],
+            "Answer": [chat_response],
+            "Thumbs": [None],  # Replace None with an actual value for thumbs if needed
+            "CreatedAt": [pd.Timestamp.now()]
+        }
+        # Insert the DataFrame into the database
+        pd.DataFrame(data).to_sql('stg_tr_chat_history',
+                                  con=engine, if_exists='append', index=False)
+
     chat_history += f"{chat_response}<split>"
-    return chat_history, None, response_code
+    return [textbox(x, box="user") if i % 2 == 0 else textbox(x, box="AI")
+                 for i, x in enumerate(chat_history.split("<split>")[:-1])
+        ], response_code, chat_history
 
 
 @app.callback(Output("response-code-final-df", "data"),

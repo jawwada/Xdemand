@@ -1,4 +1,5 @@
 from xiom_optimized.dash_callbacks.ask_ai_callbacks import *
+from common.db_connection import engine
 
 description = """
 This is a chatbot that can answer questions about the running stock of the products in the warehouse."""
@@ -23,6 +24,9 @@ controls = dbc.InputGroup(
         dbc.Button("Submit", id="submit"),
     ]
 )
+# Add the clear chat button here with the id "clear-chat-button", right aligned
+clear_button = dbc.Button("Clear Chat", id="clear-chat-button",
+                          className="mr-2", style={"float": "right"})
 
 layout = [
     dcc.Store(id="store-it", data=[]),
@@ -35,17 +39,18 @@ layout = [
         children=[
             Header("XD", app),
             html.Hr(),
+            clear_button,  # Add the clear chat button here
             conversation,
             controls,
+
             dbc.Spinner(html.Div(id="loading-component")),
             html.Div(id='buttons-container', children=[
                 dbc.Button("Generate Table", id="generate-table-button", className="mr-2"),
                 dbc.Button("Generate Graph", id="generate-graph-button", className="mr-2")
             ]),
-            html.Div(id="graph-table-container", children=''),  # This is where the table or graph will be displayed
+            html.Div(id="graph-table-container", children=''),
             html.Div(id="data-table-container", children=''),
             html.Div(id='dynamic-figure', children='')
-
         ],
     ),
 ]

@@ -5,7 +5,7 @@ from dash import dcc
 from dash import html
 
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.tabs.ask_ai import layout as inventory_planning_layout
+from xiom_optimized.tabs.ask_ai import layout as ask_ai_layout
 from xiom_optimized.tabs.data_chooser import data_chooser
 from xiom_optimized.tabs.data_upload import layout as data_upload_layout
 from xiom_optimized.tabs.demand_analysis import layout as demand_analysis_layout
@@ -24,7 +24,7 @@ page_layouts = {
     "/demand-analysis": demand_analysis_layout,
     "/price-sensing": price_sensing_layout,
     "/stockout-prediction": stockout_prediction_layout,
-    "/inventory-planning": inventory_planning_layout,
+    "/ask-ai": ask_ai_layout,
     "/profile": profile_layout,
     "/data-upload": data_upload_layout,
     "product-research": product_research_layout,
@@ -87,7 +87,7 @@ layout = html.Div(id='page_container',
                                                   dcc.Tab(label=" Price Sensing ", value="/price-sensing"),
                                                   dcc.Tab(label=" Stock Sensing ", value="/stockout-prediction"),
                                                   dcc.Tab(label=" Product Research ", value="/product-research"),
-                                                  dcc.Tab(label=" Ask AI (Beta) ", value="/inventory-planning")
+                                                  dcc.Tab(label=" Ask AI (Beta) ", value="/ask-ai")
                                               ]),
                                       ], className="row", style={'width': 'auto'}),
                                       html.Hr(),
@@ -141,8 +141,9 @@ def toggle_dropdown_visibility(selected_tab):
         channel_style = region_style = dim_style = time_style = hidden_style
     elif selected_tab == '/stockout-prediction':
         channel_style = region_style = dim_style = time_style = hidden_style
-    elif selected_tab == '/inventory-planning':
-        data_chooser_style = hidden_style
+    elif selected_tab == '/ask-ai':
+        channel_style = region_style = dim_style = time_style = hidden_style
     elif selected_tab == '/product-research':
         channel_style = region_style = hidden_style
+
     return sku_style, warehouse_style, region_style, channel_style, dim_style, time_style, data_chooser_style
