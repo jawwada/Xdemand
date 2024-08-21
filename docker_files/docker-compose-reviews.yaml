@@ -1,0 +1,8 @@
+version: '3'
+services:
+  myapp:
+    build:
+      context: ..
+      dockerfile: docker_files/Dockerfile-reviews
+    image: xiomacr.azurecr.io/rdx-azure:amazon-reviews-pipeline
+    platform: linux/amd64

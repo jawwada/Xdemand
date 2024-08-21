@@ -1,0 +1,49 @@
+FROM --platform=linux/amd64 python:3.9.11-bullseye
+
+RUN apt install curl
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/debian/11/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN exit
+RUN apt-get update
+RUN echo msodbcsql18 msodbcsql/ACCEPT_EULA boolean true | debconf-set-selections
+RUN ACCEPT_EULA=Y apt-get install -y mssql-tools18
+RUN echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc \
+    && /bin/bash -c "source ~/.bashrc"
+
+# devtools is required for installing prophet
+RUN apt-get install -y unixodbc-dev  \
+    gcc  \
+    g++ \
+    build-essential  \
+    python-dev \
+    python3-dev
+
+# Upgrade pip and install system-level dependencies
+RUN pip3 install --upgrade pip
+RUN pip3 install --upgrade cython numpy
+
+# Install Poetry
+RUN pip3 install poetry
+RUN poetry config virtualenvs.create false
+# Copy the pyproject.toml and poetry.lock files to the container
+COPY pyproject.toml .
+
+RUN poetry lock
+# Install dependencies
+RUN poetry install --only main
+
+# Install additional dependencies
+RUN poetry run pip3 install python-dotenv==1.0.1
+
+# Set the working directory and copy the rest of the application code
+WORKDIR /app
+COPY . /app
+
+# set the environment variable
+ENV PYTHONPATH "${PYTHONPATH}:/app"
+
+# expose the port
+EXPOSE 8000
+
+#Set the default command to run the application with Gunicorn
+CMD ["gunicorn", "xiom_optimized.index:server", "--bind", "0.0.0.0:8000"]

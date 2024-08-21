@@ -1,0 +1,10 @@
+version: '3'
+services:
+  myapp:
+    build:
+      context: ..
+      dockerfile: docker_files/Dockerfile-xiom
+    image: xiomacr.azurecr.io/dash-azure:dc-3.0
+    ports:
+      - "8000:8000"
+    platform: linux/amd64

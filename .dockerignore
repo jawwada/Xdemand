@@ -28,7 +28,7 @@ logs/
 **__pycache__/
 common/cache/
 logging_logs/
-cache/
+cache/**
 
 # Ignore Jupyter notebook checkpoints
 **.ipynb_checkpoints/
