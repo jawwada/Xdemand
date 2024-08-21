@@ -76,25 +76,32 @@ def textbox(text, box="AI", name="RDX"):
 @app.callback(
     [Output("display-conversation", "children"),
      Output("response-code", "data"),
-     Output("store-conversation", "data")],
+     Output("store-conversation", "data"),
+     Output("user-input", "value")],
     [Input("submit", "n_clicks"),
      Input("user-input", "n_submit"),
-     Input("clear-chat-button", "n_clicks")],
-     [State("store-conversation", "data"),
-      State("user-input", "value")],
+     Input("clear-chat-button", "n_clicks"),
+     Input("warehouse-code-dropdown", "value"),
+     Input("category-dropdown", "value"),
+     Input("sku-dropdown", "value")],
+    [State("store-conversation", "data"),
+     State("user-input", "value")],
 )
-def run_chatbot(n_clicks, n_submit, clear_clicks, chat_history, user_input):
+def run_chatbot(n_clicks, n_submit, clear_clicks, warehouse_code, category, sku, chat_history, user_input):
     ctx = dash.callback_context
     # check if the callback was triggered by the clear chat button
     if ctx.triggered[0]["prop_id"] == "clear-chat-button.n_clicks":
-        return "", "", ""
+        return "", "", "", None  # Reset user input to None
 
     if user_input is None or user_input == "":
-        return "", "", chat_history
+        return "", "", chat_history, None  # Reset user input to None
 
+    user_input = user_input.strip()  + f". Focus Area: Warehouse: {warehouse_code}\n Category: {category}\n SKU: {sku}\n"
+    # Clean up user input
+    # Use warehouse_code, category, and sku as needed in your logic
     name = "Xd"
     chat_history += f"You : {user_input} <split>"
-    model_input = f"{prompt_ds}\n  chat_history:\n {chat_history} \n User Input: {user_input}\n"
+    model_input = (f"{prompt_ds}\n  chat_history:\n {chat_history} \n User Input: {user_input}")
     chat_response = agent_running_stock.run(model_input, callbacks=[custom_callback])
     response_code = custom_callback.response_code
 
@@ -115,7 +122,7 @@ def run_chatbot(n_clicks, n_submit, clear_clicks, chat_history, user_input):
     chat_history += f"{chat_response}<split>"
     return [textbox(x, box="user") if i % 2 == 0 else textbox(x, box="AI")
                  for i, x in enumerate(chat_history.split("<split>")[:-1])
-        ], response_code, chat_history
+        ], response_code, chat_history, None  # Reset user input to None
 
 
 @app.callback(Output("response-code-final-df", "data"),
