@@ -91,7 +91,7 @@ layout = html.Div(id='page_container',
                                               ]),
                                       ], className="row", style={'width': 'auto'}),
                                       html.Hr(),
-                                      html.Div([data_chooser])
+                                      html.Div([data_chooser, dcc.DatePickerRange(id='date-chooser', style={'display': 'none'})])
                                   ]),
                               ], className="col-md-2", style={'float': 'left', 'border-right': '5px solid #ddd'}),
 
@@ -118,7 +118,8 @@ layout = html.Div(id='page_container',
      Output('channel-dropdown', 'style'),
      Output('dim-selector', 'style'),
      Output('time-selector', 'style'),
-     Output('data-chooser', 'style')],
+     Output('data-chooser', 'style'),
+     Output('date-chooser', 'style')],
     [Input('tabs-navigation', 'value')],
 )
 def toggle_dropdown_visibility(selected_tab):
@@ -129,6 +130,7 @@ def toggle_dropdown_visibility(selected_tab):
     # Initialize all dropdowns to be visible
     sku_style = warehouse_style = region_style = channel_style = \
         dim_style = time_style = data_chooser_style = default_style
+    date_chooser_style = hidden_style
 
     # Hide specific dropdowns based on the selected tab
     if selected_tab == '/demand-forecasting':
@@ -143,7 +145,8 @@ def toggle_dropdown_visibility(selected_tab):
         channel_style = region_style = dim_style = time_style = hidden_style
     elif selected_tab == '/ask-ai':
         channel_style = region_style = dim_style = time_style = hidden_style
+        date_chooser_style = default_style  # Show date chooser when Ask AI tab is active
     elif selected_tab == '/product-research':
         channel_style = region_style = hidden_style
 
-    return sku_style, warehouse_style, region_style, channel_style, dim_style, time_style, data_chooser_style
+    return sku_style, warehouse_style, region_style, channel_style, dim_style, time_style, data_chooser_style, date_chooser_style

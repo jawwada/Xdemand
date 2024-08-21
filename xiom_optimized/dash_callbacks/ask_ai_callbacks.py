@@ -85,9 +85,11 @@ def textbox(text, box="AI", name="RDX"):
      State("category-dropdown", "value"),
      State("sku-dropdown", "value"),
      State("store-conversation", "data"),
-     State("user-input", "value")],
+     State("user-input", "value"),
+     State("date-chooser", "start_date"),
+     State("date-chooser", "end_date")],
 )
-def run_chatbot(n_clicks, n_submit, clear_clicks, warehouse_code, category, sku, chat_history, user_input):
+def run_chatbot(n_clicks, n_submit, clear_clicks, warehouse_code, category, sku, chat_history, user_input, start_date, end_date):
     ctx = dash.callback_context
     # check if the callback was triggered by the clear chat button
     if ctx.triggered[0]["prop_id"] == "clear-chat-button.n_clicks":
@@ -103,6 +105,8 @@ def run_chatbot(n_clicks, n_submit, clear_clicks, warehouse_code, category, sku,
         focus_area.append(f"Category: {category}")
     if sku is not None:
         focus_area.append(f"SKU: {sku}")
+    if start_date and end_date:
+        focus_area.append(f"Date Range: {start_date} to {end_date}")
 
     if focus_area:
         user_input = user_input.strip() + ". Focus Area: " + "\n ".join(focus_area) + "\n"
