@@ -93,7 +93,7 @@ def run_chatbot(n_clicks, n_submit, clear_clicks, warehouse_code, category, sku,
     if ctx.triggered[0]["prop_id"] == "clear-chat-button.n_clicks":
         return "", "", "", None  # Reset user input to None
 
-    if user_input is None or user_input == "":
+    if ctx.triggered[0]["prop_id"] != "submit.n_clicks":
         return "", "", chat_history, None  # Reset user input to None
 
     focus_area = []
