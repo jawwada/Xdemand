@@ -36,8 +36,6 @@ def get_data_price_recommender():
 
 
     df_price_reference = cache_manager.query_price_reference()
-    df_price_reference['warehouse_code'] = df_price_reference['region'].replace(region_warehouse_codes)
-    df_price_reference.drop(columns=['region'], inplace=True)
     df_price_reference = df_price_reference.groupby(['sku', 'warehouse_code']).agg({'price': 'mean'}).reset_index()
     df_price_reference.rename(columns={'price': 'ref_price'}, inplace=True)
     df_price_elasticity = cache_manager.query_price_sensing_tab()
