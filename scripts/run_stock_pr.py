@@ -1,9 +1,10 @@
 import logging
+
 from common.db_connection import write_replace_db
 from config import price_recommendation_settings as pr_cf
 from config import stock_status_settings as ss_cf
-from xdemand.pipelines.RDX.price_recommender.price_optimizer import price_optimizer
 from xdemand.pipelines.RDX.price_recommender.pr_utils import get_data_price_recommender
+from xdemand.pipelines.RDX.price_recommender.price_optimizer import price_optimizer
 from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import get_forecast_stocks_shipments
 from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import merge_shiptment_stocks_forecast
 
@@ -21,11 +22,11 @@ def run_stock_status_forecast():
 
     logger.info("Write to the database")
     # Write to the database
-    write_replace_db(merged_df,'stat_running_stock_forecast')
+    write_replace_db(merged_df, 'stat_running_stock_forecast')
     print("Stock Status Forecasting Tables Done")
 
-def run_price_recommender():
 
+def run_price_recommender():
     # Get the data
     df_price_recommender = get_data_price_recommender()
     # Clip the price_elasticity to -1 and -5
@@ -38,7 +39,8 @@ def run_price_recommender():
     print("Price Recommendation Tables Done")
     return
 
+
 if __name__ == '__main__':
     logger.info("Starting RDX Stock and PR Pipeline")
-    #run_stock_status_forecast()
+    # run_stock_status_forecast()
     run_price_recommender()

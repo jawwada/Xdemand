@@ -1,5 +1,6 @@
 from common.db_connection import engine
 
+
 def preprocess_marketplace_sales_to_im_sales():
     # Connect to the database
     with engine.connect() as connection:

@@ -1,5 +1,6 @@
 import base64
 import io
+import logging
 import traceback
 
 import dash
@@ -20,13 +21,11 @@ from xiom_optimized.langchain_utils.dangerous_code import generate_table
 from xiom_optimized.langchain_utils.dangerous_code import get_final_df_from_code
 from xiom_optimized.langchain_utils.prompts import prompt_ds
 
-import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 IMAGES = {"XD": app.get_asset_url("img.png")}
 custom_callback = CustomHandler(app)
-
 
 
 def Header(name, app):

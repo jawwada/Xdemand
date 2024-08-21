@@ -1,5 +1,5 @@
-import os
 from dynaconf import Dynaconf
+
 forecast_settings = Dynaconf(
     envvar_prefix="XDEMAND",
     settings_files=['config/sales_forecast_pipeline.yaml'],

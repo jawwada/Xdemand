@@ -1,11 +1,15 @@
-from datetime import datetime, timedelta
 import logging
+from datetime import datetime
+from datetime import timedelta
+
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
+
+from common.cache_manager_joblib import CacheManagerJoblib as CacheManager
 from common.local_constants import region_warehouse_codes
 from config import price_sensing_settings as cf
-from common.cache_manager_joblib import CacheManagerJoblib as CacheManager
+
 
 class PriceSensor:
     def __init__(self, price_col: str = cf.price_col,
@@ -16,6 +20,7 @@ class PriceSensor:
         self.days_before = days_before
         self.log_normal_regression = log_normal_regression
         self.logger = logging.getLogger(__name__)
+
     def process_reference_price(self):
         df_price_reference = self.cache_manager.query_price_reference()
         df_price_reference['warehouse_code'] = df_price_reference['region'].map(region_warehouse_codes)

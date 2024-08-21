@@ -1,18 +1,21 @@
 # test_tools.py
+import logging
+import math
+from datetime import datetime
+from datetime import timedelta
+
+import cmdstanpy
+import numpy as np
+import pandas as pd
+import prophet
 import pytest
 import torch
-import math
-import logging
-import cmdstanpy
-import prophet
 from prophet import Prophet
-import pandas as pd
-import numpy as np
-from datetime import datetime, timedelta
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 @pytest.fixture(scope="module")
 def torch_setup():
@@ -21,15 +24,18 @@ def torch_setup():
     assert torch.backends.mps.is_built(), "PyTorch was not built with MPS activated."
     return torch
 
+
 @pytest.fixture(scope="module")
 def cmdstanpy_setup():
     logger.info(f"cmdstanpy version: {cmdstanpy.__version__}")
     return cmdstanpy
 
+
 @pytest.fixture(scope="module")
 def prophet_setup():
     logger.info(f"prophet version: {prophet.__version__}")
     return Prophet
+
 
 def test_torch_mps(torch_setup):
     dtype = torch.float
@@ -70,6 +76,7 @@ def test_torch_mps(torch_setup):
 
     logger.info(f'Result: y = {a.item()} + {b.item()} x + {c.item()} x^2 + {d.item()} x^3')
 
+
 def test_cmdstanpy(cmdstanpy_setup):
     # Check if cmdstan is installed
     if not cmdstanpy.cmdstan_path():
@@ -77,6 +84,7 @@ def test_cmdstanpy(cmdstanpy_setup):
         cmdstanpy.install_cmdstan()
     else:
         logger.info("CmdStan is already installed.")
+
 
 def test_prophet(prophet_setup):
     # Set the start date and number of days
@@ -113,6 +121,7 @@ def test_prophet(prophet_setup):
 
     # Print the forecasted values
     logger.info(f"Forecast tail:\n{forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()}")
+
 
 if __name__ == "__main__":
     pytest.main()

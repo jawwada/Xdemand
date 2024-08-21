@@ -3,11 +3,11 @@ import logging
 from datetime import datetime
 from datetime import timedelta
 
+import cmdstanpy
 import numpy as np
 import pandas as pd
 import prophet
 from prophet import Prophet
-import cmdstanpy
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -65,6 +65,8 @@ def check_torch_mps():
     logger.info(f'Result: y = {a.item()} + {b.item()} x + {c.item()} x^2 + {d.item()} x^3')
 
 """
+
+
 def check_cmdstanpy():
     logger.info(f"cmdstanpy version: {cmdstanpy.__version__}")
     if not cmdstanpy.cmdstan_path():
@@ -72,6 +74,7 @@ def check_cmdstanpy():
         cmdstanpy.install_cmdstan()
     else:
         logger.info("CmdStan is already installed.")
+
 
 def check_prophet():
     logger.info(f"prophet version: {prophet.__version__}")
@@ -111,6 +114,6 @@ def check_prophet():
 
 
 if __name__ == "__main__":
-    #check_torch_mps()
+    # check_torch_mps()
     check_cmdstanpy()
     check_prophet()

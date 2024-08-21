@@ -1,3 +1,5 @@
+import logging
+
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table
@@ -6,8 +8,9 @@ from xiom_optimized.langchain_utils.agents import agent_visualisation
 from xiom_optimized.utils.data_fetcher import df_agg_monthly_3years as df2
 from xiom_optimized.utils.data_fetcher import df_price_rec_summary as df3
 from xiom_optimized.utils.data_fetcher import df_running_stock as df1
-import logging
+
 logger = logging.getLogger(__name__)
+
 
 def get_fig_from_code(code):
     local_variables = {}

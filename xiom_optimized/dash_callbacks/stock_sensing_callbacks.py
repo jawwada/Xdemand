@@ -17,6 +17,7 @@ from xiom_optimized.utils.data_fetcher import df_price_rec
 from xiom_optimized.utils.data_fetcher import df_price_rec_summary
 from xiom_optimized.utils.data_fetcher import df_running_stock
 
+
 @cache_decorator
 @app.callback(
     Output('tabs-content-stockout', 'children'),

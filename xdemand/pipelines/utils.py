@@ -1,4 +1,4 @@
-def filter_top_n( sales_df, top_n):
+def filter_top_n(sales_df, top_n):
     # Group by 'sku' and sum the 'quantity'
     grouped = sales_df.groupby('sku')['revenue'].sum()
     # Sort the summed quantities in descending order and take the top N

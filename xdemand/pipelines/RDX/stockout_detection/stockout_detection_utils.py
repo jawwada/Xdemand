@@ -1,7 +1,7 @@
 import logging
 import warnings
-
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,6 +12,7 @@ from tqdm import tqdm
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 warnings.filterwarnings('ignore')
+
 
 def fill_missing_dates(df_sku: pd.DataFrame) -> pd.DataFrame:
     """
@@ -106,7 +107,6 @@ def process_sku_warehouse_combinations(grid_df: pd.DataFrame, total_days_dict: d
     grid_df['gap_e_log10'] = np.log10((grid_df['gap_e'].values + 1))
     grid_df.loc[grid_df['gap_e_log10'] > 2, 'gap_e_log10'] = 2
 
-
     return grid_df
 
 
@@ -140,6 +140,7 @@ def visualize_stockout(grid_df: pd.DataFrame) -> None:
     temp = sns.heatmap(v_df, cmap='Reds')
     plt.savefig('stockout.png')
     plt.show()
+
 
 def preprocess_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     """

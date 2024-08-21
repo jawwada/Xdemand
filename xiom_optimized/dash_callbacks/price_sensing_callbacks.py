@@ -35,7 +35,7 @@ def update_price_sensing_graph(graph_data_tab, filter_data):
         bins = [float('-inf'), -1.75, -1.25, 0]
         labels = ['Highly Elastic', 'Elastic', 'Unitary/Inelastic']
 
-        #sort the data
+        # sort the data
         df = df.sort_values(by='price_elasticity', ascending=False)
 
         # Categorize the SKUs based on the price elasticity bins
@@ -60,7 +60,7 @@ def update_price_sensing_graph(graph_data_tab, filter_data):
             fig.update_layout(
                 title=f'{label}',
                 xaxis_side="top",
-                height=max(len(bin_df) * 25,400)  # height should equal the number of SKUs in the bin * 25
+                height=max(len(bin_df) * 25, 400)  # height should equal the number of SKUs in the bin * 25
             )
             figures.append(fig)
 

@@ -1,13 +1,15 @@
+import logging
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from statsmodels.tsa.seasonal import seasonal_decompose
-import logging
-import matplotlib.pyplot as plt
 
 # Configure logging
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
+
 
 class PriceElasticityCalculator:
     def __init__(self, date_col='date', quantity_col='quantity', price_col='price',
@@ -86,7 +88,8 @@ class PriceElasticityCalculator:
 
                 # make the max elasticity -0.1
                 elasticity = min(1, elasticity) - 1.1
-                elasticity_results.append({'sku': sku, 'warehouse_code': warehouse_code, 'price_elasticity': elasticity})
+                elasticity_results.append(
+                    {'sku': sku, 'warehouse_code': warehouse_code, 'price_elasticity': elasticity})
 
                 if plot_parameters:
                     self.plot_parameters(X, y, title=f"SKU {sku}, Warehouse {warehouse_code}")
@@ -100,7 +103,7 @@ class PriceElasticityCalculator:
 
     def plot_parameters(self, X, y, title='Price Elasticity Regression'):
         plt.figure(figsize=(12, 6))
-        plt.plot(X,y, label='Quantity')
+        plt.plot(X, y, label='Quantity')
         plt.title(f"Price Elasticity Regression: {title}")
         plt.xlabel('Date')
         plt.ylabel('Quantity')

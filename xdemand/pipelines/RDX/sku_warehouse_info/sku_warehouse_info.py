@@ -23,7 +23,7 @@ def get_daily_sales_and_forecast_melted():
     df_sales['warehouse_code'] = df_sales['region'].replace(region_warehouse_codes)
 
     df_sales = df_sales.drop(columns=['region'])
-    #group by sku, warehouse and date and sum the quantity and revenue
+    # group by sku, warehouse and date and sum the quantity and revenue
     df_sales = df_sales.groupby(['sku', 'warehouse_code', 'date']).sum().reset_index()
     df_sales['avg_price'] = (df_sales['revenue'] - df_sales['promotional_rebates']) / df_sales['quantity']
     df_sales['avg_price'] = df_sales['avg_price'].fillna(method='ffill').fillna(method='bfill')
@@ -110,12 +110,12 @@ def get_lookups():
     df_sku_warehouse_info = df_lookup.merge(df_price_rec, on=['sku', 'warehouse_code'], how='left')
     return df_sku_warehouse_info
 
-df_sales, df_forecast= get_daily_sales_and_forecast_melted()
+
+df_sales, df_forecast = get_daily_sales_and_forecast_melted()
 print(df_sales)
 
-df_running= get_running_stock()
+df_running = get_running_stock()
 print(df_running)
 
-df_lookups= get_lookups()
+df_lookups = get_lookups()
 print(df_lookups)
-

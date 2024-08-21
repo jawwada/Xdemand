@@ -1,11 +1,13 @@
+import logging
+
 import pandas as pd
 from prophet import Prophet
-import logging
 
 from xdemand.pipelines.utils import filter_top_n
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
 
 class ProphetForecaster:
     def __init__(self, periods, freq, forecast_tail_periods):
@@ -17,7 +19,8 @@ class ProphetForecaster:
         # Preprocess the data
         df = sku_data[['date_part', target]]
         prophet_data = df.rename(columns={'date_part': 'ds', target: 'y'})
-        logger.info(f"Forecasting SKU {sku} for {target} in {warehouse_code} for next {self.periods} days with {len(prophet_data)} rows")
+        logger.info(
+            f"Forecasting SKU {sku} for {target} in {warehouse_code} for next {self.periods} days with {len(prophet_data)} rows")
 
         # Instantiate the Prophet model
         model = Prophet(growth='linear', yearly_seasonality=True,
@@ -56,7 +59,8 @@ class ProphetForecaster:
 
         rows_per_sku = sales_df.groupby(['sku', 'warehouse_code'])['date_part'].count().reset_index()
         rows_per_sku = rows_per_sku[rows_per_sku['date_part'] > min_rows_per_sku]
-        sales_df = pd.merge(sales_df, rows_per_sku[['sku', 'warehouse_code']], how='inner', on=['sku', 'warehouse_code'])
+        sales_df = pd.merge(sales_df, rows_per_sku[['sku', 'warehouse_code']], how='inner',
+                            on=['sku', 'warehouse_code'])
         sales_df = filter_top_n(sales_df, top_n)
         return sales_df
 

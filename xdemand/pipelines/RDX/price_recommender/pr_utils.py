@@ -1,15 +1,16 @@
 # Description: This file contains the functions to get the data for price recommendation.
-from config import price_recommendation_settings as cf
 import pandas as pd
-from common.db_connection import params
-from sqlalchemy import create_engine, text
-import diskcache as dc
-from common.local_constants import region_warehouse_codes
+from sqlalchemy import create_engine
+from sqlalchemy import text
+
 from common.cache_manager_joblib import CacheManagerJoblib
+from common.db_connection import params
 
 cache_manager = CacheManagerJoblib()
+
+
 def top_n_skus_revenue_last_3_months():
-    engine =  create_engine(f"mssql+pyodbc:///?odbc_connect={params}", echo=False)
+    engine = create_engine(f"mssql+pyodbc:///?odbc_connect={params}", echo=False)
     query = """
     select * from agg_im_sku_daily_sales 
     where sku in (select im_sku from look_product_hierarchy)
@@ -25,29 +26,30 @@ def top_n_skus_revenue_last_3_months():
     df_sku_sales_sorted = df_sku_sales.sort_values(by='revenue', ascending=False)
     return df_sku_sales_sorted
 
-def get_data_price_recommender():
 
+def get_data_price_recommender():
     df_running_stock = cache_manager.query_df_running_stock()
 
     df_running_stock['ds'] = pd.to_datetime(df_running_stock['ds'])
-    df_running_stock=df_running_stock[pd.notna(df_running_stock['running_stock_after_forecast'])]
-    df_running_stock=df_running_stock.drop(columns=['Expected_Arrival_Date','status_date'])
-    df_running_stock.sort_values(['sku','warehouse_code','ds'],inplace=True)
-
+    df_running_stock = df_running_stock[pd.notna(df_running_stock['running_stock_after_forecast'])]
+    df_running_stock = df_running_stock.drop(columns=['Expected_Arrival_Date', 'status_date'])
+    df_running_stock.sort_values(['sku', 'warehouse_code', 'ds'], inplace=True)
 
     df_price_reference = cache_manager.query_price_reference()
     df_price_reference = df_price_reference.groupby(['sku', 'warehouse_code']).agg({'price': 'mean'}).reset_index()
     df_price_reference.rename(columns={'price': 'ref_price'}, inplace=True)
     df_price_elasticity = cache_manager.query_price_sensing_tab()
     df_running_stock = pd.merge(df_running_stock, df_price_reference, how='left', on=['sku', 'warehouse_code'])
-    df_price_recommender = pd.merge(df_running_stock, df_price_elasticity, how='left', on=['sku', 'warehouse_code','level_1'])
+    df_price_recommender = pd.merge(df_running_stock, df_price_elasticity, how='left',
+                                    on=['sku', 'warehouse_code', 'level_1'])
     return df_price_recommender
 
-def calculate_adjusted_price_stock( df):
+
+def calculate_adjusted_price_stock(df):
     df['running_stock_after_forecast_adj'] = 0.0
     running_stock = 0.0
 
-     # Loop through the DataFrame
+    # Loop through the DataFrame
     for index, row in df.iterrows():
         # Update running stock
         if index == df.first_valid_index():
@@ -68,8 +70,8 @@ def calculate_adjusted_price_stock( df):
 
     return df
 
-def get_price_adjustments(name,group, p0, price_rec, r, cf):
 
+def get_price_adjustments(name, group, p0, price_rec, r, cf):
     group_info = dict({
         'sku': name[0],
         'warehouse_code': name[1],
@@ -89,7 +91,6 @@ def get_price_adjustments(name,group, p0, price_rec, r, cf):
     revenue_before = group['y_hat_adj'].sum() * p0
     revenue_after = group['q_prime_adj'].sum() * price_rec
     # set up the df_sku_warehouse_info
-
 
     # prepare inventory orders , fir
     group_info['opt_stock_level'] = group_info['mean_demand'] * cf.forecast_stock_level

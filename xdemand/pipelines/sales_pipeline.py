@@ -1,12 +1,12 @@
+import logging
 import platform
 from typing import List
-import logging
 
 import pandas as pd
 
+from common.cache_manager_joblib import CacheManagerJoblib
 from common.db_connection import write_replace_db
 from common.local_constants import region_warehouse_codes
-
 from xdemand.pipelines.RDX.sales_forecast.execute_preprocessing_sql import preprocess_marketplace_sales_to_im_sales
 from xdemand.pipelines.RDX.sales_forecast.porphet_forecaster import ProphetForecaster
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection_utils import fill_missing_dates
@@ -14,7 +14,6 @@ from xdemand.pipelines.RDX.stockout_detection.stockout_detection_utils import ge
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection_utils import preprocess_dataframe
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection_utils import process_sku_warehouse_combinations
 from xdemand.pipelines.RDX.stockout_detection.stockout_detection_utils import visualize_stockout
-from common.cache_manager_joblib import CacheManagerJoblib
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -22,6 +21,7 @@ logger.setLevel(logging.INFO)
 # ... existing imports ...
 from xdemand.pipelines.RDX.price_sensing.price_elasticity_calculator import PriceElasticityCalculator
 from xdemand.pipelines.RDX.price_sensing.price_sensor import PriceSensor
+
 
 class SalesPipeline:
     def __init__(self,
@@ -80,7 +80,8 @@ class SalesPipeline:
         self.forecaster = ProphetForecaster(forecast_periods, forecast_period_freq, forecast_tail_periods)
 
         # Initialize PriceSensor with parameters
-        self.price_sensor = PriceSensor(price_col=price_col,log_normal_regression=log_normal_regression, days_before=days_before)
+        self.price_sensor = PriceSensor(price_col=price_col, log_normal_regression=log_normal_regression,
+                                        days_before=days_before)
 
         # Initialize PriceElasticityCalculator with parameters
         self.price_elasticity_calculator = PriceElasticityCalculator(
@@ -92,6 +93,7 @@ class SalesPipeline:
             remove_months=remove_months,
             remove_months_window=remove_months_window
         )
+
     def run_prophet_training_pipeline(self):
         """Runs the sales forecasting pipeline using the Prophet model."""
         logger.info("Starting Sales Forecasting Pipeline")
@@ -113,7 +115,6 @@ class SalesPipeline:
         # drop data for the max date, as it may not be complete
         daily_sales = daily_sales[daily_sales['date_part'] < max_date]
         max_date = max(daily_sales['date_part'])
-
 
         grouper = daily_sales.groupby(['sku', 'warehouse_code'])
 
@@ -139,11 +140,13 @@ class SalesPipeline:
         max_date = max(df_dsa['date'])
         df_dsa['date_part'] = df_dsa['date'].dt.date
         logger.info(f"Max date {max_date} and min date {df_dsa['date'].min()}")
-        if compute_elasticity_std==False:
-            reg_coef_df = self.price_elasticity_calculator.get_price_elasticity(df_dsa)  # Call the method on the instance
-            log_normal_regressions,_ = self.price_sensor.std_price_regression(df_dsa)  # Use self.price_sensor
+        if compute_elasticity_std == False:
+            reg_coef_df = self.price_elasticity_calculator.get_price_elasticity(
+                df_dsa)  # Call the method on the instance
+            log_normal_regressions, _ = self.price_sensor.std_price_regression(df_dsa)  # Use self.price_sensor
         else:
-            log_normal_regressions, reg_coef_df = self.price_sensor.std_price_regression(df_dsa)  # Use self.price_sensor
+            log_normal_regressions, reg_coef_df = self.price_sensor.std_price_regression(
+                df_dsa)  # Use self.price_sensor
 
         reg_coef_df['price_elasticity'] = reg_coef_df['price_elasticity'].clip(clip_lower, None)
         logger.info(f"log_normal_regressions.head() {log_normal_regressions.head()}")
@@ -154,7 +157,6 @@ class SalesPipeline:
         logger.info(
             f"Saved regression results to database for regressor {self.price_col} and target {self.price_target}")
 
-
     def run_stockout_detection(self):
         """Detects stockouts based on sales data and fills in missing dates."""
         logger.info("Starting Stockout Detection Pipeline")
@@ -164,7 +166,7 @@ class SalesPipeline:
         logger.info(f"Unique SKU, Warehouse combinations {df[['sku', 'warehouse_code']].nunique()}")
 
         # Fill missing dates
-        df_filled = df.groupby([ 'sku', 'warehouse_code']).apply(fill_missing_dates).reset_index(drop=True)
+        df_filled = df.groupby(['sku', 'warehouse_code']).apply(fill_missing_dates).reset_index(drop=True)
         df_filled['quantity'] = df_filled['quantity'].fillna(0)
         total_days_dict = get_total_days_dict(df_filled)
         grid_df = df_filled.copy(deep=True)

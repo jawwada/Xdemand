@@ -14,11 +14,9 @@ from plotly.subplots import make_subplots
 from prophet import Prophet
 
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.utils.cache_manager import cache_decorator
 from xiom_optimized.utils.config_constants import sample_rate_dict
 from xiom_optimized.utils.data_fetcher import df_fc_qp
 from xiom_optimized.utils.data_fetcher import df_sales
-
 
 
 @app.callback(
@@ -129,8 +127,8 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
             # Assuming filtered_data is another DataFrame you want to merge with
             # perform cascading merge on warehouse_code and region
             # Merge the filtered DataFrame with filtered_data
-            filtered_data = filtered_data[['warehouse_code','level_1']].drop_duplicates()
-            df_fc_qp_filtered = df_fc_qp_filtered.merge(filtered_data, on=['warehouse_code','level_1'],
+            filtered_data = filtered_data[['warehouse_code', 'level_1']].drop_duplicates()
+            df_fc_qp_filtered = df_fc_qp_filtered.merge(filtered_data, on=['warehouse_code', 'level_1'],
                                                         how='inner')
 
             # Decide which set of columns to aggregate based on the value of quantity_sales_radio
@@ -151,7 +149,6 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
             ]).agg(agg_dict).reset_index()
 
             # drop first and last period to avoid missing data
-
 
             # Inside your update_demand_forecast_graph function, after you define df_ds and set 'date' as its index:
 

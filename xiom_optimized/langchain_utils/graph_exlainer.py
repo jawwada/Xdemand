@@ -1,11 +1,16 @@
 import base64
 import io
-from dash import dcc, html
-from dash.dependencies import Input, Output, State
+
 import plotly.io as pio
 from PIL import Image
-from langchain_openai import ChatOpenAI
+from dash import dcc
+from dash import html
+from dash.dependencies import Input
+from dash.dependencies import Output
+from dash.dependencies import State
 from langchain.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+
 
 class GraphExplainer:
     def __init__(self, app, model="gpt-4-1106-preview"):

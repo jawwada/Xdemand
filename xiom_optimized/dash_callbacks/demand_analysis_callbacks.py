@@ -37,9 +37,10 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         pd.Grouper(freq=sample_rate_dict[time_window], key='date')]).agg({
         quantity_sales_radio: 'sum',
         'price': 'mean'}).reset_index()
-    filtered_data = pd.read_json(filtered_data, orient='split') # drop duplicates otherwise big erros
-    filtered_data = filtered_data[['channel','sku', 'warehouse_code', 'region', 'level_1']].drop_duplicates()
-    df_sales_filtered = pd.merge(df_lastyear, filtered_data, on=['channel','sku', 'warehouse_code', 'region', 'level_1'],
+    filtered_data = pd.read_json(filtered_data, orient='split')  # drop duplicates otherwise big erros
+    filtered_data = filtered_data[['channel', 'sku', 'warehouse_code', 'region', 'level_1']].drop_duplicates()
+    df_sales_filtered = pd.merge(df_lastyear, filtered_data,
+                                 on=['channel', 'sku', 'warehouse_code', 'region', 'level_1'],
                                  how='inner')
 
     if graph_data_tab == 'da-tab-1':
@@ -63,7 +64,7 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
                                   df_month1_prev_year[quantity_sales_radio]
 
         df_month1.sort_values('mom_change', ascending=False, inplace=True)
-        df_month1 = df_month1[['sku_warehouse','mom_change']].drop_duplicates()
+        df_month1 = df_month1[['sku_warehouse', 'mom_change']].drop_duplicates()
         df = pd.merge(df, df_month1[['sku_warehouse', 'mom_change']], on='sku_warehouse', how='left')
         winners = pd.merge(df, df_month1['sku_warehouse'].head(n_largest), on='sku_warehouse', how='inner')
         losers = pd.merge(df, df_month1['sku_warehouse'].tail(n_largest), on='sku_warehouse', how='inner')
@@ -101,9 +102,9 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         df_tree_map = pd.merge(df_tree_map, ph_data[['channel', 'sku', 'region', "level_1"]].drop_duplicates(),
                                on=['channel', 'sku', 'region', "level_1"], how='left')
         # Create the treemap
-        df_tree_map = df_tree_map.groupby(['channel', 'region',"level_1" ,'sku'])[
+        df_tree_map = df_tree_map.groupby(['channel', 'region', "level_1", 'sku'])[
             quantity_sales_radio].sum().reset_index()
-        fig_tree = px.treemap(df_tree_map, path=['channel', 'region',"level_1", 'sku'],
+        fig_tree = px.treemap(df_tree_map, path=['channel', 'region', "level_1", 'sku'],
                               color='sku', values=quantity_sales_radio, title='Sales')
 
         num_skus = len(df_tree_map['sku'].unique())

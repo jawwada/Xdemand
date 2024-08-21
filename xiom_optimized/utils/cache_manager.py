@@ -1,3 +1,4 @@
+import logging
 from functools import wraps
 from pathlib import Path
 
@@ -12,11 +13,11 @@ from xiom_optimized.utils.config_constants import CACHE_TYPE
 from xiom_optimized.utils.config_constants import TIMEOUT
 from xiom_optimized.utils.config_constants import cnxn
 
-import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 import warnings
+
 warnings.filterwarnings("ignore")
 
 logger.info("Xdemand app starting")
@@ -50,6 +51,8 @@ class CacheDecorator:
 
 
 cache_decorator = CacheDecorator().cache_decorator
+
+
 class CacheManager:
     def __init__(self):
         pass
@@ -61,11 +64,11 @@ class CacheManager:
                     FROM look_product_hierarchy lph
                  """)
         df = pd.read_sql_query(query, cnxn)
-        df['warehouse_code']=df['region'].map(region_warehouse_codes)
+        df['warehouse_code'] = df['region'].map(region_warehouse_codes)
 
         query_2 = ("""SELECT distinct sku, warehouse_code from stat_forecast_data_quantity""")
         df_2 = pd.read_sql_query(query_2, cnxn)
-        df = df.merge(df_2, on=['sku','warehouse_code'], how='inner')
+        df = df.merge(df_2, on=['sku', 'warehouse_code'], how='inner')
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
@@ -86,7 +89,7 @@ class CacheManager:
         daily_sales['month'] = daily_sales['date'].dt.month
         daily_sales['year_month'] = daily_sales['date'].dt.to_period('M')
         daily_sales['revenue'] = daily_sales['revenue'].astype(float)
-        daily_sales = daily_sales.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
+        daily_sales = daily_sales.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
         return daily_sales.to_json(date_format='iso', orient='split')
 
     @cache_decorator
@@ -103,7 +106,7 @@ class CacheManager:
         df = pd.read_sql_query(query, cnxn)
         df['date'] = pd.to_datetime(df['date'])
         df['warehouse_code'] = df['region'].map(region_warehouse_codes)
-        df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
@@ -114,19 +117,19 @@ class CacheManager:
                     ORDER BY sku, warehouse_code, ds"""
         df = pd.read_sql_query(query, cnxn)
         df['ds'] = pd.to_datetime(df['ds'])
-        df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
 
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
-    def query_df_running_stock(self,ph_data):
+    def query_df_running_stock(self, ph_data):
         query = """SELECT stat.* FROM stat_running_stock_forecast stat
             WHERE ds >= CAST(GETDATE() AS DATE)
             """
         df = pd.read_sql_query(query, cnxn)
         df.date = pd.to_datetime(df.ds).dt.date
         df['ds'] = pd.to_datetime(df['ds'])
-        df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
@@ -138,12 +141,12 @@ class CacheManager:
             ) fcst ON fcst.sku = stat.sku AND fcst.warehouse_code = stat.warehouse_code"""
         df = pd.read_sql_query(query, cnxn)
         df.date = pd.to_datetime(df.date)
-        df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
 
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
-    def query_price_sensing_tab(self,ph_data):
+    def query_price_sensing_tab(self, ph_data):
         query = """SELECT stat.* FROM stat_regression_coeff_price_quantity stat
             JOIN (
                 SELECT DISTINCT sku, warehouse_code 
@@ -152,15 +155,15 @@ class CacheManager:
                   order by price_elasticity desc"""
         df = pd.read_sql_query(query, cnxn)
         df['price_elasticity'] = df['price_elasticity'].astype(float).round(4)
-        df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
 
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
-    def query_price_regression_tab(self,ph_data):
+    def query_price_regression_tab(self, ph_data):
         query = """SELECT stat.* FROM  stat_regression_price_quantity stat"""
         df = pd.read_sql_query(query, cnxn)
-        df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
 
         return df.to_json(date_format='iso', orient='split')
 
@@ -171,7 +174,7 @@ class CacheManager:
              where date > DATEADD(year, -1, GETDATE()) 
              order by stat.sku, warehouse_code"""
         df = pd.read_sql_query(query, cnxn)
-        df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
@@ -194,7 +197,7 @@ class CacheManager:
             FROM [dbo].[stat_price_recommender_summary] stat
             """
         df = pd.read_sql_query(query, cnxn)
-        df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
 
         return df.to_json(date_format='iso', orient='split')
 
@@ -212,6 +215,6 @@ class CacheManager:
         """
         df = pd.read_sql_query(query, cnxn)
         df['ds'] = pd.to_datetime(df['ds'])
-        df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
 
         return df.to_json(date_format='iso', orient='split')

@@ -1,14 +1,15 @@
+import numpy as np
 import optuna
 import pandas as pd
-import numpy as np
-from config import price_recommendation_settings as cf
-from sklearn.metrics import mean_squared_error, mean_absolute_error
 
-def calculate_adjusted_price_stock( df):
+from config import price_recommendation_settings as cf
+
+
+def calculate_adjusted_price_stock(df):
     df['running_stock_after_forecast_adj'] = 0.0
     running_stock = 0.0
 
-     # Loop through the DataFrame
+    # Loop through the DataFrame
     for index, row in df.iterrows():
         # Update running stock
         if index == df.first_valid_index():
@@ -29,13 +30,14 @@ def calculate_adjusted_price_stock( df):
 
     return df
 
-def optune_run_trials(df_price_recommender,df_sku_info,n_trials):
+
+def optune_run_trials(df_price_recommender, df_sku_info, n_trials):
     # Create a new DataFrame to store the results
     df_sku_warehouse = df_sku_info.reset_index()
     all_adjustments = pd.DataFrame()
     df_price_recommender['q_prime'] = 0.0
 
-    #optuna_storage = f"mssql+pyodbc:///?odbc_connect={optuna_db_params}"
+    # optuna_storage = f"mssql+pyodbc:///?odbc_connect={optuna_db_params}"
     optuna_storage = "sqlite:///optuna_study.db"
     grouper = df_price_recommender.groupby(['sku', 'warehouse_code'])
 
@@ -51,13 +53,17 @@ def optune_run_trials(df_price_recommender,df_sku_info,n_trials):
 
         print(group.head())
         s_opt = df_sku_warehouse.loc[(df_sku_warehouse['sku'] == name[0]) & \
-                                (df_sku_warehouse['warehouse_code'] == name[1])]['opt_stock_level'].values[0]
+                                     (df_sku_warehouse['warehouse_code'] == name[1])]['opt_stock_level'].values[0]
         print(name)
         p0 = \
-        df_sku_warehouse.loc[(df_sku_warehouse['sku'] == name[0]) & (df_sku_warehouse['warehouse_code'] == name[1])]['ref_price'].values[0]
+            df_sku_warehouse.loc[
+                (df_sku_warehouse['sku'] == name[0]) & (df_sku_warehouse['warehouse_code'] == name[1])][
+                'ref_price'].values[0]
         r = \
-        df_sku_warehouse.loc[(df_sku_warehouse['sku'] == name[0]) & (df_sku_warehouse['warehouse_code'] == name[1])]['price_elasticity']. \
-            values[0] # Price elasticity
+            df_sku_warehouse.loc[
+                (df_sku_warehouse['sku'] == name[0]) & (df_sku_warehouse['warehouse_code'] == name[1])][
+                'price_elasticity']. \
+                values[0]  # Price elasticity
         avg_yhat = group['yhat'].mean()
         print(s_opt, p0, r, avg_yhat)
         # Optimize the objective function
@@ -69,10 +75,11 @@ def optune_run_trials(df_price_recommender,df_sku_info,n_trials):
             print('Best objective value:', study.best_trial.value)
             # compute revenue before and after
             # q_prime is the adjusted demand after we change the price ['q_prime']= ['yhat'] * (price_prime / p0) ** r
-            group['q_prime'] = group['yhat'] * (price_rec/ p0) ** r
+            group['q_prime'] = group['yhat'] * (price_rec / p0) ** r
             group = calculate_adjusted_price_stock(group)
             group['y_hat_adj'] = group['yhat'].where(group['yhat'] < group['running_stock_after_forecast'], 0)
-            group['q_prime_adj'] = group['q_prime'].where(group['q_prime'] < group['running_stock_after_forecast_adj'], 0)
+            group['q_prime_adj'] = group['q_prime'].where(group['q_prime'] < group['running_stock_after_forecast_adj'],
+                                                          0)
 
             revenue_before = group['y_hat_adj'].sum() * p0
             revenue_after = group['q_prime_adj'].sum() * price_rec
@@ -93,6 +100,7 @@ def optune_run_trials(df_price_recommender,df_sku_info,n_trials):
             print(f"Error in {name} : {e}")
             continue
     return all_adjustments, df_sku_info
+
 
 def objective(trial, df, p0, r):
     try:

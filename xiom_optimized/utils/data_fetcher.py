@@ -1,9 +1,9 @@
+import logging
+
 import pandas as pd
 
-from common.local_constants import region_warehouse_codes
 from xiom_optimized.utils.cache_manager import CacheManager
 
-import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -20,7 +20,8 @@ def fetch_ph_data():
 
 
 def fetch_daily_sales(ph_data):
-    df_daily_sales_da = pd.read_json(cache_manager.query_df_daily_sales(ph_data), convert_dates=['date'], orient='split')
+    df_daily_sales_da = pd.read_json(cache_manager.query_df_daily_sales(ph_data), convert_dates=['date'],
+                                     orient='split')
     df_sales = pd.read_json(cache_manager.query_df_daily_sales(ph_data), convert_dates=['date'], orient='split')
     df_sales.columns = df_sales.columns.str.lower()
     df_sales['date'] = pd.to_datetime(df_sales['date'])
@@ -40,7 +41,8 @@ def fetch_price_recommendations(ph_data):
 
 
 def fetch_price_reference(ph_data):
-    df_price_reference = pd.read_json(cache_manager.query_price_reference(ph_data), convert_dates=['date'], orient='split')
+    df_price_reference = pd.read_json(cache_manager.query_price_reference(ph_data), convert_dates=['date'],
+                                      orient='split')
     df_price_reference = df_price_reference.groupby(['sku', 'warehouse_code', 'level_1'])['price'].mean().reset_index()
     return df_price_reference
 
@@ -61,10 +63,12 @@ def fetch_stockout_past(ph_data):
     return pd.read_json(cache_manager.query_stockout_past(ph_data), convert_dates=['date'], orient='split')
 
 
-def fetch_running_stock(df_price_reference,ph_data):
-    df_running_stock = pd.read_json(cache_manager.query_df_running_stock(ph_data), convert_dates=['date'], orient='split')
+def fetch_running_stock(df_price_reference, ph_data):
+    df_running_stock = pd.read_json(cache_manager.query_df_running_stock(ph_data), convert_dates=['date'],
+                                    orient='split')
     df_running_stock['ds'] = pd.to_datetime(df_running_stock['ds'])
-    df_running_stock = pd.merge(df_running_stock, df_price_reference[['sku', 'warehouse_code', 'level_1' ,'price']], how='left',
+    df_running_stock = pd.merge(df_running_stock, df_price_reference[['sku', 'warehouse_code', 'level_1', 'price']],
+                                how='left',
                                 on=['sku', 'warehouse_code', 'level_1'])
     return df_running_stock
 
@@ -72,7 +76,7 @@ def fetch_running_stock(df_price_reference,ph_data):
 def fetch_aggregated_data(df_daily_sales_da, df_sales):
     df_agg_daily_3months = df_daily_sales_da.groupby(['sku', 'warehouse_code', 'level_1', 'date'])[
         ['quantity', 'revenue']].sum().reset_index()
-    df_agg_monthly_3years = df_sales.groupby(['sku', 'warehouse_code','level_1', pd.Grouper(key='date', freq='M')])[
+    df_agg_monthly_3years = df_sales.groupby(['sku', 'warehouse_code', 'level_1', pd.Grouper(key='date', freq='M')])[
         ['quantity', 'revenue']].sum().reset_index()
     return df_agg_daily_3months, df_agg_monthly_3years
 
@@ -105,7 +109,7 @@ df_sku_sum = fetch_sku_summary(df_daily_sales_da)
 df_stockout_past = fetch_stockout_past(ph_data)
 
 # fetch running stock data
-df_running_stock = fetch_running_stock(df_price_reference,ph_data)
+df_running_stock = fetch_running_stock(df_price_reference, ph_data)
 
 # fetch aggregated data
 df_agg_daily_3months, df_agg_monthly_3years = fetch_aggregated_data(df_daily_sales_da, df_sales)

@@ -2,21 +2,23 @@ import numpy as np
 import optuna
 import pandas as pd
 from dynaconf import Dynaconf
+
 from xdemand.pipelines.RDX.price_recommender.pr_utils import calculate_adjusted_price_stock
+
 
 def optuna_optimizer(name, group, p0, r, cf: Dynaconf):
     # at this point we have only one sku and warehouse
-    sku= group['sku'].unique()
+    sku = group['sku'].unique()
     warehouse_code = group['warehouse_code'].unique()
     study_name = f"{sku}_{warehouse_code}"
-    #optuna_storage = f"mssql+pyodbc:///?odbc_connect={optuna_db_params}"
+    # optuna_storage = f"mssql+pyodbc:///?odbc_connect={optuna_db_params}"
     optuna_storage = "sqlite:///optuna_study.db"
     try:
         optuna.delete_study(study_name=study_name, storage=optuna_storage)
     except:
         pass
     study = optuna.create_study(study_name=study_name, storage=optuna_storage, direction='minimize')
-    n_trials= cf.n_trials
+    n_trials = cf.n_trials
     try:
         study.optimize(lambda trial: objective(trial, group, p0, r, cf),
                        n_trials=n_trials)
@@ -25,6 +27,7 @@ def optuna_optimizer(name, group, p0, r, cf: Dynaconf):
     except Exception as e:
         print(f"Error in {name} : {e}")
     return study.best_trial.params['price']
+
 
 def objective(trial, df, p0, r, cf):
     try:

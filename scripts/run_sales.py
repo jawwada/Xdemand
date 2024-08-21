@@ -1,23 +1,25 @@
 import logging
 import os
+
 import typer
+
 from config import forecast_settings as cf  # Import configuration settings for forecasting
 from config import price_sensing_settings as ps_cf  # Import price sensing configuration settings
-
-from xdemand.pipelines.sales_pipeline import SalesPipeline  # Import the SalesPipeline class
 from xdemand.pipelines.RDX.sales_forecast.execute_preprocessing_sql import preprocess_marketplace_sales_to_im_sales
+from xdemand.pipelines.sales_pipeline import SalesPipeline  # Import the SalesPipeline class
 
 # Create a Typer application for command-line interface
 app = typer.Typer(pretty_exceptions_enable=False)
-
 
 logger = logging.getLogger(__name__)  # Set up a logger for this module
 # Configure logging to display INFO level messages
 logging.basicConfig(level=logging.INFO)
 
+
 @app.command(name='run-sales-pipeline', help='Run the sales forecasting pipeline with specified parameters.')
 def main(
-        top_n_skus: int = typer.Option(int(os.getenv('TOP_N_SKUS_XDEMAND', 5)), help='Top N SKUs to consider.')  # Read top_n from environment variable
+        top_n_skus: int = typer.Option(int(os.getenv('TOP_N_SKUS_XDEMAND', 5)), help='Top N SKUs to consider.')
+        # Read top_n from environment variable
 ):
     """Main entry point for running the sales pipeline with command line arguments."""
 
@@ -66,6 +68,7 @@ def main(
     logger.info("Running the price sensing pipeline...")
     sales_pipeline.run_price_sensing()  # Execute the price sensing pipeline
     logger.info("Completed the price sensing pipeline.")
+
 
 if __name__ == '__main__':
     app()
