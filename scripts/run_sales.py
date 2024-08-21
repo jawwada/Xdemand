@@ -5,6 +5,7 @@ from config import forecast_settings as cf  # Import configuration settings for 
 from config import price_sensing_settings as ps_cf  # Import price sensing configuration settings
 
 from xdemand.pipelines.sales_pipeline import SalesPipeline  # Import the SalesPipeline class
+from xdemand.pipelines.RDX.sales_forecast.execute_preprocessing_sql import preprocess_marketplace_sales_to_im_sales
 
 # Create a Typer application for command-line interface
 app = typer.Typer(pretty_exceptions_enable=False)
@@ -51,7 +52,7 @@ def main(
         remove_months=ps_cf.price_elasticity.remove_months,  # Flag to remove specific months
         remove_months_window=ps_cf.price_elasticity.remove_months_window  # List of months to remove
     )
-
+    preprocess_marketplace_sales_to_im_sales()  # Execute the preprocessing SQL script
     # Run the sales forecasting pipeline
     logger.info("Running the sales forecasting pipeline...")
     sales_pipeline.run_prophet_training_pipeline()  # Execute the Prophet training pipeline
