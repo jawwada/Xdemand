@@ -16,7 +16,7 @@ import pandas as pd
 from azure.storage.blob import BlobServiceClient
 from openai import OpenAI
 
-from common.db_connection import engine
+from common.db_connection import engine, write_replace_db
 from common.local_constants import AZURE_CONNECTION_STRING
 from common.local_constants import region_warehouse_codes
 
@@ -77,8 +77,13 @@ def create_amazon_reviews_store():
     
     """, engine)  # Read directly into a DataFrame
 
-    # Install Argos Translate packages for unique regions
-    install_argos_packages()
+    # Add columns for translated title and body
+    reviews['Translated_Title'] = reviews.apply(lambda row: translate_review(row['Title'], row['Region'].lower(), 'en'),
+                                                axis=1)
+    reviews['Translated_Body'] = reviews.apply(lambda row: translate_review(row['Body'], row['Region'].lower(), 'en'),
+                                               axis=1)
+    write_replace_db(reviews, 'tr_amazon_reviews_translated')
+
 
     # Save Chroma DB to SQLite file
     db_path = "amazon_reviews"
@@ -100,9 +105,9 @@ def create_amazon_reviews_store():
         to_code = 'en'  # Use the region field as the target language code
 
         # Translate the title
-        translated_title = translate_review(title, from_code, to_code)  # Pass codes to translation
+        translated_title = review['Translated_Title']
         # Translate the review body
-        translated_body = translate_review(body, from_code, to_code)  # Pass codes to translation
+        translated_body = review['Translated_Body']
 
         # Get text embedding
         embedding = get_embedding(translated_body, model="text-embedding-3-small")

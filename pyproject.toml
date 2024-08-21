@@ -6,48 +6,20 @@ authors = ["Ahmed Jawad <jawwada@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.10.dev0"
-plotly = "5.23.0"
-flask = "2.0.1"
 pandas = "2.0.3"
-gunicorn = "23.0.0"
-scikit-learn = "1.2.2"
-Flask-Login = "0.5.0"
-flask_caching = "2.0.2"
 werkzeug = "2.0.1"
-dash = "2.14.1"
-dash_table = "^5.0.0"
-dash_auth = "^1.4.1"
 sqlalchemy = "2.0.32"
-chart_studio = "1.1.0"
-dash_bootstrap_components = "1.6.0"
-matplotlib = "3.9.2"
 azure-storage-blob = "*"
 numpy = "1.23.5"
-joblib = "1.2.0"
 pandasql = "0.7.3"
-seaborn = "0.13.2"
 pytz = "2023.3"
-fastdtw = "0.3.4"
 python-dateutil = "2.8.2"
 dynaconf = "3.2.6"
-xgboost = "2.1.1"
 mlxtend = "0.22.0"
-prophet = "1.1.5"
-holidays = "0.50"
-redis = "4.5.5"
-langchain = "0.2.14"
-langchain_experimental = "0.0.64"
 tabulate = "0.8.10"
-statsmodels = "0.14.2"
 openai = "1.40.6"
 langchain-openai = "0.1.21"
-optuna = "3.6.1"
-diskcache = "5.6.3"
-dash-ag-grid = "31.2.0"
-langchain-groq = "0.1.9"
-openpyxl = "3.1.5"
 pyodbc = "5.0.1"
-pillow = "^10.4.0"
 typer = "^0.12.4"
 chromadb = "^0.5.5"
 argostranslate = "^1.9.6"
@@ -57,7 +29,6 @@ torch = [
     {url = "https://download.pytorch.org/whl/cpu/torch-2.2.1-cp39-none-macosx_11_0_arm64.whl", markers = "sys_platform == 'darwin' and platform_machine == 'arm64'"},
     {url = "https://download.pytorch.org/whl/cpu/torch-2.2.1-cp39-none-macosx_10_9_x86_64.whl", markers = "sys_platform == 'darwin' and platform_machine == 'x86_64'"}
 ]
-
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
