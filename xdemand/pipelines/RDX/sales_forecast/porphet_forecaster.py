@@ -72,6 +72,6 @@ class ProphetForecaster:
                 forecast['last_data_seen'] = max_date
                 all_forecasts = pd.concat([all_forecasts, forecast], axis=0, ignore_index=True)
             else:
-                logger.warning(f"No forecast for SKU {sku} in region {warehouse_code}")
+                logger.warning(f"No forecast for SKU {sku} in warehouse_code {warehouse_code}")
 
         return all_forecasts
