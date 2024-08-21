@@ -7,8 +7,6 @@ from xdemand.pipelines.RDX.price_recommender.pr_utils import get_data_price_reco
 from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import get_forecast_stocks_shipments
 from xdemand.pipelines.RDX.stock_status_forecast.stock_status_utils import merge_shiptment_stocks_forecast
 
-from xdemand.pipelines.RDX.index_reviews.build_chroma import create_amazon_reviews_store, install_argos_packages
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -44,6 +42,3 @@ if __name__ == '__main__':
     logger.info("Starting RDX Stock and PR Pipeline")
     run_stock_status_forecast()
     run_price_recommender()
-    # Create Amazon reviews store
-    install_argos_packages()
-    create_amazon_reviews_store()

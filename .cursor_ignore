@@ -1,14 +1,24 @@
 #ignore everything except code files
-**
-!**.py
-!**ignore
-!pyproject.toml
-!*.md
-!*.yml
-!*.yaml
-!Dockerfile**
-!*.ignore
-!**.sh
-!**.sql
-!xiom_optimized/assets/*
-**cache**/
+*.py[cod]
+*.zip
+# Common data files
+*.csv
+*.json
+*.xml
+*.xlsx
+*.xls
+*.db
+*.sqlite
+*.mdb
+*.accdb
+*.txt
+*.log
+*.dat
+*.tsv
+
+
+# Hidden folders and system files
+.*
+__pycache__/
+*.py[cod]
+

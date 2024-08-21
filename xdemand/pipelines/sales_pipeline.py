@@ -177,7 +177,7 @@ class SalesPipeline:
              'gap_e_log10']]
         grid_df['out_of_stock'] = grid_df['gap_e_log10'] >= 2
         grid_df = preprocess_dataframe(grid_df)
-        write_replace_db(grid_df, 'stat_stock_out')
+        write_replace_db(grid_df, 'stat_stock_out_past')
         if platform.system() == 'Windows' or platform.system() == 'Darwin':
             visualize_stockout(grid_df)
 

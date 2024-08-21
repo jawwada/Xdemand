@@ -67,8 +67,14 @@ def create_amazon_reviews_store():
 
     # Fetch reviews from the database using Pandas
     reviews = pd.read_sql_query("""
-        SELECT [Date], [im_sku], [Region], [Title], [Body], [Rating]
-        FROM [dbo].[tr_amazon_reviews]
+        SELECT [Date], [im_sku] as sku, [Region], [Title], [Body], [Rating]
+        FROM [dbo].[tr_amazon_reviews] stat
+                JOIN (
+                    SELECT sku, warehouse_code, count(*) as count
+                    FROM stat_forecast_data_quantity 
+                    group by sku, warehouse_code
+                ) fcst ON fcst.sku = stat.im_sku
+    
     """, engine)  # Read directly into a DataFrame
 
     # Install Argos Translate packages for unique regions
@@ -86,7 +92,7 @@ def create_amazon_reviews_store():
     # Process and insert reviews into Chroma DB
     for index, review in reviews.iterrows():  # Iterate over DataFrame rows
 
-        date, im_sku, region, title, body, rating = review
+        date, sku, region, title, body, rating = review
         warehouse_code = region_warehouse_codes.get(region, None)  # Use get to fetch the warehouse code
 
         # Set from_code and to_code based on the region
@@ -107,7 +113,7 @@ def create_amazon_reviews_store():
             embeddings=[embedding],
             metadatas=[{
                 "date": date.strftime("%Y-%m-%d"),
-                "im_sku": im_sku,
+                "sku": sku,
                 "region": region,
                 "warehouse_code": warehouse_code,
                 "title": translated_title,
