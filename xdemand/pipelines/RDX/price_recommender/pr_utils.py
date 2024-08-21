@@ -40,7 +40,7 @@ def get_data_price_recommender():
     df_price_reference.rename(columns={'price': 'ref_price'}, inplace=True)
     df_price_elasticity = cache_manager.query_price_sensing_tab()
     df_running_stock = pd.merge(df_running_stock, df_price_reference, how='left', on=['sku', 'warehouse_code'])
-    df_price_recommender = pd.merge(df_running_stock, df_price_elasticity, how='left', on=['sku', 'warehouse_code'])
+    df_price_recommender = pd.merge(df_running_stock, df_price_elasticity, how='left', on=['sku', 'warehouse_code','level_1'])
     return df_price_recommender
 
 def calculate_adjusted_price_stock( df):

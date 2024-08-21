@@ -31,7 +31,7 @@ def run_price_recommender():
     # Clip the price_elasticity to -1 and -5
     df_price_recommender['price_elasticity'] = df_price_recommender['price_elasticity'].clip(-5, -1)
     # Run the Optuna trials
-    price_adjustments, df_sku_warehouse_pr = price_optimizer(df_price_recommender, pr_cf)
+    df_price_recommender, df_sku_warehouse_pr = price_optimizer(df_price_recommender, pr_cf)
     write_replace_db(df_price_recommender, 'stat_price_recommender')
     write_replace_db(df_sku_warehouse_pr, 'stat_price_recommender_summary')
 
@@ -40,5 +40,5 @@ def run_price_recommender():
 
 if __name__ == '__main__':
     logger.info("Starting RDX Stock and PR Pipeline")
-    run_stock_status_forecast()
+    #run_stock_status_forecast()
     run_price_recommender()
