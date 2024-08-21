@@ -41,9 +41,8 @@ def fetch_price_recommendations(ph_data):
 
 def fetch_price_reference(ph_data):
     df_price_reference = pd.read_json(cache_manager.query_price_reference(ph_data), convert_dates=['date'], orient='split')
-    df_price_reference['warehouse_code'] = df_price_reference['region'].map(region_warehouse_codes)
     df_price_reference = df_price_reference.drop(columns=['date'])
-    df_price_reference = df_price_reference.groupby(['sku', 'warehouse_code','region', 'level_1'])['price'].mean().reset_index()
+    df_price_reference = df_price_reference.groupby(['sku', 'warehouse_code', 'level_1'])['price'].mean().reset_index()
     return df_price_reference
 
 
@@ -72,9 +71,8 @@ def fetch_running_stock(df_price_reference,ph_data):
 
 
 def fetch_aggregated_data(df_daily_sales_da, df_sales):
-    df_agg_daily_3months = df_daily_sales_da.groupby(['sku', 'region', 'level_1', 'date'])[
+    df_agg_daily_3months = df_daily_sales_da.groupby(['sku', 'warehouse_code', 'level_1', 'date'])[
         ['quantity', 'revenue']].sum().reset_index()
-    df_daily_sales_da['warehouse_code'] = df_daily_sales_da['region'].map(region_warehouse_codes)
     df_agg_monthly_3years = df_sales.groupby(['sku', 'warehouse_code','level_1', pd.Grouper(key='date', freq='M')])[
         ['quantity', 'revenue']].sum().reset_index()
     return df_agg_daily_3months, df_agg_monthly_3years
