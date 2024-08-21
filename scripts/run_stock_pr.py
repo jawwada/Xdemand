@@ -30,7 +30,7 @@ def run_stock_status_forecast():
 def run_price_recommender():
 
     # Get the data
-    df_price_recommender= get_data_price_recommender()
+    df_price_recommender = get_data_price_recommender()
     # Clip the price_elasticity to -1 and -5
     df_price_recommender['price_elasticity'] = df_price_recommender['price_elasticity'].clip(-5, -1)
     # Run the Optuna trials
