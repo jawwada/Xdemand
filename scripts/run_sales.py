@@ -67,4 +67,4 @@ def main(
     logger.info("Completed the price sensing pipeline.")
 
 if __name__ == '__main__':
-    app()  # Run the Typer application
+    app()
