@@ -96,8 +96,16 @@ def run_chatbot(n_clicks, n_submit, clear_clicks, warehouse_code, category, sku,
     if user_input is None or user_input == "":
         return "", "", chat_history, None  # Reset user input to None
 
-    user_input = user_input.strip()  + f". Focus Area: Warehouse: {warehouse_code}\n Category: {category}\n SKU: {sku}\n"
-    # Clean up user input
+    focus_area = []
+    if warehouse_code is not None:
+        focus_area.append(f"Warehouse: {warehouse_code}")
+    if category is not None:
+        focus_area.append(f"Category: {category}")
+    if sku is not None:
+        focus_area.append(f"SKU: {sku}")
+
+    if focus_area:
+        user_input = user_input.strip() + ". Focus Area: " + "\n ".join(focus_area) + "\n"
     # Use warehouse_code, category, and sku as needed in your logic
     name = "Xd"
     chat_history += f"You : {user_input} <split>"
