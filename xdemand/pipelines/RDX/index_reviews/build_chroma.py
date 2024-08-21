@@ -97,17 +97,12 @@ def create_amazon_reviews_store():
     # Process and insert reviews into Chroma DB
     for index, review in reviews.iterrows():  # Iterate over DataFrame rows
 
-        date, sku, region, title, body, rating = review
+        date, sku, region, title, body, rating, translated_title, translated_body = review
         warehouse_code = region_warehouse_codes.get(region, None)  # Use get to fetch the warehouse code
 
         # Set from_code and to_code based on the region
         from_code = region.lower()  # Assuming English is the source language
         to_code = 'en'  # Use the region field as the target language code
-
-        # Translate the title
-        translated_title = review['Translated_Title']
-        # Translate the review body
-        translated_body = review['Translated_Body']
 
         # Get text embedding
         embedding = get_embedding(translated_body, model="text-embedding-3-small")
