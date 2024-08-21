@@ -68,13 +68,7 @@ def create_amazon_reviews_store():
     # Fetch reviews from the database using Pandas
     reviews = pd.read_sql_query("""
         SELECT [Date], [im_sku] as sku, [Region], [Title], [Body], [Rating]
-        FROM [dbo].[tr_amazon_reviews] stat
-                JOIN (
-                    SELECT sku, warehouse_code, count(*) as count
-                    FROM stat_forecast_data_quantity 
-                    group by sku, warehouse_code
-                ) fcst ON fcst.sku = stat.im_sku
-    
+        FROM [dbo].[tr_amazon_reviews]    
     """, engine)  # Read directly into a DataFrame
 
     # Add columns for translated title and body
@@ -148,7 +142,3 @@ def upload_to_azure_blob(db_path):
     with open(db_path, "rb") as data:
         blob_client.upload_blob(data, overwrite=True)
 
-
-if __name__ == "__main__":
-    install_argos_packages()
-    create_amazon_reviews_store()
