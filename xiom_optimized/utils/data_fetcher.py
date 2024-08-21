@@ -41,7 +41,6 @@ def fetch_price_recommendations(ph_data):
 
 def fetch_price_reference(ph_data):
     df_price_reference = pd.read_json(cache_manager.query_price_reference(ph_data), convert_dates=['date'], orient='split')
-    df_price_reference = df_price_reference.drop(columns=['date'])
     df_price_reference = df_price_reference.groupby(['sku', 'warehouse_code', 'level_1'])['price'].mean().reset_index()
     return df_price_reference
 

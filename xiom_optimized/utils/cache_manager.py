@@ -73,7 +73,7 @@ class CacheManager:
         query = """
         SELECT * FROM agg_im_sku_daily_sales_oos
         Where date > DATEADD(year, -3, GETDATE()) 
-        ORDER BY sku, warehouse_code, region, date;
+        ORDER BY sku, warehouse_code, date;
         """
         with cnxn.connect() as con:
             daily_sales = pd.read_sql_query(query, con)

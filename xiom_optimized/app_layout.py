@@ -132,7 +132,7 @@ def toggle_dropdown_visibility(selected_tab):
 
     # Hide specific dropdowns based on the selected tab
     if selected_tab == '/demand-forecasting':
-        region_style = hidden_style
+        region_style = channel_style = hidden_style
     elif selected_tab == '/':
         data_chooser_style = hidden_style
     elif selected_tab == '/demand-analysis':
@@ -144,5 +144,5 @@ def toggle_dropdown_visibility(selected_tab):
     elif selected_tab == '/inventory-planning':
         data_chooser_style = hidden_style
     elif selected_tab == '/product-research':
-        region_style = hidden_style
+        channel_style = region_style = hidden_style
     return sku_style, warehouse_style, region_style, channel_style, dim_style, time_style, data_chooser_style
