@@ -197,7 +197,6 @@ class CacheManager:
              where date > DATEADD(year, -1, GETDATE()) 
              order by stat.sku, warehouse_code"""
         df = pd.read_sql_query(query, cnxn)
-        df['date'] = pd.to_datetime(df['date'])
         df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
         return df.to_json(date_format='iso', orient='split')
 
