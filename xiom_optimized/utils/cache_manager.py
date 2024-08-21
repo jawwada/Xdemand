@@ -63,27 +63,10 @@ class CacheManager:
         df = pd.read_sql_query(query, cnxn)
         df['warehouse_code']=df['region'].map(region_warehouse_codes)
 
-        query_2 = ("""SELECT sku, warehouse_code from stat_forecast_data_quantity""")
+        query_2 = ("""SELECT distinct sku, warehouse_code from stat_forecast_data_quantity""")
         df_2 = pd.read_sql_query(query_2, cnxn)
         df = df.merge(df_2, on=['sku','warehouse_code'], how='inner')
         return df.to_json(date_format='iso', orient='split')
-
-    @cache_decorator
-    def query_df_daily_sales_oos(self,ph_data):
-        query = """
-        SELECT * FROM agg_im_sku_daily_sales_oos
-        Where date > DATEADD(year, -3, GETDATE()) 
-        ORDER BY sku, warehouse_code, date;
-        """
-        with cnxn.connect() as con:
-            daily_sales = pd.read_sql_query(query, con)
-        daily_sales['date'] = pd.to_datetime(pd.to_datetime(daily_sales['date']).dt.date)
-        daily_sales['year'] = daily_sales['date'].dt.year
-        daily_sales['month'] = daily_sales['date'].dt.month
-        daily_sales['year_month'] = daily_sales['date'].dt.to_period('M')
-        daily_sales['revenue'] = daily_sales['revenue'].astype(float)
-        daily_sales = daily_sales.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
-        return daily_sales.to_json(date_format='iso', orient='split')
 
     @cache_decorator
     def query_df_daily_sales_forecast_skus(self, ph_data):
@@ -137,12 +120,7 @@ class CacheManager:
 
     @cache_decorator
     def query_df_running_stock(self,ph_data):
-        query = """
-        select stat.* from stat_running_stock_forecast stat
-            JOIN (
-                SELECT DISTINCT sku, warehouse_code 
-                FROM stat_forecast_data_quantity 
-            ) fcst ON fcst.sku = stat.sku AND fcst.warehouse_code = stat.warehouse_code
+        query = """SELECT stat.* FROM stat_running_stock_forecast stat
             WHERE ds >= CAST(GETDATE() AS DATE)
             """
         df = pd.read_sql_query(query, cnxn)
@@ -180,11 +158,7 @@ class CacheManager:
 
     @cache_decorator
     def query_price_regression_tab(self,ph_data):
-        query = """SELECT stat.* FROM  stat_regression_price_quantity stat
-            JOIN (
-                SELECT DISTINCT sku, warehouse_code 
-                FROM stat_forecast_data_quantity 
-            ) fcst ON fcst.sku = stat.sku AND fcst.warehouse_code = stat.warehouse_code"""
+        query = """SELECT stat.* FROM  stat_regression_price_quantity stat"""
         df = pd.read_sql_query(query, cnxn)
         df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
 
@@ -218,10 +192,6 @@ class CacheManager:
               stat.[price_old],
               stat.[opt_stock_level]
             FROM [dbo].[stat_price_recommender_summary] stat
-            JOIN (
-                SELECT DISTINCT sku, warehouse_code
-                FROM stat_forecast_data_quantity
-            ) fcst ON fcst.sku = stat.sku AND fcst.warehouse_code = stat.warehouse_code
             """
         df = pd.read_sql_query(query, cnxn)
         df = df.merge(ph_data[['sku','level_1']].drop_duplicates(), on='sku', how='inner')
@@ -239,10 +209,6 @@ class CacheManager:
         , [q_prime_adj] as q_prime_adj
         FROM[dbo].[stat_price_recommender] 
         stat
-            JOIN (
-                SELECT DISTINCT sku, warehouse_code 
-                FROM stat_forecast_data_quantity 
-            ) fcst ON fcst.sku = stat.sku AND fcst.warehouse_code = stat.warehouse_code
         """
         df = pd.read_sql_query(query, cnxn)
         df['ds'] = pd.to_datetime(df['ds'])
