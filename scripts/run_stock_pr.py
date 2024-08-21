@@ -1,6 +1,7 @@
 from common.db_connection import engine
 from common.logger_ import logger
-from sqlalchemy.exc import PendingRollbackError
+from common.db_connection import write_replace_db
+
 
 from config import price_recommendation_settings as pr_cf
 from config import stock_status_settings as ss_cf
@@ -24,38 +25,19 @@ def run_stock_status_forecast():
 
     logger.info("Write to the database")
     # Write to the database
-    return_status = write_replace_stat_running_stock_forecast(merged_df)
-    logger.info(f"Saved stock status to database with status {return_status}")
+    write_replace_db(merged_df,'stat_running_stock_forecast')
     print("Stock Status Forecasting Tables Done")
 
 def run_price_recommender():
 
     # Get the data
     df_price_recommender= get_data_price_recommender()
-
     # Clip the price_elasticity to -1 and -5
     df_price_recommender['price_elasticity'] = df_price_recommender['price_elasticity'].clip(-5, -1)
-
     # Run the Optuna trials
     price_adjustments, df_sku_warehouse_pr = price_optimizer(df_price_recommender, pr_cf)
-    try:
-        # Handle the PendingRollbackError by rolling back the transaction
-        with engine.connect() as connection:
-            connection.rollback()
-    except:
-        pass
-    try:
-        # Write to the database
-        price_adjustments.reset_index().to_sql('stat_price_recommender',con=engine,if_exists='replace')
-        df_sku_warehouse_pr.reset_index().to_sql('stat_price_recommender_summary',con=engine,if_exists='replace')
-    except PendingRollbackError as e:
-        # Handle the PendingRollbackError by rolling back the transaction
-        with engine.connect() as connection:
-            connection.rollback()
-        price_adjustments.reset_index().to_sql('stat_price_recommender', con=engine, if_exists='replace')
-        df_sku_warehouse_pr.reset_index().to_sql('stat_price_recommender_summary', con=engine, if_exists='replace')
-        print(f"Transaction rolled back due to error: {e}")
-
+    write_replace_db(df_price_recommender, 'stat_price_recommender')
+    write_replace_db(df_sku_warehouse_pr, 'stat_price_recommender_summary')
 
     print("Price Recommendation Tables Done")
     return

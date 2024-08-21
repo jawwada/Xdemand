@@ -161,11 +161,6 @@ def get_shipments_after_log_date_forecast_skus(max_stock_date,formatted_skus):
     shipments['warehouse_codes'] = shipments['WareHouseCode'].replace(region_warehouse_codes)
     return shipments
 
-def write_replace_stat_running_stock_forecast(merged_df):
-    with engine.connect() as con:
-        code = merged_df.to_sql('stat_running_stock_forecast', engine, index=False, if_exists='replace')
-        logger.info(f"stat_running_stock_forecast written to DB")
-    return code
 
 def get_forecast_stocks_shipments(sku=None):
 
