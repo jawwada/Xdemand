@@ -171,11 +171,16 @@ def update_sku_price_relationship_graph(selected_sku=None, filter_data=None):
 @app.callback(
     Output("download-dataframe-csv", "data"),
     Input("download-button", "n_clicks"),
-    State('filter-data', 'data'),
+    Input('filter-data', 'data'),
     prevent_initial_call=True,
 )
 def download_csv(n_clicks, filter_data):
+    if n_clicks is None:
+        return None
     filtered_data = pd.read_json(filter_data, orient='split')
-    unique_wh = filtered_data[['sku', 'warehouse_code']].drop_duplicates()
-    df_table = df_price_sensing_tab.merge(unique_wh, on=['sku', 'warehouse_code'], how='inner')
-    return dcc.send_data_frame(df_table.to_csv, "price_elasticity_data.csv")
+    unique_wh = filtered_data['warehouse_code'].unique()
+    if isinstance(unique_wh, str):
+        unique_wh = [unique_wh]
+
+    df = df_price_sensing_tab[df_price_sensing_tab['warehouse_code'].isin(unique_wh)]
+    return dcc.send_data_frame(df.to_csv, "price_elasticity_data.csv")
