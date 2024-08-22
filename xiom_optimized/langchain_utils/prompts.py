@@ -22,9 +22,9 @@ df1, df2 and df3 are available in the environment. And required libraries can be
     - `warehouse_code`: Warehouse region code.
     - `level_1`: Product category.
     - `date`: Aggregated monthly status date.
-    - `quantity`: Total quantity sold.
-    - `revenue`: Revenue generated.
-    - `oos_days`: Out of stock days.
+    - `quantity`: Total quantity sold in the month. 
+    - `revenue`: Revenue generated in the month.
+    - `oos_days`: Out of stock days ihe month. (Sum over a time period to get total)
 
 3. **df3: Aggregated Price Recommendation Data for Next months (One Row is 6-Month View  for (sku-warehouse_code combination)**:
     - `sku`: Unique Stock Keeping Unit.
@@ -58,25 +58,20 @@ prompt_ds = f"""
 **Data Context:*
 Available Data: You have 3 data sets related to running stock, sales, and price recommendations. These can be accessed with variables like df1, df2, and df3.
 How to Use Data:
-Group by SKU and warehouse_code to analyze product trends.
+Merge data by sku, warehouse_code, level_1 to analyse and combine different data sets.
 Use meaningful names for data sets in reports (e.g., "running stock data," "sales data," "price recommendation data").
 If specific data views, downloads are needed, use functions like .head() or .tail() to preview the data.
-Give Actionable Insights:
-"Top 10 revenue products are at risk of running out of stock in the next 30 days."
-"With the holiday season approaching, it might be a good time to clear slow-moving products."
-"Product prices are too high/low, negatively affecting sales volume/revenur."
-"Revenue is dropping in X warehouse despite good forecasts; check the pricing and stock levels."
+Give Actionable Insights.
 
 **Analysis Guidelines:**
 Demand Trend and Seasonality: Analyze trends and yearly_seasonality in running stock data. 
 Top Revenue Products:  group by (sku, warehouse_code), sum up past 12 months': revenue, quantity, and out-of-stock days. 
-Past Out-of-Stock Days: Calculate the total out_of_stock (oos_days) days for each product in the past 12 months.
-Inventory and Price: (revenue_after - revenue_before), for price changes (new_price - old_price) through price recommendation data.
-How Many Understock/Overstock days in holiday season? Ans: Check df1 for October to January and for each sku, warehouse_code group sum is_understock/is_overstock .
-When Understock/Ovrstock? Stock Forecast Data, take the first date for sku,warehouse_code combination where is_understock or is_overstock is True.
-Inventory Orders: Subtracting current_stock from the opt_stock_level in price recommendation data. 
+Price Recommendations: Give Price_new for recommendation, price_old for old price, share (revenue_after - revenue_before), and price elasticity.
+Past Out-of-Stock Days: Calculate the sum of out_of_stock (oos_days) days for each product for the given time period.
+When Understock/Ovrstock? df1, take the first date for sku,warehouse_code combination where is_understock or is_overstock is True.
+Understock days in a period: sum is_understock for the period.
 Price Recommendation Questions: price_new - price_old, and revenue_after - revenue_before., and price elasticity.
-Total Expected Revenue: Calculate the total expected revenue from price recommendation data.
+Total Expected Revenue for futrue: revenue_before from df3 for the time period.
 
 **Presentation:**
 Share insights in a news or report style. 
@@ -94,7 +89,7 @@ Use markdown. Use colored labels, bold, relevant icons, and tables where appropr
 
 prompt_template_final_df = PromptTemplate(
     input_variables=["text"],
-    template="""You are a Python developer for data analysis. You have received a code snippet for data analysis. 
+    template="""You are an expert Python developer for data analysis. You have received a code snippet for data analysis. 
     where the data frames df1, df2, and df3 are already loaded in the environment.
 Your task is to:
 Assisn the result of the analysis to a dataframe called final_df, and return the complete code for analysis.
@@ -106,8 +101,7 @@ have to convert them appropriately to final_df.
 remove any head() or tail() function type calls that limit the data to a few rows.
 Import a library if needed, but do not do any other change in the original code and provide the complete code for analysis, 
 
-which means both the original code snippet and the assignment to final_df. Provide the code in such a way that if a json parser parses the code,
- it should be free of errors.
+Provide the code in such a way that if a json parser parses your return code,it should be free of errors. 
  No markdowns.
 Here is the code snippet:
 
@@ -148,12 +142,10 @@ You are a data visualization expert. You have been provided with a code snippet 
 - **Unique Product Identification:**
    - Consider concatenating `sku` and `warehouse_code` to create a unique product identifier.
 - **Forecasts and Events:**
-   - For running stock forecasts, use the date on the x-axis, and stock levels, expected revenue, trends, etc., on the y-axis. 
-   Mark events like holidays or container arrivals on the plot through annotations or vertical lines.
-Consider using date on x-axis and stock levels, expected revenue, trends, etc., on y-axis as well.
-Annotated events like holidays or container arrivals on the plot through annotations or vertical lines. (use holidays package with warehouse_code)
-- The visualization should be appealing and aligned with the goals of the data analysis.
+   - For running stock forecasts, use the date on the x-axis, and running_stock_after_forecast columns on the y-axis. You can add vertical lines for the dates when shipping arrives. 
 
+Mark events like holidays or container arrivals on the plot through annotations or vertical lines. (import holidays. country=warehosue_code.lower())
+Consider using date on x-axis and stock levels, expected revenue, trends, etc., on y-axis as well.
 
 **Return the code with all these instructions applied, without any markdowns.**
 
