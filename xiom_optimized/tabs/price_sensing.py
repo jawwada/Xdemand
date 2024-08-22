@@ -7,8 +7,8 @@ default_sku = unique_skus[0] if unique_skus else None
 
 content = html.Div([
     # Forecasting Graphs
-    # html.H4('Analyze Customer Price Interaction', style={'color': 'white'}),
     html.Div([
+        html.Button("Explain AI", id="explain-ai-button", className="mr-2", style={"float": "right"}),
         dcc.Tabs(id="ps-tabs",
                  value='ps-tab-1', children=[
                 dcc.Tab(label='Graph', value='ps-tab-1'),

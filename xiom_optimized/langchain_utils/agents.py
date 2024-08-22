@@ -30,3 +30,7 @@ llm = ChatOpenAI(temperature=0.3, model="gpt-4o-mini")
 agent_data_table = LLMChain(llm=llm, prompt=prompt_template_final_df)
 # create agent
 agent_visualisation = LLMChain(llm=llm, prompt=prompt_template_visualisation_engineer)
+
+# Create the agent for explaining the current page
+llm_explain_page = ChatOpenAI(temperature=0.3, model="gpt-4o-mini")
+agent_explain_page = LLMChain(llm=llm_explain_page, prompt=prompt_template_explain_page)

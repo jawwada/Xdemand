@@ -17,6 +17,9 @@ from xiom_optimized.tabs.product_research import layout as product_research_layo
 from xiom_optimized.tabs.profile import layout as profile_layout
 from xiom_optimized.tabs.progress_bar import progress_bar_layout
 from xiom_optimized.tabs.stock_sensing import layout as stockout_prediction_layout
+# Register the explain_ai callback
+from xiom_optimized.dash_callbacks.explain_ai_callbacks import register_explain_ai_callback
+register_explain_ai_callback(app)
 
 # Define a dictionary for mapping the pathname to the layout of the corresponding page
 page_layouts = {
@@ -27,7 +30,7 @@ page_layouts = {
     "/ask-ai": ask_ai_layout,
     "/profile": profile_layout,
     "/data-upload": data_upload_layout,
-    "product-research": product_research_layout,
+    "/product-research": product_research_layout,
     "/": home_layout,
 }
 
@@ -38,6 +41,13 @@ layout = html.Div(id='page_container',
                   children=[
                       progress_bar_layout,
                       dcc.Location(id='url', refresh=False),
+                      dcc.Store(id="explain-ai-store", data=""),  # Store for the explanation
+    dcc.Textarea(
+        id='explanation-output',
+        placeholder='Explanation will appear here...',
+        style={'width': '100%', 'height': 200},
+        readOnly=True
+    ),
                       dbc.Row(
                           [
                               dbc.Col(
@@ -91,7 +101,8 @@ layout = html.Div(id='page_container',
                                               ]),
                                       ], className="row", style={'width': 'auto'}),
                                       html.Hr(),
-                                      html.Div([data_chooser, dcc.DatePickerRange(id='date-chooser', style={'display': 'none'})])
+                                      html.Div([data_chooser, dcc.DatePickerRange(id='date-chooser', style={'display': 'none'})]),
+                                      html.Button("Capture Screen", id="capture-screen-button", n_clicks=0)
                                   ]),
                               ], className="col-md-2", style={'float': 'left', 'border-right': '5px solid #ddd'}),
 
@@ -106,7 +117,18 @@ layout = html.Div(id='page_container',
                                   ),
                               ], width=10),
                           ]
-                      )
+                      ),
+                      html.Script('''
+                          document.getElementById("explain-ai-button").onclick = function() {
+                              html2canvas(document.body).then(function(canvas) {
+                                  const imgData = canvas.toDataURL("image/png");
+                                  // Send imgData to the Dash callback
+                                  const button = document.getElementById("explain-ai-button");
+                                  button.setAttribute("data-screenshot", imgData);
+                                  button.click(); // Trigger the callback
+                              });
+                          };
+                      ''')
                   ]
                   )
 
@@ -150,3 +172,4 @@ def toggle_dropdown_visibility(selected_tab):
         channel_style = region_style = hidden_style
 
     return sku_style, warehouse_style, region_style, channel_style, dim_style, time_style, data_chooser_style, date_chooser_style
+

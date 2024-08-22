@@ -3,13 +3,16 @@ from xiom_optimized.dash_callbacks.demand_analysis_callbacks import *
 content = html.Div([
     # Forecasting Graphs
     html.Div([
-        dcc.Tabs(id="analysis-tabs", value='da-tab-1', children=[
-            dcc.Tab(label='Graph', value='da-tab-1'),
-            dcc.Tab(label='Data', value='da-tab-2'),
-        ]),
-        html.Div(id='da-tabs-content-analysis'),
-        html.Hr(),
-    ], className="col")
+        html.Div([
+            html.Button("Explain AI", id="explain-ai-button", className="mr-2", style={"float": "right"}),
+            dcc.Tabs(id="analysis-tabs", value='da-tab-1', children=[
+                dcc.Tab(label='Graph', value='da-tab-1'),
+                dcc.Tab(label='Data', value='da-tab-2'),
+            ]),
+            html.Div(id='da-tabs-content-analysis'),
+            html.Hr(),
+        ], className="col"),
+    ]),
 ])
 
 layout = html.Div([

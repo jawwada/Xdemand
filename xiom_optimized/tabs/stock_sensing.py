@@ -5,6 +5,7 @@ from xiom_optimized.dash_callbacks.stock_sensing_callbacks import *
 content = html.Div([
     # Forecasting Graphs
     html.Div([
+        html.Button("Explain AI", id="explain-ai-button", className="mr-2", style={"float": "right"}),
         dcc.Tabs(id="stockout-tabs", value='so-tab-1', children=[
             dcc.Tab(label='Graph', value='so-tab-1'),
             dcc.Tab(label='Data', value='so-tab-2'),

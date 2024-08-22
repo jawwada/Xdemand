@@ -162,3 +162,20 @@ Annotated events like holidays or container arrivals on the plot through annotat
 prompt_template_visualisation_engineer = PromptTemplate(
     input_variables=["text"],
     template=prompt_ve + ": {text}")
+
+prompt_explain_page = f"""
+You are a business analyst. Your task is to explain the current page of the application to the user.
+Provide a clear and concise explanation of the page's purpose, key features, and how the user can interact with it.
+
+**Important Points to Remember:**
+- Focus on the main functionalities available on the page.
+- Highlight any important data visualizations or tables.
+- Explain how the user can utilize the features to achieve their goals.
+
+**Return the explanation in a user-friendly manner.**
+"""
+
+prompt_template_explain_page = PromptTemplate(
+    input_variables=["page_content"],
+    template=prompt_explain_page + ": {page_content}"
+)
