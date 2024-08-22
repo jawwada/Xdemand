@@ -106,7 +106,7 @@ def inventory_planning_container(graph_data_tab, filter_data, view):
             x=positive_inventory['inventory_order'],
             y=positive_inventory['sku'] + ' - ' + positive_inventory['warehouse_code'],
             orientation='h',
-            marker=dict(color='green')
+            marker=dict(color=positive_inventory['inventory_order'], colorscale='Greens')
         ))
         fig_positive_inventory.update_layout(
             title='Inventory To Order',
@@ -121,7 +121,7 @@ def inventory_planning_container(graph_data_tab, filter_data, view):
             x=negative_inventory['inventory_order'],
             y=negative_inventory['sku'] + ' - ' + negative_inventory['warehouse_code'],
             orientation='h',
-            marker=dict(color='red')
+            marker=dict(color=negative_inventory['inventory_order'], colorscale='Reds')
         ))
         fig_negative_inventory.update_layout(
             title='Slow Moving/ Excessive Inventory ',
@@ -163,7 +163,7 @@ def inventory_planning_container(graph_data_tab, filter_data, view):
                 x=understock_data['stock_days'],
                 y=understock_data['sku'] + ' - ' + understock_data['warehouse_code'],
                 orientation='h',
-                marker=dict(color='orange')
+                marker=dict(color=understock_data['stock_days'], colorscale='Oranges')
             ))
 
             # Add annotations for 0 values
@@ -196,7 +196,7 @@ def inventory_planning_container(graph_data_tab, filter_data, view):
                 x=overstock_data['overstock_days'],
                 y=overstock_data['sku'] + ' - ' + overstock_data['warehouse_code'],
                 orientation='h',
-                marker=dict(color='blue')
+                marker=dict(color=overstock_data['overstock_days'], colorscale='Blues')
             ))
             fig_overstock.update_layout(
                 title='How many days of overstock do you have?',
