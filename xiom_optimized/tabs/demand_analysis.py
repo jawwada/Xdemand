@@ -2,6 +2,7 @@ from xiom_optimized.dash_callbacks.demand_analysis_callbacks import *
 
 content = html.Div([
     # Forecasting Graphs
+    dcc.Store(id='fig-store'),
     html.Div([
         html.Div([
             html.Button("Explain AI", id="explain-ai-analysis", className="mr-2", style={"float": "right"}),

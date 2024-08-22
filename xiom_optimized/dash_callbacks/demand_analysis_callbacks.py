@@ -3,6 +3,7 @@ import urllib
 import dash_table
 import pandas as pd
 import plotly.express as px
+import dash
 from dash import Input
 from dash import Output
 from dash import State
@@ -19,10 +20,12 @@ from xiom_optimized.langchain_utils.agents import agent_explain_page  # Import t
 import plotly.graph_objects as go  # Ensure this is imported
 import time  # Ensure this is imported
 from xiom_optimized.utils.utils import encode_image  # Ensure this is imported
+from plotly.subplots import make_subplots  # Import make_subplots
 
 @cache_decorator
 @app.callback(
-    Output('da-tabs-content-analysis', 'children'),
+    [Output('da-tabs-content-analysis', 'children'),
+     Output('fig-store', 'data')],
     Input('quantity-sales-radio', 'value'),
     Input('sample-rate-slider', 'value'),
     Input('analysis-tabs', 'value'),
@@ -119,24 +122,27 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         fig_bar = px.bar(agg_data_top_skus, x='date', y=quantity_sales_radio, color='sku', \
                          title=f'Top Earners - {quantity_sales_radio.capitalize()}')
 
-        return html.Div([
-            html.Div([
-                html.Div(dcc.Graph(id='historical-tree-map', figure=fig_tree), className='col-md-6'),
-                html.Div(dcc.Graph(id='historical-region', figure=fig_region), className='col-md-6'),
-            ], className='row'),
+        # Create a subplot figure with the correct types
+        fig = make_subplots(
+            rows=3, cols=2,
+            specs=[[{"type": "treemap"}, {"type": "bar"}],
+                   [{"type": "xy"}, {"type": "xy"}],
+                   [{"type": "bar"}, {"type": "bar"}]],
+            subplot_titles=("Sales", "Losers - MoM Change", "Regional Trends", "Category Trends", "Growth Drivers - MoM Change", f'Top Earners - {quantity_sales_radio.capitalize()}')
+        )
 
-            html.Hr(),
-            html.Div([
-                html.Div(dcc.Graph(id='historical-winners', figure=fig_winners), className='col-md-6'),
-                html.Div(dcc.Graph(id='losers-time-series', figure=fig_losers), className='col-md-6')
-            ], className='row'),
+        # Add each figure as a subplot
+        fig.add_trace(fig_tree['data'][0], row=1, col=1)
+        fig.add_trace(fig_losers['data'][0], row=1, col=2)
+        fig.add_trace(fig_region['data'][0], row=2, col=1)
+        fig.add_trace(fig_category['data'][0], row=2, col=2)
+        fig.add_trace(fig_winners['data'][0], row=3, col=1)
+        fig.add_trace(fig_bar['data'][0], row=3, col=2)
 
-            html.Hr(),
-            html.Div([
-                html.Div(dcc.Graph(id='category-trends', figure=fig_category), className='col-md-6'),
-                html.Div(dcc.Graph(id='historical-bar-chart', figure=fig_bar), className='col-md-6'),
-            ], className='row'),
-        ], className='col-md-12')  # Return the last figure for use in the next callback
+        # Update layout
+        fig.update_layout(height=900, showlegend=False)
+
+        return dcc.Graph(figure=fig), fig.to_dict()
     else:
         analysis_table = dash_table.DataTable(
             id='analysis-table',
@@ -156,22 +162,15 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
 
 
 @app.callback(
-    Output('download-button-analysis', 'href'),
-    Input('analysis-table', 'data'))
-def update_download_link(data):
-    df_to_download = pd.DataFrame.from_records(data)
-    csv_string = df_to_download.to_csv(index=False, encoding='utf-8')
-    csv_string = "data:text/csv;charset=utf-8," + urllib.parse.quote(csv_string)
-    return csv_string
-
-@app.callback(
-    Output('da-tabs-content-analysis', 'children'),
+    Output('explanation-output', 'data'),
     Input('explain-ai-analysis', 'n_clicks'),
-    [State('historical-winners', 'figure')],  # Use the figure from the previous callback
+    [State('fig-store', 'data')],  # Use the figure from the previous callback
     prevent_initial_call=True
 )
 def explain_ai_analysis(n_clicks, fig):
     # Create a figure object from the incoming figure
+    if n_clicks is None:
+        return dash.no_update
     fig_object = go.Figure(fig)
 
     # Write the image to a file
@@ -199,5 +198,5 @@ def explain_ai_analysis(n_clicks, fig):
             )
         ]
     )
-
-    return result.content  # Return the result to update the content
+    print(result["text"])
+    return result["text"]  # Return the result to update the content
