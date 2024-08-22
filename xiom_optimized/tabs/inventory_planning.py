@@ -1,4 +1,4 @@
-from xiom_optimized.dash_callbacks.stock_sensing_callbacks import *
+from xiom_optimized.dash_callbacks.inventory_planning_callbacks import *
 
 # from xiom_optimized.tabs.data_chooser import sku_warehouse_selector
 
@@ -16,9 +16,9 @@ content = html.Div([
     ),
     # Forecasting Graphs
     html.Div([
-        dcc.Tabs(id="stockout-tabs", value='so-tab-1', children=[
-            dcc.Tab(label='Graph', value='so-tab-1'),
-            dcc.Tab(label='Data', value='so-tab-2'),
+        dcc.Tabs(id="inventory-status-tabs", value='is-tab-1', children=[
+            dcc.Tab(label='Graph', value='is-tab-1'),
+            dcc.Tab(label='Data', value='is-tab-2'),
         ]),
     ], className="row"),
 

@@ -16,14 +16,14 @@ from xiom_optimized.tabs.price_sensing import layout as price_sensing_layout
 from xiom_optimized.tabs.product_research import layout as product_research_layout
 from xiom_optimized.tabs.profile import layout as profile_layout
 from xiom_optimized.tabs.progress_bar import progress_bar_layout
-from xiom_optimized.tabs.stock_sensing import layout as stockout_prediction_layout
+from xiom_optimized.tabs.inventory_planning import layout as inventory_planning_layout
 
 # Define a dictionary for mapping the pathname to the layout of the corresponding page
 page_layouts = {
     "/demand-forecasting": demand_forecasting_layout,
     "/demand-analysis": demand_analysis_layout,
     "/price-sensing": price_sensing_layout,
-    "/stockout-prediction": stockout_prediction_layout,
+    "/stockout-prediction": inventory_planning_layout,
     "/ask-ai": ask_ai_layout,
     "/profile": profile_layout,
     "/data-upload": data_upload_layout,
