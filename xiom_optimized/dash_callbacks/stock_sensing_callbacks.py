@@ -197,8 +197,8 @@ def update_stockout_container(graph_data_tab, filter_data, view):
             marker=dict(color='blue')
         ))
         fig_overstock.update_layout(
-            title='Top Overstocked Items',
-            xaxis_title='How many days of overstock do you have?',
+            title='How many days of overstock do you have?',
+            xaxis_title='Excess Days of Stock, 180 days is the optimal stock level',
             yaxis_title='SKU - Warehouse Code',
             xaxis_side="top",
             yaxis=dict(autorange="reversed"),
