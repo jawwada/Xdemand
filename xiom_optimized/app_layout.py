@@ -42,6 +42,7 @@ layout = html.Div(id='page_container',
                       progress_bar_layout,
                       dcc.Location(id='url', refresh=False),
                       dcc.Store(id="explain-ai-store", data=""),  # Store for the explanation
+                      dcc.Store(id="current-page-content", data=""),  # Store for the current page content
     dcc.Textarea(
         id='explanation-output',
         placeholder='Explanation will appear here...',
@@ -172,4 +173,3 @@ def toggle_dropdown_visibility(selected_tab):
         channel_style = region_style = hidden_style
 
     return sku_style, warehouse_style, region_style, channel_style, dim_style, time_style, data_chooser_style, date_chooser_style
-
