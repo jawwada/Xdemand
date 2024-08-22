@@ -23,7 +23,7 @@ agent_running_stock = create_pandas_dataframe_agent(
     agent_type=AgentType.OPENAI_FUNCTIONS,
     number_of_head_rows=5,
     allow_dangerous_code=True,
-    max_iterations=5
+    max_iterations=10
 )
 
 llm = ChatOpenAI(temperature=0.3, model="gpt-4o-mini")
