@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
 from dash import Input
-from dash import Output
+from dash import Output, State
 from dash import dash_table
 from dash import dcc
 from dash import html
@@ -206,11 +206,13 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
             dcc.Graph(id='components-data-graph', figure=fig_components),
         ])
     else:
-        download_columns = ['sku', 'region', 'warehouse_code', 'ds', 'quantity', 'revenue']
+        filtered_data = pd.read_json(filter_data, orient='split')
+        unique_wh = filtered_data[['sku', 'warehouse_code']].drop_duplicates()
+        df_table = df_fc_qp.merge(unique_wh, on=['sku', 'warehouse_code'], how='inner')
         forecast_table = dash_table.DataTable(
             id='forecast-table',
-            columns=[{"name": i, "id": i} for i in download_columns],
-            data=df_fc_qp.head(100)[download_columns].to_dict('records'),
+            columns=[{"name": i, "id": i} for i in df_table.columns],
+            data=df_table.head(100).to_dict('records'),
             page_size=25,
             sort_action="native",
             sort_mode="multi",
@@ -223,17 +225,21 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
 
         return html.Div([  # Forecast Data Table
             html.Div([forecast_table], className="col-md-12"),
-            html.A('Download CSV', id='download-button', className='btn btn-primary', download="forecast_data.csv",
-                   href="",
-                   target="_blank"),
+            html.Button('Download CSV', id='download-button-fcst'),
+            dcc.Download(id="download-dataframe-csv"),
         ], className="col-md-12")
 
 
 @app.callback(
-    Output('download-button', 'href'),
-    Input('forecast-table', 'data'))
-def update_download_link(data):
-    df_to_download = pd.DataFrame.from_records(data)
-    csv_string = df_to_download.to_csv(index=False, encoding='utf-8')
-    csv_string = "data:text/csv;charset=utf-8," + urllib.parse.quote(csv_string)
-    return csv_string
+    Output('download-dataframe-csv', 'data'),
+    Input('download-button-fcst', 'n_clicks'),
+    State('filter-date', 'data'),
+    prevent_initial_call=True
+)
+def update_download_link(n_clicks,filter_data):
+    if n_clicks is None:
+        return
+    filtered_data = pd.read_json(filter_data, orient='split')
+    unique_wh = filtered_data[['sku', 'warehouse_code']].drop_duplicates()
+    df = df_fc_qp.merge(unique_wh, on=['sku', 'warehouse_code'], how='inner')
+    return dcc.send_data_frame(df.to_csv, "price_elasticity_data.csv")

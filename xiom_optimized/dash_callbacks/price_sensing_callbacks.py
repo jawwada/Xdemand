@@ -79,10 +79,13 @@ def update_price_sensing_graph(graph_data_tab, filter_data):
             for fig, label in zip(figures, labels)
         ])
     else:
+        filtered_data = pd.read_json(filter_data, orient='split')
+        unique_wh = filtered_data[['sku', 'warehouse_code']].drop_duplicates()
+        df_table = df_price_sensing_tab.merge(unique_wh, on=['sku', 'warehouse_code'], how='inner')
         ps_table = dash_table.DataTable(
             id='forecast-table',
-            columns=[{"name": i, "id": i} for i in df_price_sensing_tab.columns],
-            data=df_price_sensing_tab.to_dict('records'),
+            columns=[{"name": i, "id": i} for i in df_table.columns],
+            data=df_table.to_dict('records'),
             page_size=12,
             style_table={'overflowX': 'auto'},
             sort_action="native",
@@ -94,8 +97,8 @@ def update_price_sensing_graph(graph_data_tab, filter_data):
                 } for c in ['Date', 'Region']
             ],
         )
-        download_button = html.Button("Download Data", id="download-button")
-        download_component = dcc.Download(id="download-dataframe-csv")
+        download_button = html.Button("Download Data", id="download-button-ps")
+        download_component = dcc.Download(id="download-dataframe-ps-csv")
 
         return html.Div([  # Forecast Data Table
             ps_table,
@@ -169,18 +172,15 @@ def update_sku_price_relationship_graph(selected_sku=None, filter_data=None):
 
 
 @app.callback(
-    Output("download-dataframe-csv", "data"),
-    Input("download-button", "n_clicks"),
-    Input('filter-data', 'data'),
+    Output("download-dataframe-ps-csv", "data"),
+    Input("download-button-ps", "n_clicks"),
+    State('filter-data', 'data'),
     prevent_initial_call=True,
 )
 def download_csv(n_clicks, filter_data):
     if n_clicks is None:
         return None
     filtered_data = pd.read_json(filter_data, orient='split')
-    unique_wh = filtered_data['warehouse_code'].unique()
-    if isinstance(unique_wh, str):
-        unique_wh = [unique_wh]
-
-    df = df_price_sensing_tab[df_price_sensing_tab['warehouse_code'].isin(unique_wh)]
+    unique_wh = filtered_data[['sku', 'warehouse_code']].drop_duplicates()
+    df = df_price_sensing_tab.merge(unique_wh, on=['sku', 'warehouse_code'], how='inner')
     return dcc.send_data_frame(df.to_csv, "price_elasticity_data.csv")

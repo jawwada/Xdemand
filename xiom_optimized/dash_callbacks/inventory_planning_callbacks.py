@@ -397,8 +397,8 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code, f
     # price recommendation table working
     pr_table = dash_table.DataTable(
         id='pr-table',
-        columns=[{"name": i, "id": i} for i in sku_df_pr.columns],
-        data=sku_df_pr.head(100).to_dict('records'),
+        columns=[{"name": i, "id": i} for i in df_table.columns],
+        data=df_table.head(100).to_dict('records'),
         page_size=12,
         style_table={'overflowX': 'scroll'},
         sort_action="native",
@@ -429,11 +429,13 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code, f
 
 @app.callback(
     Output('downloand-pr-date-data', 'data'),
-    Input('download-button-pr-date', 'href'),
+    Input('download-button-pr-date', 'n_clicks'),
     State('filter-data', 'data'),
     prevent_initial_call=True
 )
 def update_download_link(n_clicks,filter_data):
+    if n_clicks is None:
+        return
     filtered_data = pd.read_json(filter_data, orient='split')
     unique_wh = filtered_data[['sku', 'warehouse_code']].drop_duplicates()
     df_to_download = df_price_rec.merge(unique_wh, on=['sku', 'warehouse_code'])
