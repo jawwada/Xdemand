@@ -9,6 +9,7 @@ content = html.Div([
         options=[
             {'label': 'Revenue Impact', 'value': 'revenue'},
             {'label': 'Inventory Orders', 'value': 'inventory'},
+            {'label': 'Stock Duration', 'value': 'stock_days'},
         ],
         value='revenue',  # Default value
         labelStyle={'display': 'inline-block'}

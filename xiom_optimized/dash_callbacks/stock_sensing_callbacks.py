@@ -94,11 +94,11 @@ def update_stockout_container(graph_data_tab, filter_data, view):
         height=top_n * 22
     )
 
-    df_price_rec_summary_filteres = df_price_rec_summary[df_price_rec_summary['warehouse_code'].isin(unique_wh)]
+    df_price_rec_summary_filtered = df_price_rec_summary[df_price_rec_summary['warehouse_code'].isin(unique_wh)]
     # Inventory Order Graphs
-    df_price_rec_summary_filteres['inventory_order'] = df_price_rec_summary_filteres['inventory_orders'].astype(float)
-    positive_inventory = df_price_rec_summary_filteres[df_price_rec_summary_filteres['inventory_orders'] > 0].sort_values(by='inventory_order', ascending=False).head(top_n)
-    negative_inventory = df_price_rec_summary_filteres[df_price_rec_summary_filteres['inventory_orders'] < 0].sort_values(by='inventory_order', ascending=True).head(top_n)
+    df_price_rec_summary_filtered['inventory_order'] = df_price_rec_summary_filtered['inventory_orders'].astype(float)
+    positive_inventory = df_price_rec_summary_filtered[df_price_rec_summary_filtered['inventory_orders'] > 0].sort_values(by='inventory_order', ascending=False).head(top_n)
+    negative_inventory = df_price_rec_summary_filtered[df_price_rec_summary_filtered['inventory_orders'] < 0].sort_values(by='inventory_order', ascending=True).head(top_n)
 
     fig_positive_inventory = go.Figure(go.Bar(
         x=positive_inventory['inventory_order'],
@@ -139,13 +139,64 @@ def update_stockout_container(graph_data_tab, filter_data, view):
                 dcc.Graph(id='bottom-n-so-graph', figure=fig_overstock)
             ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%', 'height': '500px'})
         ])
-    else:  # 'inventory'
+    elif view == 'inventory':
         return html.Div([
             html.Div([
                 dcc.Graph(id='positive-inventory-graph', figure=fig_positive_inventory)
             ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%', 'height': '500px'}),
             html.Div([
                 dcc.Graph(id='negative-inventory-graph', figure=fig_negative_inventory)
+            ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%', 'height': '500px'})
+        ])
+    elif view == 'stock_days':
+        # Prepare data for understock graph
+        stock_days_data = df_price_rec_summary_filtered
+        stock_days_data['stock_days'] = (df_price_rec_summary_filtered['current_stock'] -df_price_rec_summary_filtered['opt_stock_level'] )/df_price_rec_summary_filtered['mean_demand']
+        understock_data = stock_days_data[stock_days_data['stock_days'] < 0]
+        understock_data['stock_days'] = stock_days_data['stock_days'] * -1
+        understock_data = understock_data.sort_values(by='stock_days', ascending=True).head(top_n)
+
+        fig_understock = go.Figure(go.Bar(
+            x=understock_data['stock_days'],
+            y=understock_data['sku'] + ' - ' + understock_data['warehouse_code'],
+            orientation='h',
+            marker=dict(color='orange')
+        ))
+        fig_understock.update_layout(
+            title='Top Understocked Items',
+            xaxis_title='Days under 120-day stock level',
+            yaxis_title='SKU - Warehouse Code',
+            xaxis_side="top",
+            yaxis=dict(autorange="reversed"),
+            height=top_n * 22
+        )
+
+        # Prepare data for overstock graph
+        overstock_data = stock_days_data[stock_days_data['stock_days'] > 180]
+        overstock_data['overstock_days'] = stock_days_data['stock_days'] - 180
+        overstock_data = overstock_data.sort_values(by='stock_days', ascending=False).head(top_n)
+
+        fig_overstock = go.Figure(go.Bar(
+            x=overstock_data['overstock_days'],
+            y=overstock_data['sku'] + ' - ' + overstock_data['warehouse_code'],
+            orientation='h',
+            marker=dict(color='blue')
+        ))
+        fig_overstock.update_layout(
+            title='Top Overstocked Items',
+            xaxis_title='Days over 180-day stock level',
+            yaxis_title='SKU - Warehouse Code',
+            xaxis_side="top",
+            yaxis=dict(autorange="reversed"),
+            height=top_n * 22
+        )
+
+        return html.Div([
+            html.Div([
+                dcc.Graph(id='understock-days-graph', figure=fig_understock)
+            ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%', 'height': '500px'}),
+            html.Div([
+                dcc.Graph(id='overstock-days-graph', figure=fig_overstock)
             ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%', 'height': '500px'})
         ])
     # return html.Div([dcc.Graph(id='historical-bar-chart', figure=fig_stockout), html.Hr()])
