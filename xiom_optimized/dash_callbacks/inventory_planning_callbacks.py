@@ -163,7 +163,7 @@ def inventory_planning_container(graph_data_tab, filter_data, view):
                 x=understock_data['stock_days'],
                 y=understock_data['sku'] + ' - ' + understock_data['warehouse_code'],
                 orientation='h',
-                marker=dict(color=understock_data['stock_days'], colorscale='Blues')
+                marker=dict(color=understock_data['stock_days'], colorscale='turbo')
             ))
 
             # Add annotations for 0 values
@@ -196,7 +196,7 @@ def inventory_planning_container(graph_data_tab, filter_data, view):
                 x=overstock_data['overstock_days'],
                 y=overstock_data['sku'] + ' - ' + overstock_data['warehouse_code'],
                 orientation='h',
-                marker=dict(color=overstock_data['overstock_days'], colorscale='Oranges')
+                marker=dict(color=overstock_data['overstock_days'], colorscale='redor')
             ))
             fig_overstock.update_layout(
                 title='How many days of overstock do you have?',
