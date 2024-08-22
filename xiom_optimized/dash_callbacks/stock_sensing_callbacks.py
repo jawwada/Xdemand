@@ -155,12 +155,28 @@ def update_stockout_container(graph_data_tab, filter_data, view):
         understock_data = stock_days_data[stock_days_data['stock_days'] < 120]
         understock_data = understock_data.sort_values(by='stock_days', ascending=True).head(top_n)
 
+        # How to annotate the 0 values?
+
         fig_understock = go.Figure(go.Bar(
             x=understock_data['stock_days'],
             y=understock_data['sku'] + ' - ' + understock_data['warehouse_code'],
             orientation='h',
             marker=dict(color='orange')
         ))
+
+        # Add annotations for 0 values
+        for index, row in understock_data.iterrows():
+            if row['stock_days'] == 0:
+                fig_understock.add_annotation(
+                    x=row['stock_days'],
+                    y=row['sku'] + ' - ' + row['warehouse_code'],
+                    text="0",
+                    showarrow=True,
+                    arrowhead=2,
+                    ax=20,
+                    ay=0
+                )
+
         fig_understock.update_layout(
             title='How many days of stock do you have?',
             xaxis_title='Days of Stock',
@@ -169,7 +185,6 @@ def update_stockout_container(graph_data_tab, filter_data, view):
             yaxis=dict(autorange="reversed"),
             height=top_n * 22
         )
-
         # Prepare data for overstock graph
         overstock_data = stock_days_data[stock_days_data['stock_days'] > 180]
         overstock_data['overstock_days'] = stock_days_data['stock_days'] - 180
