@@ -2,7 +2,7 @@ import dash_table
 import pandas as pd
 import plotly.express as px
 from dash import Input
-from dash import Output
+from dash import Output, State
 from dash import dcc
 from dash import html
 from plotly import graph_objs as go
@@ -171,7 +171,11 @@ def update_sku_price_relationship_graph(selected_sku=None, filter_data=None):
 @app.callback(
     Output("download-dataframe-csv", "data"),
     Input("download-button", "n_clicks"),
+    State('filter-data', 'data'),
     prevent_initial_call=True,
 )
-def download_csv(n_clicks):
-    return dcc.send_data_frame(df_price_sensing_tab.to_csv, "price_elasticity_data.csv")
+def download_csv(n_clicks, filter_data):
+    filtered_data = pd.read_json(filter_data, orient='split')
+    unique_wh = filtered_data[['sku', 'warehouse_code']].drop_duplicates()
+    df_table = df_price_sensing_tab.merge(unique_wh, on=['sku', 'warehouse_code'], how='inner')
+    return dcc.send_data_frame(df_table.to_csv, "price_elasticity_data.csv")
