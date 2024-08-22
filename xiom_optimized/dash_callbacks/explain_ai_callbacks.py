@@ -4,6 +4,9 @@ from dash import callback_context
 from dash.dependencies import Input, Output, State
 from xiom_optimized.langchain_utils.agents import agent_explain_page
 from PIL import Image
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 def register_explain_ai_callback(app):
     @app.callback(
@@ -22,10 +25,7 @@ def register_explain_ai_callback(app):
             image = Image.open(io.BytesIO(image_data))
 
             # Process the image with the existing agent
-            response = agent_visualisation.invoke({"image": image})
-
-            # Use the new agent to explain the current page
-            explanation_response = agent_explain_page.invoke({"page_content": page_content})
+            explanation_response = agent_explain_page.invoke({"image": image})
 
             # Return the explanation to the store and the text area
             return explanation_response, explanation_response
