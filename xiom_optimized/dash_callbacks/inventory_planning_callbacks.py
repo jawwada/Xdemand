@@ -393,7 +393,7 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code, f
 
     filtered_data = pd.read_json(filter_data, orient='split')
     unique_wh = filtered_data[['sku', 'warehouse_code']].drop_duplicates()
-    df_table = df_price_rec_summary.merge(unique_wh, on=['sku', 'warehouse_code'], how='inner')
+    df_table = df_price_rec.merge(unique_wh, on=['sku', 'warehouse_code'], how='inner')
     # price recommendation table working
     pr_table = dash_table.DataTable(
         id='pr-table',
