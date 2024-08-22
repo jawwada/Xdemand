@@ -21,40 +21,36 @@ from xiom_optimized.utils.data_fetcher import df_running_stock
 @cache_decorator
 @app.callback(
     Output('tabs-content-stockout', 'children'),
-    Input('stockout-tabs', 'value'),
-    Input('filter-data', 'data'))
-def update_stockout_container(graph_data_tab, filter_data):
+    [Input('stockout-tabs', 'value'),
+     Input('filter-data', 'data'),
+     Input('view-toggle', 'value')]  # New input for view toggle
+)
+def update_stockout_container(graph_data_tab, filter_data, view):
     filtered_data = pd.read_json(filter_data, orient='split')
     unique_wh = filtered_data['warehouse_code'].unique()
     top_n = 50
-    # find the top 10 SKUs with the highest stockout loss
+
     df_running_stock_filtered = df_running_stock[df_running_stock['warehouse_code'].isin(unique_wh)]
 
+    # Revenue Impact (Stockout) Graphs
     df_running_stock_us = df_running_stock_filtered[df_running_stock_filtered.is_understock == True]. \
         groupby(['sku', 'warehouse_code'])[['revenue']].sum().reset_index()
     top_stockouts = df_running_stock_us.sort_values(by=['revenue'], ascending=False).head(top_n)
     total_stockout_loss = df_running_stock_us['revenue'].sum()
-    total_stockout_loss_fomatted = "{:,.0f}".format(total_stockout_loss)
+    total_stockout_loss_formatted = "{:,.0f}".format(total_stockout_loss)
 
-    # get sku and warehouse code together in a string for top stockouts
-    top_stockouts['sku'] = top_stockouts['sku'] + ' - ' + top_stockouts['warehouse_code']
-    # find the top 10 SKUs with the highest overstock loss
-    # Stockout Plot
     fig_stockout = go.Figure(go.Bar(
         x=top_stockouts['revenue'],
-        y=top_stockouts['sku'],
+        y=top_stockouts['sku'] + ' - ' + top_stockouts['warehouse_code'],
         orientation='h',
-        marker=dict(
-            color=top_stockouts['revenue'],
-            colorscale='RdBu',  # or any other color scale that you prefer
-        )
+        marker=dict(color=top_stockouts['revenue'], colorscale='RdBu')
     ))
     fig_stockout.update_layout(
         title='Top Stockout Items by Revenue Loss',
-        xaxis_title=f'Loss= {total_stockout_loss_fomatted}',
-        yaxis_title='SKU - Warehouse Code ',
+        xaxis_title=f'Loss= {total_stockout_loss_formatted}',
+        yaxis_title='SKU - Warehouse Code',
         xaxis_side="top",
-        yaxis=dict(autorange="reversed"),  # To display top items at top
+        yaxis=dict(autorange="reversed"),
         height=top_n * 22
     )
 
@@ -72,7 +68,6 @@ def update_stockout_container(graph_data_tab, filter_data):
 
     df_running_stock_os['over_stocked_revenue_loss'] = df_running_stock_os['over_stocked_quantity'] * (
         df_running_stock_os['price'])
-    # filter nan and inf values
     df_running_stock_os = df_running_stock_os[df_running_stock_os['over_stocked_revenue_loss'].notna()]
     df_running_stock_os = df_running_stock_os[df_running_stock_os['over_stocked_revenue_loss'] != float('inf')]
     df_running_stock_os = df_running_stock_os.groupby(['sku', 'warehouse_code'])[
@@ -83,61 +78,76 @@ def update_stockout_container(graph_data_tab, filter_data):
     total_overstock_loss = df_running_stock_os['over_stocked_revenue_loss'].sum()
     total_overstock_loss_formatted = "{:,.0f}".format(total_overstock_loss)
     top_overstock['sku'] = top_overstock['sku'] + ' - ' + top_overstock['warehouse_code']
-    # Overstock Plot
+
     fig_overstock = go.Figure(go.Bar(
         x=top_overstock['over_stocked_revenue_loss'],
         y=top_overstock['sku'],
         orientation='h',
-        marker=dict(
-            color=top_overstock['over_stocked_revenue_loss'],
-            colorscale='Reds',  # or any other color scale that you prefer
-        )
+        marker=dict(color=top_overstock['over_stocked_revenue_loss'], colorscale='Reds')
     ))
     fig_overstock.update_layout(
         title='Top Overstocked Items by Revenue Loss',
         xaxis_title=f'Loss = {total_overstock_loss_formatted}',
         yaxis_title='SKU - Warehouse Code',
         xaxis_side="top",
-        yaxis=dict(autorange="reversed"),  # To display top items at top
+        yaxis=dict(autorange="reversed"),
         height=top_n * 22
     )
-    download_columns = ['sku', 'ds', 'warehouse_code', 'yhat', 'running_stock_after_forecast',
-                        'InTransit_Quantity', 'Expected_Arrival_Date', 'is_understock', 'is_overstock']
-    # Add x-axis titles
-    # Add y-axis titles
-    stockout_table = dash_table.DataTable(
-        id='stockout-table',
-        columns=[{"name": i, "id": i} for i in download_columns],
-        data=df_running_stock_filtered[download_columns].to_dict('records'),
-        page_size=12,
-        style_table={'overflowX': 'scroll'},
-        sort_action="native",
-        sort_mode="multi",
-        style_cell_conditional=[
-            {
-                'if': {'column_id': c},
-                'textAlign': 'left'
-            } for c in ['Date', 'Region']
-        ]
+
+    df_price_rec_summary_filteres = df_price_rec_summary[df_price_rec_summary['warehouse_code'].isin(unique_wh)]
+    # Inventory Order Graphs
+    df_price_rec_summary_filteres['inventory_order'] = df_price_rec_summary_filteres['inventory_orders'].astype(float)
+    positive_inventory = df_price_rec_summary_filteres[df_price_rec_summary_filteres['inventory_orders'] > 0].sort_values(by='inventory_order', ascending=False).head(top_n)
+    negative_inventory = df_price_rec_summary_filteres[df_price_rec_summary_filteres['inventory_orders'] < 0].sort_values(by='inventory_order', ascending=True).head(top_n)
+
+    fig_positive_inventory = go.Figure(go.Bar(
+        x=positive_inventory['inventory_order'],
+        y=positive_inventory['sku'] + ' - ' + positive_inventory['warehouse_code'],
+        orientation='h',
+        marker=dict(color='green')
+    ))
+    fig_positive_inventory.update_layout(
+        title='Inventory To Order',
+        xaxis_title='Order Quantity',
+        yaxis_title='SKU - Warehouse Code',
+        xaxis_side="top",
+        yaxis=dict(autorange="reversed"),
+        height=top_n * 22
     )
-    if graph_data_tab == 'so-tab-1':
+
+    fig_negative_inventory = go.Figure(go.Bar(
+        x=negative_inventory['inventory_order'],
+        y=negative_inventory['sku'] + ' - ' + negative_inventory['warehouse_code'],
+        orientation='h',
+        marker=dict(color='red')
+    ))
+    fig_negative_inventory.update_layout(
+        title='Slow Moving/ Excessive Inventory ',
+        xaxis_title='Inventory Overstock',
+        yaxis_title='SKU - Warehouse Code',
+        xaxis_side="top",
+        yaxis=dict(autorange="reversed"),
+        height=top_n * 22
+    )
+
+    if view == 'revenue':
         return html.Div([
             html.Div([
                 dcc.Graph(id='top-n-so-graph', figure=fig_stockout)
             ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%', 'height': '500px'}),
-
             html.Div([
                 dcc.Graph(id='bottom-n-so-graph', figure=fig_overstock)
             ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%', 'height': '500px'})
         ])
-    else:
-        return html.Div([  # Forecast Data Table
-            stockout_table,
-            html.A('Download CSV', id='download-button-stockout', className='btn btn-primary',
-                   download="stock_status.csv",
-                   href="",
-                   target="_blank"),
-        ], style={'overflow-y': 'scroll', 'overflowX': 'scroll', 'width': '100%'})
+    else:  # 'inventory'
+        return html.Div([
+            html.Div([
+                dcc.Graph(id='positive-inventory-graph', figure=fig_positive_inventory)
+            ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%', 'height': '500px'}),
+            html.Div([
+                dcc.Graph(id='negative-inventory-graph', figure=fig_negative_inventory)
+            ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%', 'height': '500px'})
+        ])
     # return html.Div([dcc.Graph(id='historical-bar-chart', figure=fig_stockout), html.Hr()])
 
 

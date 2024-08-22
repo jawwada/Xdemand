@@ -188,6 +188,7 @@ class CacheManager:
               stat.[current_stock],
               stat.[understock_days],
               stat.[overstock_days],
+              stat.inventory_orders,
               stat.[price_elasticity],
               stat.[revenue_before],
               stat.[revenue_after],

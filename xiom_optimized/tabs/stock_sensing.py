@@ -3,6 +3,16 @@ from xiom_optimized.dash_callbacks.stock_sensing_callbacks import *
 # from xiom_optimized.tabs.data_chooser import sku_warehouse_selector
 
 content = html.Div([
+    # Add radio button for toggling views
+    dcc.RadioItems(
+        id='view-toggle',
+        options=[
+            {'label': 'Revenue Impact', 'value': 'revenue'},
+            {'label': 'Inventory Orders', 'value': 'inventory'},
+        ],
+        value='revenue',  # Default value
+        labelStyle={'display': 'inline-block'}
+    ),
     # Forecasting Graphs
     html.Div([
         dcc.Tabs(id="stockout-tabs", value='so-tab-1', children=[
