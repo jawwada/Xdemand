@@ -97,12 +97,12 @@ Assisn the result of the analysis to a dataframe called final_df, and return the
 
 Guidelines:
 Mostly, the result a data frame, so you can do df_final = name of last data frame and return the code
-in rare cases, it might be a a dictionary (with keys as measures and values as results) or a list of results, then you 
-have to convert them appropriately to final_df.
+In rare cases, it might be a a dictionary (with keys as measures and values as results) or a list of results, then you have to convert them appropriately to final_df.
+In very rare cases, the final results are multiple data frame, and have to be combined through a combination of following columns ['sku', 'warehouse_code', 'level_1']
 remove any head() or tail() function type calls that limit the data to a few rows.
-Import a library if needed, but do not do any other change in the original code and provide the complete code for analysis, 
+Import a library if needed, but do not do any other change besides final df assignment and provide the completed code for analysis, 
 
-Provide the code in such a way that if a json parser parses your return code,it should be free of errors. 
+Try to provide the code without any change but in such a way that if a json parser parses your return code,it should be free of errors. 
  No markdowns.
 Here is the code snippet:
 
@@ -149,9 +149,7 @@ Mark events like holidays or container arrivals on the plot through annotations 
 Consider using date on x-axis and stock levels, expected revenue, trends, etc., on y-axis as well.
 
 **Return the code with all these instructions applied, without any markdowns.**
-
 """
-
 prompt_template_visualisation_engineer = PromptTemplate(
     input_variables=["text"],
     template=prompt_ve + ": {text}")
