@@ -17,6 +17,9 @@ server = Flask(__name__)
 app = dash.Dash(
     __name__,
     external_stylesheets=[dbc.themes.ZEPHYR],
+    external_scripts=[
+        {'src': 'https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/dist/dom-to-image.min.js'}
+    ],
     server=server)
 app.title = 'X-Demand'
 app.config['suppress_callback_exceptions'] = False

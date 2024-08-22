@@ -103,7 +103,6 @@ layout = html.Div(id='page_container',
                                       ], className="row", style={'width': 'auto'}),
                                       html.Hr(),
                                       html.Div([data_chooser, dcc.DatePickerRange(id='date-chooser', style={'display': 'none'})]),
-                                      html.Button("Capture Screen", id="capture-screen-button", n_clicks=0)  # Ensure this button has the correct ID
                                   ]),
                               ], className="col-md-2", style={'float': 'left', 'border-right': '5px solid #ddd'}),
 
@@ -118,18 +117,7 @@ layout = html.Div(id='page_container',
                                   ),
                               ], width=10),
                           ]
-                      ),
-                      html.Script('''
-                          document.getElementById("capture-screen-button").onclick = function() {  // Updated to use the correct button ID
-                              html2canvas(document.body).then(function(canvas) {
-                                  const imgData = canvas.toDataURL("image/png");
-                                  // Send imgData to the Dash callback
-                                  const button = document.getElementById("explain-ai-button");  // Ensure this button exists
-                                  button.setAttribute("data-screenshot", imgData);
-                                  button.click(); // Trigger the callback
-                              });
-                          };
-                      ''')
+                      )
                   ]
                   )
 

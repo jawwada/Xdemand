@@ -1,4 +1,5 @@
 import pandas as pd
+import base64
 
 from xiom_optimized.utils.data_fetcher import ph_data
 
@@ -35,3 +36,9 @@ def format_sql_values(values):
         return f"('{values[0]}')"
     else:
         return str(tuple(values))
+
+
+# function for decoding graph image
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')

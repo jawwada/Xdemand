@@ -5,15 +5,20 @@ import pandas as pd
 import plotly.express as px
 from dash import Input
 from dash import Output
+from dash import State
 from dash import dcc
 from dash import html
+from langchain_core.messages import HumanMessage, SystemMessage
 
 from xiom_optimized.app_config_initial import app
 from xiom_optimized.utils.cache_manager import cache_decorator
 from xiom_optimized.utils.config_constants import sample_rate_dict
 from xiom_optimized.utils.data_fetcher import df_sales
 from xiom_optimized.utils.data_fetcher import ph_data
-
+from xiom_optimized.langchain_utils.agents import agent_explain_page  # Import the agent
+import plotly.graph_objects as go  # Ensure this is imported
+import time  # Ensure this is imported
+from xiom_optimized.utils.utils import encode_image  # Ensure this is imported
 
 @cache_decorator
 @app.callback(
@@ -131,7 +136,7 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
                 html.Div(dcc.Graph(id='category-trends', figure=fig_category), className='col-md-6'),
                 html.Div(dcc.Graph(id='historical-bar-chart', figure=fig_bar), className='col-md-6'),
             ], className='row'),
-        ], className='col-md-12')
+        ], className='col-md-12')  # Return the last figure for use in the next callback
     else:
         analysis_table = dash_table.DataTable(
             id='analysis-table',
@@ -158,3 +163,41 @@ def update_download_link(data):
     csv_string = df_to_download.to_csv(index=False, encoding='utf-8')
     csv_string = "data:text/csv;charset=utf-8," + urllib.parse.quote(csv_string)
     return csv_string
+
+@app.callback(
+    Output('da-tabs-content-analysis', 'children'),
+    Input('explain-ai-analysis', 'n_clicks'),
+    [State('historical-winners', 'figure')],  # Use the figure from the previous callback
+    prevent_initial_call=True
+)
+def explain_ai_analysis(n_clicks, fig):
+    # Create a figure object from the incoming figure
+    fig_object = go.Figure(fig)
+
+    # Write the image to a file
+    image_path = f"images/fig{n_clicks}.png"
+    fig_object.write_image(image_path)
+    time.sleep(1)  # Optional: wait for the image to be written
+
+    # Encode the image for the agent
+    base64_image = encode_image(image_path)
+
+    # Call the agent to explain the image
+    result = agent_explain_page.invoke(
+        [
+            HumanMessage(
+                content=[
+                    {"type": "text", "text": "What data insight can we get from this graph?"},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{base64_image}",
+                            "detail": "auto",
+                        },
+                    },
+                ]
+            )
+        ]
+    )
+
+    return result.content  # Return the result to update the content
