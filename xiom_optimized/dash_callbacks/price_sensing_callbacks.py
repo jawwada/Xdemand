@@ -97,7 +97,7 @@ def update_price_sensing_graph(graph_data_tab, filter_data):
                 } for c in ['Date', 'Region']
             ],
         )
-        download_button = html.Button("Download Data", id="download-button-ps")
+        download_button = html.Button("Download Data", id="download-button-ps",className='btn btn-primary')
         download_component = dcc.Download(id="download-dataframe-ps-csv")
 
         return html.Div([  # Forecast Data Table

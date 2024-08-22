@@ -236,7 +236,7 @@ def inventory_planning_container(graph_data_tab, filter_data, view):
 
         return html.Div([  # Forecast Data Table
             html.Div([pr_table], className="col-md-12"),
-            html.Button(children="Download Data",id='download-button-inventory'),
+            html.Button(children="Download Data",id='download-button-inventory',className='btn btn-primary'),
             dcc.Download(id="download-pr-data"),
         ], className="col-md-12")
 
@@ -422,7 +422,7 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code, f
     else:
         return html.Div([  # Forecast Data Table
             pr_table,
-            html.Button('Download CSV', id='download-button-pr-date'),
+            html.Button('Download CSV', id='download-button-pr-date',className='btn btn-primary'),
             dcc.Download(id="download-pr-date-data"),
         ])
 

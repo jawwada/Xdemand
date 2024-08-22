@@ -225,7 +225,7 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
 
         return html.Div([  # Forecast Data Table
             html.Div([forecast_table], className="col-md-12"),
-            html.Button('Download CSV', id='download-button-fcst'),
+            html.Button('Download CSV', id='download-button-fcst',className='btn btn-primary'),
             dcc.Download(id="download-dataframe-csv"),
         ], className="col-md-12")
 
