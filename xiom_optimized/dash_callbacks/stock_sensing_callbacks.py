@@ -162,8 +162,8 @@ def update_stockout_container(graph_data_tab, filter_data, view):
             marker=dict(color='orange')
         ))
         fig_understock.update_layout(
-            title='Top Understocked Items',
-            xaxis_title='Days under 120-day stock level',
+            title='How many days of stock do you have?',
+            xaxis_title='Days of Stock',
             yaxis_title='SKU - Warehouse Code',
             xaxis_side="top",
             yaxis=dict(autorange="reversed"),
@@ -183,7 +183,7 @@ def update_stockout_container(graph_data_tab, filter_data, view):
         ))
         fig_overstock.update_layout(
             title='Top Overstocked Items',
-            xaxis_title='Days over 180-day stock level',
+            xaxis_title='How many days of overstock do you have?',
             yaxis_title='SKU - Warehouse Code',
             xaxis_side="top",
             yaxis=dict(autorange="reversed"),
