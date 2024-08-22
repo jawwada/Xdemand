@@ -151,10 +151,9 @@ def update_stockout_container(graph_data_tab, filter_data, view):
     elif view == 'stock_days':
         # Prepare data for understock graph
         stock_days_data = df_price_rec_summary_filtered
-        stock_days_data['stock_days'] = (df_price_rec_summary_filtered['current_stock'] -df_price_rec_summary_filtered['opt_stock_level'] )/df_price_rec_summary_filtered['mean_demand']
-        understock_data = stock_days_data[stock_days_data['stock_days'] < 0]
-        understock_data['stock_days'] = stock_days_data['stock_days'] * -1
-        understock_data = understock_data.sort_values(by='stock_days', ascending=False).head(top_n)
+        stock_days_data['stock_days'] = df_price_rec_summary_filtered['current_stock']/df_price_rec_summary_filtered['mean_demand']
+        understock_data = stock_days_data[stock_days_data['stock_days'] < 120]
+        understock_data = understock_data.sort_values(by='stock_days', ascending=True).head(top_n)
 
         fig_understock = go.Figure(go.Bar(
             x=understock_data['stock_days'],

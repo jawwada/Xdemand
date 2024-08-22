@@ -85,7 +85,7 @@ layout = html.Div(id='page_container',
                                                   dcc.Tab(label=" Demand Analysis ", value="/demand-analysis"),
                                                   dcc.Tab(label=" Demand Forecasting ", value="/demand-forecasting"),
                                                   dcc.Tab(label=" Price Sensing ", value="/price-sensing"),
-                                                  dcc.Tab(label=" Stock Sensing ", value="/stockout-prediction"),
+                                                  dcc.Tab(label=" Inventory Planning", value="/stockout-prediction"),
                                                   dcc.Tab(label=" Product Research ", value="/product-research"),
                                                   dcc.Tab(label=" Ask AI (Beta) ", value="/ask-ai")
                                               ]),
