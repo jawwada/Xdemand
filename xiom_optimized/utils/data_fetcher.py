@@ -27,6 +27,10 @@ def fetch_daily_sales(ph_data):
     df_sales['date'] = pd.to_datetime(df_sales['date'])
     return df_daily_sales_da, df_sales
 
+def fetch_monthly_sales(ph_data):
+    df = pd.read_json(cache_manager.query_df_monthly_sles(ph_data), convert_dates=['ds'], orient='split')
+    return df
+
 
 def fetch_fc_qp(ph_data):
     df_fc_qp = pd.read_json(cache_manager.query_df_fc_qp(ph_data), convert_dates=['ds'], orient='split')
@@ -112,4 +116,5 @@ df_stockout_past = fetch_stockout_past(ph_data)
 df_running_stock = fetch_running_stock(df_price_reference, ph_data)
 
 # fetch aggregated data
-df_agg_daily_3months, df_agg_monthly_3years = fetch_aggregated_data(df_daily_sales_da, df_sales)
+
+df_agg_monthly_3years = fetch_monthly_sales(ph_data)

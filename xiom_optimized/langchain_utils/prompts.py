@@ -24,6 +24,7 @@ df1, df2 and df3 are available in the environment. And required libraries can be
     - `date`: Aggregated monthly status date.
     - `quantity`: Total quantity sold in the month.
     - `revenue`: Revenue generated in the month.
+    - 'price' : Price of the product.
     - `oos_days`: Out of stock days in the month. (Sum over a time period to get total)
 
 3. **df3: Aggregated Price Recommendation Data for Next Months (One Row is 6-Month View for sku-warehouse_code combination)**:

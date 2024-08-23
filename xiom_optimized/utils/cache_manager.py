@@ -109,6 +109,25 @@ class CacheManager:
         df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
         return df.to_json(date_format='iso', orient='split')
 
+
+    @cache_decorator
+    def query_df_monthly_sles(self, ph_data):
+        query = """
+                SELECT [date]
+              ,[sku]
+              ,[warehouse_code]
+              ,[promotional rebates]
+              ,[quantity]
+              ,[revenue]
+              ,[price]
+              ,[oos_days]
+          FROM [dbo].[agg_im_sku_monthly_sales]
+        """
+        df = pd.read_sql_query(query, cnxn)
+        df['date'] = pd.to_datetime(df['date'])
+        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
+        return df.to_json(date_format='iso', orient='split')
+
     @cache_decorator
     def query_df_fc_qp(self, ph_data):
         query = f"""SELECT stat.*
