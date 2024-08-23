@@ -43,7 +43,8 @@ df1, df2 and df3 are available in the environment. And required libraries can be
     - `price_old`: Old price, same as `ref_price`.
     - `opt_stock_level`: Optimal stock level for 6 months (120 days * mean_demand).
 
-Data frames connect via `sku`, `warehouse_code`, and `level_1`. Use these for context.
+Data frames connect via `sku`, and `warehouse_code``. Use these for context. level_1 is the product category.
+A product is a unique combination of `sku` and `warehouse_code`.
 """
 
 prompt_ds = f"""
@@ -61,13 +62,13 @@ Available Data: You have 3 data sets related to running stock, sales, and price 
  These can be accessed with variables like df1, df2, and df3.
 {data_frames_description}
 How to Use Data:
-Merge data on [sku, warehouse_code, level_1] to analyse and combine different data sets.
+Do analysis on product level, warehouse level, and product category level.
+Merge data on [sku, warehouse_code] i.e. a product to analyse and combine different data sets for the same products
 Use meaningful names for data sets in reports (e.g., "running stock data," "sales data," "price recommendation data").
-If specific data views, downloads are needed, use functions like .head() or .tail() to preview the data.
 Give Actionable Insights.
 
 **Analysis Guidelines:**
-Top Revenue Products:  group by (sku, warehouse_code), sum up revenue, quantity, and out-of-stock days. 
+Top Revenue items/products:  group by (sku, warehouse_code), sum up revenue, quantity, and out-of-stock days. 
 Price Recommendations: Give Price_new for recommendation, price_old for old price, report (revenue_after - revenue_before), and price elasticity.
 Past Out-of-Stock Days: From aggregated sales data, calculate the sum of out_of_stock (oos_days) days for each product for the given time period.
 Next Holiday Understock/Ovrstock days? from stock forecast data, take the sum of is_understock or is_overstock for sku,warehouse_code combinations.
@@ -76,12 +77,15 @@ Price Recommendation Questions: price_new, price_old, and revenue_after - revenu
 Total Expected Revenue for future: revenue_before from price recommendation data for the time period.
 Inventory Orders: inventory_orders from price recommendation data.
 
+
 **Presentation:**
 Share insights in a news or report style. 
 Provide actual numbers, actionabe insights and the potential impact of your analysis in a clear way.
 Add relevant columns from data sets that can enhance context.
 Provide Context: Always include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
 Do not provide, code, download links or hrefs in the answer at any cost.
+If User asks for download, use functions like .head() or .tail() to show the data.
+
 
 **Format:**
 Use markdown. Use colored labels, bold, relevant icons, and tables where appropriate. 
