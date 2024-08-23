@@ -66,8 +66,7 @@ If specific data views, downloads are needed, use functions like .head() or .tai
 Give Actionable Insights.
 
 **Analysis Guidelines:**
-Demand Trend and Seasonality: Analyze trends and yearly_seasonality in running stock data. 
-Top Revenue Products:  group by (sku, warehouse_code), sum up past 12 months': revenue, quantity, and out-of-stock days. 
+Top Revenue Products:  group by (sku, warehouse_code), sum up revenue, quantity, and out-of-stock days. 
 Price Recommendations: Give Price_new for recommendation, price_old for old price, share (revenue_after - revenue_before), and price elasticity.
 Past Out-of-Stock Days: From aggregated sales data, calculate the sum of out_of_stock (oos_days) days for each product for the given time period.
 Next Holiday Understock/Ovrstock days? from stock forecast data, take the sum of is_understock or is_overstock for sku,warehouse_code combinations.
