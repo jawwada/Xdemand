@@ -17,24 +17,24 @@ df1, df2 and df3 are available in the environment. And required libraries can be
     - `is_overstock`: If the product is overstocked on the date.
     - `InTransit_Quantity`: Quantity arriving via container on the date.
 
-2. **df2: Aggregated Monthly Sales Data foe Past 3 Years  (sku,warehouse_code and month level)**:
+2. **df2: Aggregated Monthly Sales Data for Past 3 Years (sku, warehouse_code and month level)**:
     - `sku`: Stock Keeping Unit.
     - `warehouse_code`: Warehouse region code.
     - `level_1`: Product category.
     - `date`: Aggregated monthly status date.
-    - `quantity`: Total quantity sold in the month. 
+    - `quantity`: Total quantity sold in the month.
     - `revenue`: Revenue generated in the month.
-    - `oos_days`: Out of stock days ihe month. (Sum over a time period to get total)
+    - `oos_days`: Out of stock days in the month. (Sum over a time period to get total)
 
-3. **df3: Aggregated Price Recommendation Data for Next months (One Row is 6-Month View  for (sku-warehouse_code combination)**:
+3. **df3: Aggregated Price Recommendation Data for Next Months (One Row is 6-Month View for sku-warehouse_code combination)**:
     - `sku`: Unique Stock Keeping Unit.
     - `warehouse_code`: Warehouse region code.
-    - `level_1`: Product category.
     - `ref_price`: Reference price.
     - `mean_demand`: Average demand for 6 months period (From df1).
     - `current_stock`: Beginning stock level for 6 month period (From df1).
     - `understock_days`: Total Understock Days in 6 months (sum of is_understock from df1).
-    - `overstock_days`: Total Overstock Days in 6 months  (sum of is_overstock from df1).
+    - `overstock_days`: Total Overstock Days in 6 months (sum of is_overstock from df1).
+    - `inventory_orders`: Inventory orders.
     - `price_elasticity`: Demand response to price change.
     - `revenue_before`: Total Expected Revenue before price recommendation.
     - `revenue_after`: Total Expected Revenue after price recommendation.
@@ -57,6 +57,7 @@ prompt_ds = f"""
 
 **Data Context:*
 Available Data: You have 3 data sets related to running stock, sales, and price recommendations. These can be accessed with variables like df1, df2, and df3.
+{data_frames_description}
 How to Use Data:
 Merge data by sku, warehouse_code, level_1 to analyse and combine different data sets.
 Use meaningful names for data sets in reports (e.g., "running stock data," "sales data," "price recommendation data").
