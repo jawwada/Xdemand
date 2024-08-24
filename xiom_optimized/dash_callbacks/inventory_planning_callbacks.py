@@ -428,7 +428,7 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code, f
                     max=price_new+price_new*0.25,
                     step=0.01,
                     value=price_new,
-                    marks={i: str(i) for i in range(price_new-price_new*0.5, price_new+price_new*0.25, 1)},
+                    marks={i: str(i) for i in range(int(price_new-price_new*0.5), int(price_new+price_new*0.25), 1)},
                 ),
             ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%'})
         ])
@@ -521,10 +521,14 @@ def update_pr_graph(price_rec, selected_sku, selected_warehouse_code, filter_dat
         fig_pr.add_annotation(x=row['ds'], y=max_running_stock_adj / 2, text=str(int(row['InTransit_Quantity'])),
                               showarrow=False, font=dict(color='red'), row=1, col=1)
 
+    price_new = group_info['price_new'].iloc[0]
+    revenue_after = group_info['revenue_after'].iloc[0]
+
+
     # Update layout
     fig_pr.update_layout(
         autosize=True,
-        title=f"""Price Recommendation: {price_rec:.02f}, Revenue:  {group_info['revenue_after']:.02f}""",
+        title=f"""Price Recommendation: {price_new:.02f}, Revenue:  {revenue_after:.02f}""",
         xaxis_title=f'Stock Status for SKU {selected_sku} at Warehouse {selected_warehouse_code}',
         yaxis_title='Running Stock After Adj Forecast',
         yaxis2_title='Forecasted daily sales',
