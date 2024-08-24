@@ -424,11 +424,11 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code, f
                 dcc.Graph(id='pr-stock-graph', figure=fig_pr),
                 dcc.Slider(
                     id='price-slider',
-                    min=price_new-price_new*0.15,
-                    max=price_new+price_new*0.15,
+                    min=price_old-price_old*0.15,
+                    max=price_old+price_old*0.15,
                     step=0.01,
                     value=price_new,
-                    marks={i: str(i) for i in range(int(price_new-price_new*0.5), int(price_new+price_new*0.25), 1)},
+                    marks={i: str(i) for i in range(int(price_old-price_old*0.15), int(price_old+price_old*0.15), 1)},
                 ),
             ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%'})
         ])
