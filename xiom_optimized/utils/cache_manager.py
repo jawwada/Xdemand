@@ -222,19 +222,13 @@ class CacheManager:
         return df.to_json(date_format='iso', orient='split')
 
     @cache_decorator
-    def query_price_recommender(self, ph_data):
+    def query_price_recommender(self):
         query = f"""SELECT
-        stat.[sku]
-        , [ds]
-        , stat.[warehouse_code]
-        , [InTransit_Quantity]
-        , [running_stock_after_forecast_adj] as running_stock_after_forecast_adj
-        , [q_prime_adj] as q_prime_adj
+        stat.*
         FROM[dbo].[stat_price_recommender] 
         stat
         """
         df = pd.read_sql_query(query, cnxn)
         df['ds'] = pd.to_datetime(df['ds'])
-        df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
 
         return df.to_json(date_format='iso', orient='split')

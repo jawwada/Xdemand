@@ -75,7 +75,7 @@ def get_price_adjustments(name, group, p0, price_rec, r, cf):
     group_info = dict({
         'sku': name[0],
         'warehouse_code': name[1],
-        'ref_price': group['ref_price'].mean(),
+        'ref_price': p0,
         'mean_demand': group['yhat'].mean(),
         'current_stock': group['running_stock_after_forecast'].head(1).item(),
         'opt_stock_level': 0.0,

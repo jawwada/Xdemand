@@ -1,5 +1,6 @@
 import logging
 import urllib
+import time
 
 import dash_table
 import pandas as pd
@@ -16,7 +17,11 @@ from xiom_optimized.utils.cache_manager import cache_decorator
 from xiom_optimized.utils.data_fetcher import df_price_rec
 from xiom_optimized.utils.data_fetcher import df_price_rec_summary
 from xiom_optimized.utils.data_fetcher import df_running_stock
+from xdemand.pipelines.RDX.price_recommender.pr_utils import get_price_adjustments
 
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 @cache_decorator
 @app.callback(
@@ -265,7 +270,7 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code, f
     if not selected_sku:
         selected_sku = 'WAN-W1B+'
     if not selected_warehouse_code:
-        selected_warehouse_code = 'US'
+        selected_warehouse_code = 'UK'
 
     sku_df = df_running_stock[
         (df_running_stock['sku'] == selected_sku) & (df_running_stock['warehouse_code'] == selected_warehouse_code)]
@@ -413,10 +418,18 @@ def update_pr_container(graph_data_tab, selected_sku, selected_warehouse_code, f
     if graph_data_tab == 'pr-tab-1':
         return html.Div([
             html.Div([
-                dcc.Graph(id='top-n-pr-graph', figure=fig)
+                dcc.Graph(id='running-stock-graph', figure=fig)
             ], style={'display': 'inline-block', 'width': '50%'}),
             html.Div([
-                dcc.Graph(id='bottom-n-pr-graph', figure=fig_pr)
+                dcc.Graph(id='pr-stock-graph', figure=fig_pr),
+                dcc.Slider(
+                    id='price-slider',
+                    min=price_new-price_new*0.2,
+                    max=price_new+price_new*0.2,
+                    step=0.01,
+                    value=price_new,
+                    marks={i: str(i) for i in range(0, 101, 10)},
+                ),
             ], style={'overflow-y': 'auto', 'display': 'inline-block', 'width': '50%'})
         ])
     else:
@@ -440,3 +453,88 @@ def update_download_link(n_clicks,filter_data):
     unique_wh = filtered_data[['sku', 'warehouse_code']].drop_duplicates()
     df_to_download = df_price_rec.merge(unique_wh, on=['sku', 'warehouse_code'])
     return dcc.send_data_frame(df_to_download.to_csv, "pr_running_stock.csv")
+
+@app.callback(
+    Output('pr-stock-graph', 'figure'),
+    [Input('price-slider', 'value'),
+     Input('sku-dropdown', 'value'),
+     Input('warehouse-code-dropdown', 'value'),
+     Input('filter-data', 'data')],
+)
+def update_pr_graph(price_rec, selected_sku, selected_warehouse_code, filter_data):
+    if not selected_sku:
+        selected_sku = 'WAN-W1B+'
+    if not selected_warehouse_code:
+        selected_warehouse_code = 'UK'
+
+    sku_df_pr = df_price_rec[
+        (df_price_rec['sku'] == selected_sku) & (df_price_rec['warehouse_code'] == selected_warehouse_code)]
+    sku_df_pr = sku_df_pr.sort_values('ds')
+
+    # Get the original price from the summary table
+    sku_price_summary = df_price_rec_summary[(df_price_rec_summary['sku'] == selected_sku) & (
+            df_price_rec_summary['warehouse_code'] == selected_warehouse_code)]
+    p0 = sku_price_summary['price_old'].iloc[0] if not sku_price_summary.empty else 0
+
+    # Calculate adjusted stock based on the new price
+    group, group_info = get_price_adjustments(
+        (selected_sku, selected_warehouse_code),
+        sku_df_pr,
+        p0,
+        price_rec,
+        sku_price_summary['price_elasticity'].iloc[0],
+        pr_cf
+    )
+    # sleep here for 1 second
+    time.sleep(1)
+    logger.info(group.describe())
+    
+
+    # Create subplots: two rows, one column
+    fig_pr = make_subplots(rows=2, cols=1, shared_xaxes=True, row_heights=[0.75, 0.25], vertical_spacing=0.1)
+
+    # Add running_stock_after_forecast_adj to the first row
+    fig_pr.add_trace(
+        go.Scatter(x=group['ds'], y=group['running_stock_after_forecast_adj'],
+                   name='Running Stock After Adj Forecast', mode='lines', line=dict(color='green')),
+        row=1, col=1
+    )
+
+    # Add q_prime_adj (Forecasted daily sales) as bars to the second row with a different color scale
+    fig_pr.add_trace(
+        go.Bar(x=group['ds'], y=group['q_prime_adj'], name='Forecasted daily sales',
+               marker=dict(color=group['q_prime_adj'], colorscale='Reds')),
+        row=2, col=1
+    )
+
+    # Calculate the maximum values for each y-axis
+    max_q_prime_adj = group['q_prime_adj'].max()
+    max_running_stock_adj = group['running_stock_after_forecast_adj'].max()
+
+    # Set the y-axis ranges independently
+    fig_pr.update_yaxes(range=[0, max_running_stock_adj], row=1, col=1)  # First row for running stock
+    fig_pr.update_yaxes(range=[0,  max_q_prime_adj], row=2, col=1)  # Second row for daily sales
+
+    # Add vertical lines and annotations for Expected Arrival Dates
+    for _, row in sku_df_pr[sku_df_pr['InTransit_Quantity'] != 0].iterrows():
+        fig_pr.add_vline(x=row['ds'], line=dict(color='red', dash='dash'), line_width=1, row=1, col=1)
+        fig_pr.add_annotation(x=row['ds'], y=max_running_stock_adj / 2, text=str(int(row['InTransit_Quantity'])),
+                              showarrow=False, font=dict(color='red'), row=1, col=1)
+
+    # Update layout
+    fig_pr.update_layout(
+        autosize=True,
+        title=f"""Price Recommendation: {price_rec:.02f}, Revenue:  {group_info['revenue_after']:.02f}""",
+        xaxis_title=f'Stock Status for SKU {selected_sku} at Warehouse {selected_warehouse_code}',
+        yaxis_title='Running Stock After Adj Forecast',
+        yaxis2_title='Forecasted daily sales',
+        xaxis=dict(tickangle=-45),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        height=600
+    )
+
+    # Update y-axes titles
+    fig_pr.update_yaxes(title_text='Running Stock After Adj Forecast', row=1, col=1, color='green')
+    fig_pr.update_yaxes(title_text='Forecasted Daily sales', row=2, col=1, color='blue')
+
+    return fig_pr

@@ -38,7 +38,7 @@ def fetch_fc_qp(ph_data):
 
 
 def fetch_price_recommendations(ph_data):
-    df_price_rec = pd.read_json(cache_manager.query_price_recommender(ph_data), convert_dates=['ds'], orient='split')
+    df_price_rec = pd.read_json(cache_manager.query_price_recommender(), convert_dates=['ds'], orient='split')
     df_price_rec_summary = pd.read_json(cache_manager.query_price_recommender_summary(ph_data), convert_dates=['ds'],
                                         orient='split')
     return df_price_rec, df_price_rec_summary
