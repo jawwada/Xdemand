@@ -3,7 +3,7 @@ from langchain_core.prompts import PromptTemplate
 data_frames_description = """You have access to the following dataframes: df1, df2, df3.  All strings in variables are in capital letters.
 df1, df2 and df3 are available in the environment. And required libraries can be imported.
 
-1. **df1: Stock Forecast Data for Next 6 Months (date, sku, warehouse level)**:
+1. **df1: df_running_stock: Stock Forecast Data for Next 6 Months (date, sku, warehouse level)**:
     - `ds`: Stock Status Date.
     - `sku`: Unique Stock Keeping Unit.
     - `warehouse_code`: Warehouse region code (UK, DE, US, CA).
@@ -17,7 +17,7 @@ df1, df2 and df3 are available in the environment. And required libraries can be
     - `is_overstock`: If the product is overstocked on the date.
     - `InTransit_Quantity`: Quantity arriving via container on the date.
 
-2. **df2: Aggregated Monthly Sales Data for Past 3 Years (sku, warehouse_code and month level)**:
+2. **df2:df_agg_monthly_3_years: Aggregated Monthly Sales Data for Past 3 Years (sku, warehouse_code and month level)**:
     - `sku`: Stock Keeping Unit.
     - `warehouse_code`: Warehouse region code.
     - `level_1`: Product category.
@@ -27,9 +27,10 @@ df1, df2 and df3 are available in the environment. And required libraries can be
     - 'price' : Price of the product.
     - `oos_days`: Out of stock days in the month. (Sum over a time period to get total)
 
-3. **df3: Aggregated Price Recommendation Data for Next Months (One Row is 6-Month View for sku-warehouse_code combination)**:
+3. **df3: df_price_rec_summary: Aggregated Price Recommendation Data for Next Months (One Row is 6-Month View for sku-warehouse_code combination)**:
     - `sku`: Unique Stock Keeping Unit.
     - `warehouse_code`: Warehouse region code.
+    - `level_1`: Product category.
     - `ref_price`: Reference price.
     - `mean_demand`: Average demand for 6 months period (From df1).
     - `current_stock`: Beginning stock level for 6 month period (From df1).
@@ -58,32 +59,39 @@ prompt_ds = f"""
 - Hypothesize, Test, and Validate
 
 **Data Context:*
-Available Data: You have 3 data sets related to running stock, sales, and price recommendations.
- These can be accessed with variables like df1, df2, and df3.
+Available Data: You have 3 data sets related to running stock, sales, and price recommendations. These can be accessed with variables like df1, df2, and df3 in the environment.
 {data_frames_description}
 How to Use Data:
-Do analysis on product level, warehouse level, and product category level.
+A product is a unique combination of `sku`, `warehouse_code` and product category.
 Merge data on [sku, warehouse_code] i.e. a product to analyse and combine different data sets for the same products
 Use meaningful names for data sets in reports (e.g., "running stock data," "sales data," "price recommendation data").
 Give Actionable Insights.
 
 **Analysis Guidelines:**
-Top Revenue items/products:  group by (sku, warehouse_code), sum up revenue, quantity, and out-of-stock days. 
-Price Recommendations: Give Price_new for recommendation, price_old for old price, report (revenue_after - revenue_before), and price elasticity.
-Past Out-of-Stock Days: From aggregated sales data, calculate the sum of out_of_stock (oos_days) days for each product for the given time period.
-Next Holiday Understock/Ovrstock days? from stock forecast data, take the sum of is_understock or is_overstock for sku,warehouse_code combinations.
-Understock days in a future period: sum is_understock for the period.
-Price Recommendation Questions: price_new, price_old, and revenue_after - revenue_before, and price elasticity.
-Total Expected Revenue for future: revenue_before from price recommendation data for the time period.
-Inventory Orders: inventory_orders from price recommendation data.
+Example questions to consider:
+- What are the top-selling products? Answer with respect to quantity and revenue for past 12 months from df_agg_monthly_3years.
+- What is the optimal stock level for each product? How does it compare to the current stock level? Answer with respect to df_price_rec_summary.
+- How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
+- What is the demand trend, seasonality for each product? Answer with respect to df_running_stock.
+- Give me a report on a a product . Ans: group by sku, warehouse_code, level_1 over data frames.
+            - Sum Past 12 month quantity from df_agg_monthly_3years
+            - Sum Past 12 month revenue from df_agg_monthly_3years
+            - sum oos_days for past 12 months from df_agg_monthly_3years
+            - Sum is_understock from df_running_stock for next 6 months to get number of understock days during next 6 months.
+            - Sum of yhat from df_running_stock for next 6 months to get expected demand.
+            - Sum is_overstock from df_running_stock for next 6 months to get number of overstock days during next 6 months.
+
+- Question about holiday season stock levels. Ans: look at df_running_stock, sum is_understock for each sku, warehouse_code combinations from October to Jan.
+- What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
+- Information about how much to order: from price recommendation data inventory_orders gives inventory orders for next 4 month period ., negative means excessive inventory orders.
 
 
 **Presentation:**
 Share insights in a news or report style. 
-Provide actual numbers, actionabe insights and the potential impact of your analysis in a clear way.
+Provide actual actionabe insights and recommendationa.
 Add relevant columns from data sets that can enhance context.
 Provide Context: Always include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
-Do not provide, code, download links or hrefs in the answer at any cost.
+Do not provide, code, download links or hrefs in the answer.
 If User asks for download, use functions like .head() or .tail() to show the data.
 
 
