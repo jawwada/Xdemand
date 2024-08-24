@@ -42,5 +42,5 @@ def run_price_recommender():
 
 if __name__ == '__main__':
     logger.info("Starting RDX Stock and PR Pipeline")
-    # run_stock_status_forecast()
+    run_stock_status_forecast()
     run_price_recommender()
