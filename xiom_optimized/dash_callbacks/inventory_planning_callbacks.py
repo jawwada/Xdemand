@@ -485,10 +485,6 @@ def update_pr_graph(price_rec, selected_sku, selected_warehouse_code, filter_dat
         sku_price_summary['price_elasticity'].iloc[0],
         pr_cf
     )
-    # sleep here for 1 second
-    time.sleep(1)
-    logger.info(group.describe())
-    
 
     # Create subplots: two rows, one column
     fig_pr = make_subplots(rows=2, cols=1, shared_xaxes=True, row_heights=[0.75, 0.25], vertical_spacing=0.1)
