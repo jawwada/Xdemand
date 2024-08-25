@@ -21,7 +21,7 @@ Use meaningful names for data sets in reports (e.g., "running stock data," "sale
 Give Actionable Insights.
 
 **Analysis Guidelines:**
-- Take top 50 revenue generating products by aggregating revenue for sku, warehouse_code combinations from df_agg_monthly_3years.
+- Take top 100 revenue generating products by aggregating revenue for sku, warehouse_code combinations from df_agg_monthly_3years.
 - Analyse the product category( level_1) data and Prduct (sku, warehouse_code) data
 - for the same product, look for the optimal stock level for each product in? How does it compare to the current stock level? 
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
