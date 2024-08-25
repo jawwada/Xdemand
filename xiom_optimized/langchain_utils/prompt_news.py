@@ -72,9 +72,9 @@ It is recommended to continue monitoring the market and adjust prices as needed 
 Continue monitoring the market for further adjustments."
 
 -  **Holiday Season Stock Levels for Category Belts in UK Optimized**
--  "Stock levels for Belts in the UK have been optimized for the upcoming holiday season.
+-  Stock levels for Belts in the UK have been optimized for the upcoming holiday season.
  Based on historical sales data, inventory levels have been adjusted to ensure sufficient stock of 400 during peak demand periods. 
- It is recommended to closely monitor sales and adjust inventory levels as needed."
+ It is recommended to closely monitor sales and adjust inventory levels as needed.
 - "**Holiday Season Preparedness:** Belts stock levels in the UK have been optimized for the holiday season.
  Monitor sales closely and adjust inventory levels as needed."
 
