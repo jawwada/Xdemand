@@ -4,7 +4,7 @@ from dash import html
 from dash import State
 
 from xiom_optimized.langchain_utils.agents import agent_running_stock
-from xiom_optimized.langchain_utils.prompts import prompt_ds
+from xiom_optimized.langchain_utils.prompt_news import prompt_news
 from xiom_optimized.dash_callbacks.ask_ai_callbacks import textbox
 from xiom_optimized.utils.cache_manager import cache_decorator
 
@@ -60,6 +60,14 @@ layout = html.Div(
                 html.Hr(),
                 html.Div(
                     id='news-output',
+                    children=[
+                        dcc.Tabs(id="news-tabs", value='news-tab-1', children=[
+                            dcc.Tab(label='Top News', value='news-tab-1'),
+                            dcc.Tab(label='Alerts', value='news-tab-2'),
+                            dcc.Tab(label='Product Insights', value='news-tab-3'),
+                        ]),
+                        html.Div(id='news-tabs-content'),
+                    ]
                 ),
             ],
             className="content",
@@ -114,5 +122,27 @@ def news_box(text, name="RDX"):
 )
 @cache_decorator
 def fetch_news(_):
-    response = agent_running_stock.run(prompt_ds + "share with me the latest news for the data")
+    response = agent_running_stock.run(prompt_news + "share with me the latest news for the data")
     return news_box(response)
+
+@app.callback(
+    Output('news-tabs-content', 'children'),
+    [Input('news-tabs', 'value')]
+)
+def update_news_tabs_content(tab_value):
+    if tab_value == 'news-tab-1':
+        return html.Div([
+            # Display top news here
+            html.P("Top News Content"),
+        ])
+    elif tab_value == 'news-tab-2':
+        return html.Div([
+            # Display alerts here
+            html.P("Alert Content"),
+        ])
+    elif tab_value == 'news-tab-3':
+        return html.Div([
+            # Display product insights here
+            html.P("Product Insights Content"),
+        ])
+    return html.Div()
