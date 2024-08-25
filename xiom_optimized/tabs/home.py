@@ -127,7 +127,7 @@ agent_news = create_pandas_dataframe_agent(
     number_of_head_rows=5,
     allow_dangerous_code=True,
     handle_parsing_errors=True,
-    max_iterations=100
+    max_iterations=30
 )
 @app.callback(
     Output('news-content', 'children'),
