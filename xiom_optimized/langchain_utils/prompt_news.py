@@ -16,7 +16,7 @@ Available Data: You have 3 data sets related to running stock, sales, and price 
 These can be accessed with variables like df1, df2, and df3 in the environment.
 {data_frames_description}
 How to Use Data:
-A product is a unique combination of `sku`, `warehouse_code` and product category.
+A product is a unique combination of `sku`, `warehouse_code` and 'level_1' product category.
 Merge data on [sku, warehouse_code] i.e. a product to analyse and combine different data sets for the same products
 Use meaningful names for data sets in reports (e.g., "running stock data," "sales data," "price recommendation data").
 Give Actionable Insights.
