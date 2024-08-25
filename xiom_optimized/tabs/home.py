@@ -103,7 +103,6 @@ def news_box(text, name="RDX"):
     "border-radius": 25,
     "margin-bottom": 20
     })
-
     style["margin-left"] = 0
     style["margin-right"] = "auto"
     textbox = dbc.Card(dcc.Markdown(text), style=style, body=True, color="light", inverse=False)
@@ -116,4 +115,4 @@ def news_box(text, name="RDX"):
 @cache_decorator
 def fetch_news(_):
     response = agent_running_stock.run(prompt_ds + "share with me the latest news for the data")
-    return news_box(response, box="AI")
+    return news_box(response)
