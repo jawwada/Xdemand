@@ -21,9 +21,9 @@ Use meaningful names for data sets in reports (e.g., "running stock data," "sale
 Give Actionable Insights.
 
 **Analysis Guidelines:**
-- Analyze top revenue generating products by aggregating revenue for sku, warehouse_code combinations from df_agg_monthly_3years.
-- Analyse the product category( level_1) data and find the top categories by revenue from df_agg_monthly_3years.
-- Generate actionable insights and news, alerts for the following areas:
+- Analyze top 20 revenue generating products by aggregating revenue for sku, warehouse_code combinations from df_agg_monthly_3years.
+- Analyse the product category( level_1) data and find the top 3 categories by revenue from df_agg_monthly_3years.
+- Generate actionable insights and news, alerts for these products and categories the following areas:
 - Where are the sales increasing, decreasing, biggest revenue generators, earners, groweres, winners and looser products?
 - look for the optimal stock level? How does it compare to the current stock level? 
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
@@ -45,7 +45,7 @@ provide diverse news and headlies, content to cover all aspects of the data.
 - **Alert:** If there are critical issues or opportunities, highlight them with a clear alert.
 
 **Example News:**
-- **Category Boxing Gloves Sales Surge in UK, Demand Forecast Shows Continued Growth with expected 15% increase to 1000 units**
+- **Category Boxing Gloves Sales Surge in UK, Demand Forecast Shows Continued Growth with expected 15% increase**
 - "Sales of boxing gloves in the UK have increased significantly over the past 12 months, with a projected 15% growth in demand over the next 6 months. 
 This trend is driven by increased interest in fitness and boxing, particularly among younger demographics.  
 The current stock level 2300 Units is sufficient to meet the projected demand, 
@@ -54,7 +54,7 @@ but it's recommended to monitor the situation closely and adjust inventory level
 Ensure sufficient inventory levels are available to avoid stockouts and lost sales."
 
 - **Product "BGR-F6MB-12OZ" See a Decline in Sales in US, Inventory Levels High**
-- "Sales of "BGR-F6MB-12OZ" in the US have dropped by 10% to 175 thousand over the past 12 months. 
+- "Sales of "BGR-F6MB-12OZ" in the US have dropped by 10% to 175K over the past 12 months. 
 This decline is attributed to a milder winter season and increased competition from new brands. 
 Current inventory levels 254 are high, and it is recommended to consider promotional discounts to clear out excess stock of 90 days"
 - "**Overstock Alert:** High inventory levels of "BGR-F6MB-12OZ" in the US. Consider promotional discounts to clear out excess stock."
@@ -68,7 +68,7 @@ Current inventory levels 254 are high, and it is recommended to consider promoti
 - "A recent price adjustment for product running shoes in Canada has resulted in a 12% increase in revenue. 
 The new pricing strategy has been well-received by customers, leading to higher sales volumes. 
 It is recommended to continue monitoring the market and adjust prices as needed to maintain this positive trend."
--  "**Revenue Boost:** Price adjustment for running shoes in Canada has led to a significant increase in revenue. 
+-  "**Revenue Boost Alert:** Price adjustment for running shoes in Canada has led to a significant increase in revenue. 
 Continue monitoring the market for further adjustments."
 
 -  **Holiday Season Stock Levels for Category Belts in UK Optimized**
@@ -85,8 +85,9 @@ It is recommended to focus marketing efforts on these categories to maximize sal
 - "**Top-Selling Products Alert:** Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales."
 
 **Format:**
-Use markdown with good formatting. Use colored labels, bold, relevant icons for news and alerts, and tables where appropriate. 
-Instead of using the words "Headline", "body" , use markdown formatting, especially icons for headline and alert type to create context for headline, body and alerts.
+Use markdown with good formatting. Use colored names, bold, relevant icons for news and alerts, and tables where appropriate. 
+Instead of using the word Headline , use appropriate formatting e.g. bold for headlines with appropriate icon.
+Appropriate icon for alert type. Use formatting to create context for headline, body and alerts.
 Use bullet points for key insights and recommendations.
 
 *Let's get started:*

@@ -1,9 +1,14 @@
 import dash_bootstrap_components as dbc
 from dash import dcc
 from dash import html
-from dash import State
+from langchain.agents.agent_types import AgentType
+from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
+from langchain_openai import ChatOpenAI
 
-from xiom_optimized.langchain_utils.agents import agent_running_stock
+from xiom_optimized.utils.data_fetcher import df_agg_monthly_3years
+from xiom_optimized.utils.data_fetcher import df_price_rec_summary
+from xiom_optimized.utils.data_fetcher import df_running_stock
+
 from xiom_optimized.langchain_utils.prompt_news import prompt_news
 from xiom_optimized.utils.cache_manager import cache_decorator
 
@@ -107,12 +112,28 @@ def news_box(text, name="RDX"):
     textbox = dbc.Card(dcc.Markdown(text), style=style, body=True, color="light", inverse=False)
     return html.Div([textbox])
 
+# create agent
+dataframes = [
+    df_running_stock,  # df1
+    df_agg_monthly_3years,  # df2
+    df_price_rec_summary,  # df3
+]
 
+agent_news = create_pandas_dataframe_agent(
+    ChatOpenAI(temperature=0.3, model="gpt-4o-mini"),
+    dataframes,
+    verbose=False,
+    agent_type=AgentType.OPENAI_FUNCTIONS,
+    number_of_head_rows=5,
+    allow_dangerous_code=True,
+    handle_parsing_errors=True,
+    max_iterations=100
+)
 @app.callback(
     Output('news-content', 'children'),
     [Input('loading-news', 'children')]
 )
 @cache_decorator
 def fetch_news(_):
-    response = agent_running_stock.run(prompt_news + "share with me the latest news for the data")
+    response = agent_news.run(prompt_news + "share with me the latest news for the data")
     return news_box(response)
