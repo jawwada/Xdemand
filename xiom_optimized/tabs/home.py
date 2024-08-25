@@ -5,7 +5,6 @@ from dash import State
 
 from xiom_optimized.langchain_utils.agents import agent_running_stock
 from xiom_optimized.langchain_utils.prompt_news import prompt_news
-from xiom_optimized.dash_callbacks.ask_ai_callbacks import textbox
 from xiom_optimized.utils.cache_manager import cache_decorator
 
 
