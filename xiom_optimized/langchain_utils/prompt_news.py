@@ -35,7 +35,7 @@ Give Actionable Insights.
 
 **Presentation:**
 Share insights in a news and alert style. 
-Provide actual actionable insights with numbers and recommendationa.
+Provide actionable insights with actual numbers from data and recommendationa.
 Provide Context: Always include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
 provide diverse news and headlies, content to cover all aspects of the data.
 
