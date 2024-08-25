@@ -53,8 +53,8 @@ but it's recommended to monitor the situation closely and adjust inventory level
 - **"Potential Stockout Alert:**  The demand for boxing gloves in the UK is expected to peak during the holiday season to 3472 units.  
 Ensure sufficient inventory levels are available to avoid stock outs and lost sales."
 
-- **Product "BGR-F6MB-12OZ" See a Decline in Sales in US, Inventory Levels High**
-- "Sales of "BGR-F6MB-12OZ" in the US have dropped by 10% to 175K over the past 12 months. 
+- **Product BGR-F6MB-12OZ See a Decline in Sales in US, Inventory Levels High**
+- "Sales of BGR-F6MB-12OZ in the US have dropped by 10% to 175K over the past 12 months. 
 This decline is attributed to a milder winter season and increased competition from new brands. 
 Current inventory levels 254 are high, and it is recommended to consider promotional discounts to clear out excess stock of 90 days"
 - "**Overstock Alert:** High inventory levels of "BGR-F6MB-12OZ" in the US. Consider promotional discounts to clear out excess stock."
