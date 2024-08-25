@@ -27,7 +27,7 @@ and generate actionable insights and news, alerts for top products and categorie
 - Report sales increasing, decreasing, biggest revenue generators, earners, groweres, winners and looser products?
 - Compare the optimal stock level to current stock in price recommendation , and recommend inventory adjustments using inventory_order.
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
-- Discuss demand trend, seasonality for each product from df_running_stock. (yhat, is_understock, is_overstock)
+- Share demand trend, seasonality for each product from df_running_stock. (yhat, is_understock, is_overstock)
 - Analyse the stock levels for each product and warehouse_code combination from price recommendation data. (mean_demand, current_stock, optimal_stock_level, understock_days, overstock_days)
 - Asses upcoming/next holiday season stock levels. Ans: look at df_running_stock, sum is_understock for each sku, warehouse_code combinations for upcoming October, November, December.
 - What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
@@ -36,12 +36,12 @@ and generate actionable insights and news, alerts for top products and categorie
 **Presentation:**
 Share insights in a news and alert style. 
 Provide actionable insights with actual numbers from data and recommendations.
-Provide Context: Always include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
+Provide Context:  Include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
 provide diverse news and headlines, content to cover all aspects of the data.
 
 **News Format:**
 - **Headline:** A concise and attention-grabbing title summarizing the key insight.
-- **Body:** A clear and informative explanation of the insight, including relevant data points, trends, and recommendations.
+- **Body:** A clear and informative explanation of the insight, including relevant facts, trends, and recommendations.
 - **Alert:** If there are critical issues or opportunities, highlight them with a clear alert.
 
 **Example News:**
@@ -60,29 +60,29 @@ Current inventory levels 254 are high, and it is recommended to consider promoti
 - "**Overstock Alert:** High inventory levels of "BGR-F6MB-12OZ" in the US. Consider promotional discounts to clear out excess stock."
 
 - **"Demand for Yoga Mats Category in Germany Peaks, Inventory Running Low"**
-- "The demand for yoga mats in Germany has surged by 20% over the past 6 months, driven by a growing interest in home fitness.
- Current inventory levels are running low, and it is recommended to increase stock levels to meet the rising demand."
-- "**Stockout Alert**: Low inventory levels of yoga mats in Germany. Increase stock levels to meet rising demand."
+- The demand for yoga mats in Germany has surged by 20% over the past 6 months, driven by a growing interest in home fitness.
+ Current inventory levels are running low, and it is recommended to increase stock levels to meet the rising demand.
+- **Stockout Alert**: Low inventory levels of yoga mats in Germany. Increase stock levels to meet rising demand.
 
 -  "**Price Adjustment for Product Running Shoes in Canada Boosts Revenue**"
-- "A recent price adjustment for product running shoes in Canada has resulted in a 12% increase in revenue. 
+- A recent price adjustment for product running shoes in Canada has resulted in a 12% increase in revenue. 
 The new pricing strategy has been well-received by customers, leading to higher sales volumes. 
-It is recommended to continue monitoring the market and adjust prices as needed to maintain this positive trend."
--  "**Revenue Boost Alert:** Price adjustment for running shoes in Canada has led to a significant increase in revenue. 
-Continue monitoring the market for further adjustments."
+It is recommended to continue monitoring the market and adjust prices as needed to maintain this positive trend.
+-  **Revenue Boost Alert:** Price adjustment for running shoes in Canada has led to a significant increase in revenue. 
+Continue monitoring the market for further adjustments.
 
 -  **Holiday Season Stock Levels for Category Belts in UK Optimized**
 -  Stock levels for Belts in the UK have been optimized for the upcoming holiday season.
  Based on historical sales data, inventory levels have been adjusted to ensure sufficient stock of 400 during peak demand periods. 
  It is recommended to closely monitor sales and adjust inventory levels as needed.
-- "**Holiday Season Preparedness:** Belts stock levels in the UK have been optimized for the holiday season.
- Monitor sales closely and adjust inventory levels as needed."
+- **Holiday Season Preparedness:** Belts stock levels in the UK have been optimized for the holiday season.
+ Monitor sales closely and adjust inventory levels as needed.
 
 - **Historical Sales Analysis Reveals Top-Selling Products in France**
-- "A historical sales analysis has revealed the top-selling products in France over the past 12 months. 
+- A historical sales analysis has revealed the top-selling products in France over the past 12 months. 
 The top categories include fitness equipment, home appliances, and fashion accessories. 
-It is recommended to focus marketing efforts on these categories to maximize sales."
-- "**Top-Selling Products Alert:** Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales."
+It is recommended to focus marketing efforts on these categories to maximize sales.
+- **Top-Selling Products Alert:** Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales.
 
 **Format:**
 Use markdown with good formatting. Use colored names, bullets, bold, relevant icons for news and alerts where appropriate. 
