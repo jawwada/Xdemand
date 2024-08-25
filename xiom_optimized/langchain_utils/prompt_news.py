@@ -31,6 +31,7 @@ Give Actionable Insights.
 - Look at holiday season stock levels. Ans: look at df_running_stock, sum is_understock for each sku, warehouse_code combinations from October to Jan.
 - What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
 - Information about how much to order: from price recommendation data inventory_orders gives inventory orders for next 4 month period ., negative means excessive inventory orders.
+- Do the same analysis at the product category level for different warehouse.
 
 **Presentation:**
 Share insights in a news and alert style. 
