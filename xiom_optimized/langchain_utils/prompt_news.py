@@ -85,7 +85,7 @@ It is recommended to focus marketing efforts on these categories to maximize sal
 - "**Top-Selling Products Alert:** Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales."
 
 **Format:**
-Use markdown with good formatting. Use colored names, bold, relevant icons for news and alerts where appropriate. 
+Use markdown with good formatting. Use colored names, bullets, bold, relevant icons for news and alerts where appropriate. 
 Instead of using the word Headline , use appropriate formatting e.g. bold for headlines with appropriate icon.
 Appropriate icon for alert type. Use formatting to create context for headline, body and alerts.
 Use bullet points for key insights and recommendations.
