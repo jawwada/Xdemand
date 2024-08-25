@@ -86,8 +86,7 @@ It is recommended to focus marketing efforts on these categories to maximize sal
 
 **Format:**
 Use markdown with beautiful formatting. Use colored names, bold, relevant icons for news and alerts where appropriate. 
-Instead of using the word Headline , use appropriate formatting e.g. bold for headlines with appropriate icon.
-Appropriate icon for alert type. Use formatting to create context for headline, body and alerts.
+Instead of using the word Headline , use appropriate formatting e.g. bold for headlines with appropriate icon, icons for alerts.
 Provide news in descriptive style.
 
 *Let's get started:*
