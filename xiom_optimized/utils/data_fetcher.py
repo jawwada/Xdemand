@@ -20,9 +20,10 @@ def fetch_ph_data():
 
 
 def fetch_daily_sales(ph_data):
+
     df_daily_sales_da = pd.read_json(cache_manager.query_df_daily_sales(ph_data), convert_dates=['date'],
                                      orient='split')
-    df_sales = pd.read_json(cache_manager.query_df_daily_sales(ph_data), convert_dates=['date'], orient='split')
+    df_sales = pd.read_json(cache_manager.query_df_daily_sales_oos(ph_data), convert_dates=['date'], orient='split')
     df_sales.columns = df_sales.columns.str.lower()
     df_sales['date'] = pd.to_datetime(df_sales['date'])
     return df_daily_sales_da, df_sales

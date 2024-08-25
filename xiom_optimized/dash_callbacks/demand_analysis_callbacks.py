@@ -11,7 +11,7 @@ from dash import html
 from xiom_optimized.app_config_initial import app
 from xiom_optimized.utils.cache_manager import cache_decorator
 from xiom_optimized.utils.config_constants import sample_rate_dict
-from xiom_optimized.utils.data_fetcher import df_sales
+from xiom_optimized.utils.data_fetcher import df_daily_sales_da
 from xiom_optimized.utils.data_fetcher import ph_data
 
 
@@ -23,10 +23,10 @@ from xiom_optimized.utils.data_fetcher import ph_data
     Input('analysis-tabs', 'value'),
     Input('filter-data', 'data'))
 def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_tab, filtered_data):
-    max_date = df_sales['date'].max()
+    max_date = df_daily_sales_da['date'].max()
     max_date = max_date - pd.DateOffset(weeks=1)
     min_date = max_date - pd.DateOffset(months=12)
-    df_lastyear = df_sales[(df_sales['date'] < max_date) & (df_sales['date'] > min_date)].copy(deep=True)
+    df_lastyear = df_daily_sales_da[(df_daily_sales_da['date'] < max_date) & (df_daily_sales_da['date'] > min_date)].copy(deep=True)
 
     df_lastyear = df_lastyear.groupby([
         'sku',
@@ -39,7 +39,7 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         'price': 'mean'}).reset_index()
     filtered_data = pd.read_json(filtered_data, orient='split')  # drop duplicates otherwise big erros
     filtered_data = filtered_data[['channel', 'sku', 'warehouse_code', 'region', 'level_1']].drop_duplicates()
-    df_sales_filtered = pd.merge(df_lastyear, filtered_data,
+    df_daily_sales_da_filtered = pd.merge(df_lastyear, filtered_data,
                                  on=['channel', 'sku', 'warehouse_code', 'region', 'level_1'],
                                  how='inner')
 
@@ -48,10 +48,10 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         # Filter the data to past 12 months
         # Filter the data to past 12 months
 
-        df_sales_filtered['sku_warehouse'] = df_sales_filtered['sku'] + " " + df_sales_filtered['warehouse_code']
+        df_daily_sales_da_filtered['sku_warehouse'] = df_daily_sales_da_filtered['sku'] + " " + df_daily_sales_da_filtered['warehouse_code']
         # group by montly data and take only complete months
 
-        df = df_sales_filtered[['sku_warehouse', 'date', quantity_sales_radio]].copy(deep=True)
+        df = df_daily_sales_da_filtered[['sku_warehouse', 'date', quantity_sales_radio]].copy(deep=True)
         # sample the data frame by month and sum by the quantity_sales_radio
 
         df = df.groupby(['sku_warehouse', 'date'])[quantity_sales_radio].sum().reset_index()
@@ -74,7 +74,7 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         fig_losers = px.bar(losers, x='date', y=quantity_sales_radio, color='sku_warehouse',
                             title='Losers - MoM Change')
 
-        df = df_sales_filtered[['region', 'date', quantity_sales_radio]].copy(deep=True)
+        df = df_daily_sales_da_filtered[['region', 'date', quantity_sales_radio]].copy(deep=True)
         regions = df['region'].unique()
 
         df = df.groupby(['region', 'date'])[quantity_sales_radio].sum().reset_index()
@@ -87,7 +87,7 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
         fig_category = px.line(df_category, x='date', y=quantity_sales_radio, color='level_1', title='Category Trends')
 
         df_tree_map = (
-            df_sales_filtered.groupby([
+            df_daily_sales_da_filtered.groupby([
                 'channel',
                 'region',
                 "level_1",
@@ -108,7 +108,7 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
                               color='sku', values=quantity_sales_radio, title='Sales')
 
         num_skus = len(df_tree_map['sku'].unique())
-        df_sku_sum = df_sales_filtered.groupby(['sku'])[[quantity_sales_radio]].sum().reset_index()
+        df_sku_sum = df_daily_sales_da_filtered.groupby(['sku'])[[quantity_sales_radio]].sum().reset_index()
         top_skus = df_sku_sum.nlargest(min(num_skus, n_largest), quantity_sales_radio)['sku']
         agg_data_top_skus = df_lastyear[df_lastyear['sku'].isin(top_skus)]
         fig_bar = px.bar(agg_data_top_skus, x='date', y=quantity_sales_radio, color='sku', \
@@ -135,8 +135,8 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
     else:
         analysis_table = dash_table.DataTable(
             id='analysis-table',
-            columns=[{"name": i, "id": i} for i in df_sales_filtered.columns],
-            data=df_sales_filtered.head(100).to_dict('records'),
+            columns=[{"name": i, "id": i} for i in df_daily_sales_da_filtered.columns],
+            data=df_daily_sales_da_filtered.head(100).to_dict('records'),
             page_size=20,
             style_table={'className': 'col-md-12'},
             sort_action="native",
