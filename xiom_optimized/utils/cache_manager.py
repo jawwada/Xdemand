@@ -95,17 +95,19 @@ class CacheManager:
     @cache_decorator
     def query_df_daily_sales(self, ph_data):
         query = """
-        SELECT agg.* FROM agg_im_sku_daily_sales agg
+        SELECT agg.* FROM agg_im_sku_daily_sales_oos agg
             JOIN (
                 SELECT DISTINCT sku, warehouse_code 
                 FROM stat_forecast_data_quantity 
             ) fcst ON fcst.sku = agg.sku AND fcst.warehouse_code = agg.warehouse_code
         where date > DATEADD(year, -3, GETDATE()) 
-        ORDER BY agg.sku, agg.region, agg.date;
+        ORDER BY agg.sku, agg.warehouse_code, agg.date;
         """
         df = pd.read_sql_query(query, cnxn)
         df['date'] = pd.to_datetime(df['date'])
-        df['warehouse_code'] = df['region'].map(region_warehouse_codes)
+        #df['warehouse_code'] = df['region'].map(region_warehouse_codes)
+        # group by sku, warehouse_code, sort by date and apply forward fill , backward fill for missing values of price
+        df = df.groupby(['sku', 'warehouse_code']).apply(lambda x: x.sort_values('date', ascending=True).ffill().bfill()).reset_index(drop=True)
         df = df.merge(ph_data[['sku', 'level_1']].drop_duplicates(), on='sku', how='inner')
         return df.to_json(date_format='iso', orient='split')
 

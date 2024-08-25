@@ -26,22 +26,31 @@ from xiom_optimized.utils.data_fetcher import df_sales
     Input('demand-tabs', 'value'),
     Input('filter-data', 'data'),
     Input('sku-dropdown', 'value'),
+    Input('warehouse-code-dropdown', 'value'),
     Input('seasonality-mode-radio', 'value')
 )
 def update_demand_forecast_graph(quantity_sales_radio, time_window,
                                  graph_data_tab, filter_data,
-                                 selected_sku, seasonality_mode):
-    if graph_data_tab == 'tab-1':
-        if isinstance(selected_sku, str):
-            df_ds = df_sales[df_sales['sku'] == selected_sku].copy()
+                                 selected_sku,selected_warehouse, seasonality_mode):
 
+    if graph_data_tab == 'tab-1':
+        if isinstance(selected_sku, str) and isinstance(selected_warehouse, str):
+            df_ds = df_sales[df_sales['sku'] == selected_sku]
+            df_ds = df_ds[df_ds['warehouse_code'] == selected_warehouse]
             df_ds['date'] = pd.to_datetime(df_ds['date'], errors='coerce')
             df_ds = df_ds.set_index('date')
-            df_ds = df_ds[quantity_sales_radio]
+            df_ds = df_ds[[quantity_sales_radio,'out_of_stock']]
 
-            # Inside your update_demand_forecast_graph function, after you define df_ds and set 'date' as its index:
-            # Set specific months to NaN
-            df_ds = df_ds.resample(sample_rate_dict[time_window]).sum()
+            # Resample the data according to the selected time window
+            df_ds = df_ds.resample(sample_rate_dict[time_window]).agg({
+                quantity_sales_radio: 'sum',
+                'out_of_stock': 'sum'
+            })
+
+            df_ds_oos = df_ds.loc[df_ds['out_of_stock'] > 0]
+            # Drop rows where 'out_of_stock' is 0
+            df_ds=df_ds.loc[df_ds['out_of_stock'] == 0]
+
 
             # Make sure your dataframe is in the right format for Prophet
             df_ds = df_ds.reset_index().rename(columns={'date': 'ds', quantity_sales_radio: 'y'})
@@ -71,6 +80,8 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
             fig_components.update_layout(title_text="Forecasting Model Components")
             # Add traces
             fig_components.add_trace(go.Scatter(x=forecast['ds'], y=forecast['trend'], name='Trend'), row=1, col=1)
+            # add out of stock data
+
 
             if model.weekly_seasonality:
                 fig_components.add_trace(go.Scatter(x=forecast['ds'], y=forecast['weekly'], name='Weekly'), row=2,
@@ -98,6 +109,8 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
 
             # Add actual data to the figure
             fig.add_trace(go.Scatter(x=df_ds['ds'], y=df_ds['y'], name='Actual'))
+            fig.add_trace(go.Scatter(x=df_ds_oos.index, y=df_ds_oos[quantity_sales_radio], mode='markers',
+                                                marker=dict(color='red'), name='Out of Stock'))
             # Add the forecasted data to the figure
             fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat'], name='Forecast'))
 
