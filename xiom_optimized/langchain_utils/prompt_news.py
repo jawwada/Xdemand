@@ -57,6 +57,26 @@ If User asks for download, use functions like .head() or .tail() to show the dat
 - **Body:** "Sales of boxing gloves in the UK have increased significantly over the past 12 months, with a projected 15% growth in demand over the next 6 months. This trend is driven by increased interest in fitness and boxing, particularly among younger demographics.  The current stock level is sufficient to meet the projected demand, but it's recommended to monitor the situation closely and adjust inventory levels as needed."
 - **Alert:** "Potential Stockout Alert:  The demand for boxing gloves in the UK is expected to peak during the holiday season.  Ensure sufficient inventory levels are available to avoid stockouts and lost sales."
 
+- **Headline:** "Winter Jackets See a Decline in Sales in US, Inventory Levels High"
+- **Body:** "Sales of winter jackets in the US have dropped by 10% over the past 12 months. This decline is attributed to a milder winter season and increased competition from new brands. Current inventory levels are high, and it is recommended to consider promotional discounts to clear out excess stock."
+- **Alert:** "Overstock Alert: High inventory levels of winter jackets in the US. Consider promotional discounts to clear out excess stock."
+
+- **Headline:** "Demand for Yoga Mats in Germany Peaks, Inventory Running Low"
+- **Body:** "The demand for yoga mats in Germany has surged by 20% over the past 6 months, driven by a growing interest in home fitness. Current inventory levels are running low, and it is recommended to increase stock levels to meet the rising demand."
+- **Alert:** "Stockout Alert: Low inventory levels of yoga mats in Germany. Increase stock levels to meet rising demand."
+
+- **Headline:** "Price Adjustment for Running Shoes in Canada Boosts Revenue"
+- **Body:** "A recent price adjustment for running shoes in Canada has resulted in a 12% increase in revenue. The new pricing strategy has been well-received by customers, leading to higher sales volumes. It is recommended to continue monitoring the market and adjust prices as needed to maintain this positive trend."
+- **Alert:** "Revenue Boost: Price adjustment for running shoes in Canada has led to a significant increase in revenue. Continue monitoring the market for further adjustments."
+
+- **Headline:** "Holiday Season Stock Levels for Electronics in UK Optimized"
+- **Body:** "Stock levels for electronics in the UK have been optimized for the upcoming holiday season. Based on historical sales data, inventory levels have been adjusted to ensure sufficient stock during peak demand periods. It is recommended to closely monitor sales and adjust inventory levels as needed."
+- **Alert:** "Holiday Season Preparedness: Electronics stock levels in the UK have been optimized for the holiday season. Monitor sales closely and adjust inventory levels as needed."
+
+- **Headline:** "Historical Sales Analysis Reveals Top-Selling Products in France"
+- **Body:** "A historical sales analysis has revealed the top-selling products in France over the past 12 months. The top categories include fitness equipment, home appliances, and fashion accessories. It is recommended to focus marketing efforts on these categories to maximize sales."
+- **Alert:** "Top-Selling Products: Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales."
+
 **Format:**
 Use markdown. Use colored labels, bold, relevant icons, and tables where appropriate. 
 
