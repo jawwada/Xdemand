@@ -6,6 +6,8 @@ from dash import State
 from xiom_optimized.langchain_utils.agents import agent_running_stock
 from xiom_optimized.langchain_utils.prompts import prompt_ds
 from xiom_optimized.dash_callbacks.ask_ai_callbacks import textbox
+from xiom_optimized.utils.cache_manager import cache_decorator
+
 
 layout = html.Div(
     [
@@ -74,12 +76,14 @@ from xiom_optimized.app_config_initial import app
 from xiom_optimized.langchain_utils.agents import agent_running_stock
 from xiom_optimized.langchain_utils.prompts import prompt_ds
 
+
+@cache_decorator
 @app.callback(
     Output('news-output', 'children'),
     [Input('url', 'pathname')]
 )
 def update_news_output(pathname):
     if pathname == "/":
-        response = agent_running_stock.run(prompt_ds + "share with me the latest news over the data")
+        response = agent_running_stock.run(prompt_ds + "share with me the latest news for the data")
         return textbox(response, box="AI")
     return ""
