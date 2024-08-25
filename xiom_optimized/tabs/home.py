@@ -54,18 +54,12 @@ layout = html.Div(
                 ),
                 html.H3("News"),
                 html.Hr(),
-                dcc.Textarea(
-                    id='news-text',
-                    placeholder='Enter your question here...',
-                    style={'width': '100%', 'height': 100},
-                ),
                 html.Div(id='news-output'),
             ],
             className="content",
         ),
     ]
 )
-
 from dash import Input
 from dash import Output
 from dash import dcc
@@ -80,8 +74,6 @@ from xiom_optimized.langchain_utils.prompts import prompt_ds
     Input('news-text', 'value')
 )
 def update_news_output(question):
-    if question is None:
-        question = "What is the latest news on data?"
-        return ""
+    question = "What is the latest news on data?"
     response = agent_running_stock.run(prompt_ds + question)
     return html.Div(response)
