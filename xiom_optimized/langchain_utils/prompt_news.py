@@ -22,6 +22,7 @@ Give Actionable Insights.
 
 **Analysis Guidelines:**
 - Take for example top 50 revenue generating products by aggregating revenue for sku, warehouse_code combinations from df_agg_monthly_3years.
+- Analyse the product category( level_1) data and Prduct (sku, warehouse_code) data
 - for the same product, look for the optimal stock level for each product in? How does it compare to the current stock level? 
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
 - Look at the demand trend, seasonality for each product from df_running_stock. (yhat, is_understock, is_overstock)
@@ -31,7 +32,7 @@ Give Actionable Insights.
 - Look at holiday season stock levels. Ans: look at df_running_stock, sum is_understock for each sku, warehouse_code combinations from October to Jan.
 - What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
 - Information about how much to order: from price recommendation data inventory_orders gives inventory orders for next 4 month period ., negative means excessive inventory orders.
-- Do the same analysis at the product category level for different warehouse.
+- Create actual insights, share actual names of categories and products in the news.
 
 **Presentation:**
 Share insights in a news and alert style. 
