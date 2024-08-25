@@ -41,7 +41,7 @@ Example questions to consider:
 
 **Presentation:**
 Share insights in a news and alert style. 
-Provide actual actionabe insights and recommendationa.
+Provide actual actionable insights and recommendationa.
 Add relevant columns from data sets that can enhance context.
 Provide Context: Always include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
 Do not provide, code, download links or hrefs in the answer.
