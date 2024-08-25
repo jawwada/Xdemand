@@ -1,6 +1,4 @@
 import dash_bootstrap_components as dbc
-from dash import dcc
-from dash import html
 from langchain.agents.agent_types import AgentType
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
 from langchain_openai import ChatOpenAI
@@ -11,7 +9,13 @@ from xiom_optimized.utils.data_fetcher import df_running_stock
 
 from xiom_optimized.langchain_utils.prompt_news import prompt_news
 from xiom_optimized.utils.cache_manager import cache_decorator
+from dash import Input
+from dash import Output
+from dash import dcc
+from dash import html
+from dash.exceptions import PreventUpdate
 
+from xiom_optimized.app_config_initial import app
 
 layout = html.Div(
     [
@@ -70,16 +74,6 @@ layout = html.Div(
         ),
     ]
 )
-
-from dash import Input
-from dash import Output
-from dash import dcc
-from dash import html
-from dash.exceptions import PreventUpdate
-
-from xiom_optimized.app_config_initial import app
-from xiom_optimized.langchain_utils.agents import agent_running_stock
-from xiom_optimized.langchain_utils.prompts import prompt_ds
 
 
 @app.callback(
