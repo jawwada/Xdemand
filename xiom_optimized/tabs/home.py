@@ -94,6 +94,21 @@ def update_news_output(pathname):
         ])
     raise PreventUpdate
 
+def news_box(text, name="RDX"):
+    text = text.replace(f"{name}:", "")
+
+    style = dict({ "max-width": "100%",
+    "width": "max-content",
+    "padding": "5px 5px",
+    "border-radius": 25,
+    "margin-bottom": 20
+    })
+
+    style["margin-left"] = 0
+    style["margin-right"] = "auto"
+    textbox = dbc.Card(dcc.Markdown(text), style=style, body=True, color="light", inverse=False)
+    return html.Div([textbox])
+
 @app.callback(
     Output('news-content', 'children'),
     [Input('loading-news', 'children')]
@@ -101,4 +116,4 @@ def update_news_output(pathname):
 @cache_decorator
 def fetch_news(_):
     response = agent_running_stock.run(prompt_ds + "share with me the latest news for the data")
-    return textbox(response, box="AI")
+    return news_box(response, box="AI")
