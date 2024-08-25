@@ -12,7 +12,8 @@ Use the data to provide insights and recommendations in the following areas:
 - Hypothesize, Test, and Validate
 
 **Data Context:*
-Available Data: You have 3 data sets related to running stock, sales, and price recommendations. These can be accessed with variables like df1, df2, and df3 in the environment.
+Available Data: You have 3 data sets related to running stock, sales, and price recommendations. 
+These can be accessed with variables like df1, df2, and df3 in the environment.
 {data_frames_description}
 How to Use Data:
 A product is a unique combination of `sku`, `warehouse_code` and product category.
@@ -21,23 +22,22 @@ Use meaningful names for data sets in reports (e.g., "running stock data," "sale
 Give Actionable Insights.
 
 **Analysis Guidelines:**
-- Analyze top 20 revenue generating products by aggregating revenue for sku, warehouse_code combinations from df_agg_monthly_3years.
-- Analyse the product category( level_1) data and find the top 3 categories by revenue from df_agg_monthly_3years.
-- Generate actionable insights and news, alerts for these products and categories the following areas:
-- Where are the sales increasing, decreasing, biggest revenue generators, earners, groweres, winners and looser products?
-- look for the optimal stock level? How does it compare to the current stock level? 
+- Analyze top products (sku, warehouse_code combinations) and categories (level_1) by aggregating revenue for  from df_agg_monthly_3years. 
+and generate actionable insights and news, alerts for top products and categories the following areas:
+- Report sales increasing, decreasing, biggest revenue generators, earners, groweres, winners and looser products?
+- Compare the optimal stock level to current stock in price recommendation , and recommend inventory adjustments using inventory_order.
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
-- Look at the demand trend, seasonality for each product from df_running_stock. (yhat, is_understock, is_overstock)
-- Look at the stock levels for each product and warehouse_code combination from price recommendation data. (mean_demand, current_stock, optimal_stock_level, understock_days, overstock_days)
-- Look at holiday season stock levels. Ans: look at df_running_stock, sum is_understock for each sku, warehouse_code combinations from October to Jan.
+- Discuss demand trend, seasonality for each product from df_running_stock. (yhat, is_understock, is_overstock)
+- Analyse the stock levels for each product and warehouse_code combination from price recommendation data. (mean_demand, current_stock, optimal_stock_level, understock_days, overstock_days)
+- Asses upcoming/next holiday season stock levels. Ans: look at df_running_stock, sum is_understock for each sku, warehouse_code combinations for upcoming October, November, December.
 - What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
 - Look at inventory_order for how much to order from price recommendation data inventory_orders gives inventory orders for next 4 month period. negative means excessive inventory orders.
 
 **Presentation:**
 Share insights in a news and alert style. 
-Provide actionable insights with actual numbers from data and recommendationa.
+Provide actionable insights with actual numbers from data and recommendations.
 Provide Context: Always include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
-provide diverse news and headlies, content to cover all aspects of the data.
+provide diverse news and headlines, content to cover all aspects of the data.
 
 **News Format:**
 - **Headline:** A concise and attention-grabbing title summarizing the key insight.
@@ -51,7 +51,7 @@ This trend is driven by increased interest in fitness and boxing, particularly a
 The current stock level 2300 Units is sufficient to meet the projected demand, 
 but it's recommended to monitor the situation closely and adjust inventory levels as needed."
 - **"Potential Stockout Alert:**  The demand for boxing gloves in the UK is expected to peak during the holiday season to 3472 units.  
-Ensure sufficient inventory levels are available to avoid stockouts and lost sales."
+Ensure sufficient inventory levels are available to avoid stock outs and lost sales."
 
 - **Product "BGR-F6MB-12OZ" See a Decline in Sales in US, Inventory Levels High**
 - "Sales of "BGR-F6MB-12OZ" in the US have dropped by 10% to 175K over the past 12 months. 
