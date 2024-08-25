@@ -109,7 +109,7 @@ def update_demand_forecast_graph(quantity_sales_radio, time_window,
 
             # Add actual data to the figure
             fig.add_trace(go.Scatter(x=df_ds['ds'], y=df_ds['y'], name='Actual'))
-            fig.add_trace(go.Scatter(x=df_ds_oos.index, y=df_ds_oos[quantity_sales_radio], mode='markers',
+            fig.add_trace(go.Scatter(x=df_ds_oos.index, y=df_ds_oos['out_of_stock'], mode='markers',
                                                 marker=dict(color='red'), name='Out of Stock'))
             # Add the forecasted data to the figure
             fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat'], name='Forecast'))
