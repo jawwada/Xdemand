@@ -59,15 +59,7 @@ layout = html.Div(
                 html.H3("News"),
                 html.Hr(),
                 html.Div(
-                    id='news-output',
-                    children=[
-                        dcc.Tabs(id="news-tabs", value='news-tab-1', children=[
-                            dcc.Tab(label='Top News', value='news-tab-1'),
-                            dcc.Tab(label='Alerts', value='news-tab-2'),
-                            dcc.Tab(label='Product Insights', value='news-tab-3'),
-                        ]),
-                        html.Div(id='news-tabs-content'),
-                    ]
+                    id='news-output', children=''
                 ),
             ],
             className="content",
@@ -116,7 +108,7 @@ def news_box(text, name="RDX"):
     textbox = dbc.Card(dcc.Markdown(text), style=style, body=True, color="light", inverse=False)
     return html.Div([textbox])
 
-#@cache_decorator
+
 @app.callback(
     Output('news-content', 'children'),
     [Input('loading-news', 'children')]
@@ -124,25 +116,3 @@ def news_box(text, name="RDX"):
 def fetch_news(_):
     response = agent_running_stock.run(prompt_news + "share with me the latest news for the data")
     return news_box(response)
-
-@app.callback(
-    Output('news-tabs-content', 'children'),
-    [Input('news-tabs', 'value')]
-)
-def update_news_tabs_content(tab_value):
-    if tab_value == 'news-tab-1':
-        return html.Div([
-            # Display top news here
-            html.P("Top News Content"),
-        ])
-    elif tab_value == 'news-tab-2':
-        return html.Div([
-            # Display alerts here
-            html.P("Alert Content"),
-        ])
-    elif tab_value == 'news-tab-3':
-        return html.Div([
-            # Display product insights here
-            html.P("Product Insights Content"),
-        ])
-    return html.Div()

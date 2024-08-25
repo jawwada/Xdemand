@@ -21,14 +21,14 @@ Use meaningful names for data sets in reports (e.g., "running stock data," "sale
 Give Actionable Insights.
 
 **Analysis Guidelines:**
-- Take top 100 revenue generating products by aggregating revenue for sku, warehouse_code combinations from df_agg_monthly_3years.
-- Analyse the product category( level_1) data and Prduct (sku, warehouse_code) data
-- for the same product, look for the optimal stock level for each product in? How does it compare to the current stock level? 
+- Analyze top revenue generating products by aggregating revenue for sku, warehouse_code combinations from df_agg_monthly_3years.
+- Analyse the product category( level_1) data and find the top categories by revenue from df_agg_monthly_3years.
+- Generate actionable insights and news, alerts for the following areas:
+- Where are the sales increasing, decreasing, biggest revenue generators, earners, groweres, winners and looser products?
+- look for the optimal stock level? How does it compare to the current stock level? 
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
 - Look at the demand trend, seasonality for each product from df_running_stock. (yhat, is_understock, is_overstock)
-            - Sum is_understock from df_running_stock for next 6 months to get number of understock days during next 6 months.
-            - Sum of yhat from df_running_stock for next 6 months to get total expected demand.
-            - Sum is_overstock from df_running_stock for next 6 months to get number of overstock days during next 6 months.
+- Look at the stock levels for each product and warehouse_code combination from price recommendation data. (mean_demand, current_stock, optimal_stock_level, understock_days, overstock_days)
 - Look at holiday season stock levels. Ans: look at df_running_stock, sum is_understock for each sku, warehouse_code combinations from October to Jan.
 - What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
 - Look at inventory_order for how much to order from price recommendation data inventory_orders gives inventory orders for next 4 month period. negative means excessive inventory orders.
@@ -45,38 +45,39 @@ provide diverse news and headlies, content to cover all aspects of the data.
 - **Alert:** If there are critical issues or opportunities, highlight them with a clear alert.
 
 **Example News:**
-- **Headline:** "Category Boxing Gloves Sales Surge in UK, Demand Forecast Shows Continued Growth with expected 15% increase to 1000 units"
-- **Body:** "Sales of boxing gloves in the UK have increased significantly over the past 12 months, with a projected 15% growth in demand over the next 6 months. This trend is driven by increased interest in fitness and boxing, particularly among younger demographics.  The current stock level is sufficient to meet the projected demand, but it's recommended to monitor the situation closely and adjust inventory levels as needed."
-- **Alert:** "Potential Stockout Alert:  The demand for boxing gloves in the UK is expected to peak during the holiday season.  Ensure sufficient inventory levels are available to avoid stockouts and lost sales."
+- **Category Boxing Gloves Sales Surge in UK, Demand Forecast Shows Continued Growth with expected 15% increase to 1000 units**
+- "Sales of boxing gloves in the UK have increased significantly over the past 12 months, with a projected 15% growth in demand over the next 6 months. This trend is driven by increased interest in fitness and boxing, particularly among younger demographics.  The current stock level is sufficient to meet the projected demand, but it's recommended to monitor the situation closely and adjust inventory levels as needed."
+- **"Potential Stockout Alert:**  The demand for boxing gloves in the UK is expected to peak during the holiday season.  Ensure sufficient inventory levels are available to avoid stockouts and lost sales."
 
-- **Headline:** Product "BGR-F6MB-12OZ" See a Decline in Sales in US, Inventory Levels High"
-- **Body:** "Sales of "BGR-F6MB-12OZ" in the US have dropped by 10% over the past 12 months. This decline is attributed to a milder winter season and increased competition from new brands. 
+- **Product "BGR-F6MB-12OZ" See a Decline in Sales in US, Inventory Levels High**
+- "Sales of "BGR-F6MB-12OZ" in the US have dropped by 10% over the past 12 months. This decline is attributed to a milder winter season and increased competition from new brands. 
 Current inventory levels 254 are high, and it is recommended to consider promotional discounts to clear out excess stock of 90 days"
-- **Alert:** "Overstock Alert: High inventory levels of "BGR-F6MB-12OZ" in the US. Consider promotional discounts to clear out excess stock."
+- "**Overstock Alert:** High inventory levels of "BGR-F6MB-12OZ" in the US. Consider promotional discounts to clear out excess stock."
 
-- **Headline:** "Demand for Yoga Mats Category in Germany Peaks, Inventory Running Low"
-- **Body:** "The demand for yoga mats in Germany has surged by 20% over the past 6 months, driven by a growing interest in home fitness. Current inventory levels are running low, and it is recommended to increase stock levels to meet the rising demand."
-- **Alert:** "Stockout Alert: Low inventory levels of yoga mats in Germany. Increase stock levels to meet rising demand."
+- **"Demand for Yoga Mats Category in Germany Peaks, Inventory Running Low"**
+- "The demand for yoga mats in Germany has surged by 20% over the past 6 months, driven by a growing interest in home fitness. Current inventory levels are running low, and it is recommended to increase stock levels to meet the rising demand."
+- "**Stockout Alert**: Low inventory levels of yoga mats in Germany. Increase stock levels to meet rising demand."
 
-- **Headline:** "Price Adjustment for Product Running Shoes in Canada Boosts Revenue"
-- **Body:** "A recent price adjustment for running shoes in Canada has resulted in a 12% increase in revenue. The new pricing strategy has been well-received by customers, leading to higher sales volumes. It is recommended to continue monitoring the market and adjust prices as needed to maintain this positive trend."
-- **Alert:** "Revenue Boost: Price adjustment for running shoes in Canada has led to a significant increase in revenue. Continue monitoring the market for further adjustments."
+-  "**Price Adjustment for Product Running Shoes in Canada Boosts Revenue**"
+- "A recent price adjustment for running shoes in Canada has resulted in a 12% increase in revenue. The new pricing strategy has been well-received by customers, leading to higher sales volumes. It is recommended to continue monitoring the market and adjust prices as needed to maintain this positive trend."
+-  "**Revenue Boost:** Price adjustment for running shoes in Canada has led to a significant increase in revenue. Continue monitoring the market for further adjustments."
 
-- **Headline:** "Holiday Season Stock Levels for Category Belts in UK Optimized"
-- **Body:** "Stock levels for Belts in the UK have been optimized for the upcoming holiday season.
+-  **Holiday Season Stock Levels for Category Belts in UK Optimized**
+-  "Stock levels for Belts in the UK have been optimized for the upcoming holiday season.
  Based on historical sales data, inventory levels have been adjusted to ensure sufficient stock of 400 during peak demand periods. 
  It is recommended to closely monitor sales and adjust inventory levels as needed."
-- **Alert:** "Holiday Season Preparedness: Belts stock levels in the UK have been optimized for the holiday season.
+- "**Holiday Season Preparedness:** Belts stock levels in the UK have been optimized for the holiday season.
  Monitor sales closely and adjust inventory levels as needed."
 
-- **Headline:** "Historical Sales Analysis Reveals Top-Selling Products in France"
-- **Body:** "A historical sales analysis has revealed the top-selling products in France over the past 12 months. 
+- **Historical Sales Analysis Reveals Top-Selling Products in France**
+- "A historical sales analysis has revealed the top-selling products in France over the past 12 months. 
 The top categories include fitness equipment, home appliances, and fashion accessories. It is recommended to focus marketing efforts on these categories to maximize sales."
-- **Alert:** "Top-Selling Products: Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales."
+- "**Top-Selling Products Alert:** Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales."
 
 **Format:**
-Use markdown. Use colored labels, bold, relevant icons for news and alerts, and tables where appropriate. 
-Instead of putting word Headlines, Body, and Alerts, use markdown and icons to create context for them.
+Use markdown with good formatting. Use colored labels, bold, relevant icons for news and alerts, and tables where appropriate. 
+Instead of using the words Healines, body, etc, use markdown formatting, especially icons for headline and alert type to create context for headline, body and alerts.
+Use bullet points for key insights and recommendations.
 
 *Let's get started: If you are unsure about any aspect of the question, ask curious questions to make your analysis accurate*
 """
