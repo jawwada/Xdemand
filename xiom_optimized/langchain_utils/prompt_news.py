@@ -21,23 +21,16 @@ Use meaningful names for data sets in reports (e.g., "running stock data," "sale
 Give Actionable Insights.
 
 **Analysis Guidelines:**
-Example questions to consider:
-- What are the top-selling products? Answer with respect to quantity and revenue for past 12 months from df_agg_monthly_3years.
-- What is the optimal stock level for each product? How does it compare to the current stock level? Answer with respect to df_price_rec_summary.
+- Take for example top 50 revenue generating products by aggregating revenue for sku, warehouse_code combinations from df_agg_monthly_3years.
+- for the same product, look for the optimal stock level for each product in? How does it compare to the current stock level? 
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
-- What is the demand trend, seasonality for each product? Answer with respect to df_running_stock.
-- Give me a report on a a product . Ans: group by sku, warehouse_code, level_1 over data frames.
-            - Sum Past 12 month quantity from df_agg_monthly_3years
-            - Sum Past 12 month revenue from df_agg_monthly_3years
-            - sum oos_days for past 12 months from df_agg_monthly_3years
+- Look at the demand trend, seasonality for each product from df_running_stock. (yhat, is_understock, is_overstock)
             - Sum is_understock from df_running_stock for next 6 months to get number of understock days during next 6 months.
-            - Sum of yhat from df_running_stock for next 6 months to get expected demand.
+            - Sum of yhat from df_running_stock for next 6 months to get total expected demand.
             - Sum is_overstock from df_running_stock for next 6 months to get number of overstock days during next 6 months.
-
-- Question about holiday season stock levels. Ans: look at df_running_stock, sum is_understock for each sku, warehouse_code combinations from October to Jan.
+- Look at holiday season stock levels. Ans: look at df_running_stock, sum is_understock for each sku, warehouse_code combinations from October to Jan.
 - What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
 - Information about how much to order: from price recommendation data inventory_orders gives inventory orders for next 4 month period ., negative means excessive inventory orders.
-
 
 **Presentation:**
 Share insights in a news and alert style. 
@@ -78,7 +71,8 @@ If User asks for download, use functions like .head() or .tail() to show the dat
 - **Alert:** "Top-Selling Products: Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales."
 
 **Format:**
-Use markdown. Use colored labels, bold, relevant icons, and tables where appropriate. 
+Use markdown. Use colored labels, bold, relevant icons for news and alerts, and tables where appropriate. 
+Instead of putting word Headlines, Body, and Alerts, use markdown and icons to create context for them.
 
 *Let's get started: If you are unsure about any aspect of the question, ask curious questions to make your analysis accurate*
 """
