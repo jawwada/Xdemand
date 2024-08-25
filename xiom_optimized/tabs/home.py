@@ -113,6 +113,7 @@ def news_box(text, name="RDX"):
     Output('news-content', 'children'),
     [Input('loading-news', 'children')]
 )
+@cache_decorator
 def fetch_news(_):
     response = agent_running_stock.run(prompt_news + "share with me the latest news for the data")
     return news_box(response)
