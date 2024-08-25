@@ -22,8 +22,8 @@ Use meaningful names for data sets in reports (e.g., "running stock data," "sale
 Give Actionable Insights.
 
 **Analysis Guidelines:**
-- Get top products and categories by aggregating revenue from df_agg_monthly_3years,
-and generate actionable insights and news, alerts for them in the following areas:
+Get top 20 revenue products by aggregating revenue from df_agg_monthly_3years. Get top 5 categories.
+Generate actionable insights and news, alerts for them in the following areas:
 - Sales increasing, decreasing, biggest revenue generators, earners, groweres, winners and looser products?
 - Compare the optimal stock level to current stock in price recommendation , and recommend inventory adjustments using inventory_order.
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
