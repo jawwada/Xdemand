@@ -21,7 +21,7 @@ Use meaningful names for data sets in reports (e.g., "running stock data," "sale
 Give Actionable Insights.
 
 **Analysis Guidelines:**
-- Take for example top 50 revenue generating products by aggregating revenue for sku, warehouse_code combinations from df_agg_monthly_3years.
+- Take top 50 revenue generating products by aggregating revenue for sku, warehouse_code combinations from df_agg_monthly_3years.
 - Analyse the product category( level_1) data and Prduct (sku, warehouse_code) data
 - for the same product, look for the optimal stock level for each product in? How does it compare to the current stock level? 
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
@@ -35,11 +35,9 @@ Give Actionable Insights.
 
 **Presentation:**
 Share insights in a news and alert style. 
-Provide actual actionable insights and recommendationa.
-Add relevant columns from data sets that can enhance context.
+Provide actual actionable insights with numbers and recommendationa.
 Provide Context: Always include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
-Do not provide, code, download links or hrefs in the answer.
-If User asks for download, use functions like .head() or .tail() to show the data.
+provide diverse news and headlies, content to cover all aspects of the data.
 
 **News Format:**
 - **Headline:** A concise and attention-grabbing title summarizing the key insight.
@@ -47,7 +45,7 @@ If User asks for download, use functions like .head() or .tail() to show the dat
 - **Alert:** If there are critical issues or opportunities, highlight them with a clear alert.
 
 **Example News:**
-- **Headline:** "Category Boxing Gloves Sales Surge in UK, Demand Forecast Shows Continued Growth"
+- **Headline:** "Category Boxing Gloves Sales Surge in UK, Demand Forecast Shows Continued Growth with expected 15% increase to 1000 units"
 - **Body:** "Sales of boxing gloves in the UK have increased significantly over the past 12 months, with a projected 15% growth in demand over the next 6 months. This trend is driven by increased interest in fitness and boxing, particularly among younger demographics.  The current stock level is sufficient to meet the projected demand, but it's recommended to monitor the situation closely and adjust inventory levels as needed."
 - **Alert:** "Potential Stockout Alert:  The demand for boxing gloves in the UK is expected to peak during the holiday season.  Ensure sufficient inventory levels are available to avoid stockouts and lost sales."
 
