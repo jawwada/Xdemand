@@ -48,12 +48,13 @@ provide diverse news and headlies, content to cover all aspects of the data.
 - **Category Boxing Gloves Sales Surge in UK, Demand Forecast Shows Continued Growth with expected 15% increase to 1000 units**
 - "Sales of boxing gloves in the UK have increased significantly over the past 12 months, with a projected 15% growth in demand over the next 6 months. 
 This trend is driven by increased interest in fitness and boxing, particularly among younger demographics.  
-The current stock level is sufficient to meet the projected demand, but it's recommended to monitor the situation closely and adjust inventory levels as needed."
+The current stock level 2300 Units is sufficient to meet the projected demand, 
+but it's recommended to monitor the situation closely and adjust inventory levels as needed."
 - **"Potential Stockout Alert:**  The demand for boxing gloves in the UK is expected to peak during the holiday season to 3472 units.  
 Ensure sufficient inventory levels are available to avoid stockouts and lost sales."
 
 - **Product "BGR-F6MB-12OZ" See a Decline in Sales in US, Inventory Levels High**
-- "Sales of "BGR-F6MB-12OZ" in the US have dropped by 10% over the past 12 months. 
+- "Sales of "BGR-F6MB-12OZ" in the US have dropped by 10% to 175 thousand over the past 12 months. 
 This decline is attributed to a milder winter season and increased competition from new brands. 
 Current inventory levels 254 are high, and it is recommended to consider promotional discounts to clear out excess stock of 90 days"
 - "**Overstock Alert:** High inventory levels of "BGR-F6MB-12OZ" in the US. Consider promotional discounts to clear out excess stock."
@@ -64,7 +65,7 @@ Current inventory levels 254 are high, and it is recommended to consider promoti
 - "**Stockout Alert**: Low inventory levels of yoga mats in Germany. Increase stock levels to meet rising demand."
 
 -  "**Price Adjustment for Product Running Shoes in Canada Boosts Revenue**"
-- "A recent price adjustment for running shoes in Canada has resulted in a 12% increase in revenue. 
+- "A recent price adjustment for product running shoes in Canada has resulted in a 12% increase in revenue. 
 The new pricing strategy has been well-received by customers, leading to higher sales volumes. 
 It is recommended to continue monitoring the market and adjust prices as needed to maintain this positive trend."
 -  "**Revenue Boost:** Price adjustment for running shoes in Canada has led to a significant increase in revenue. 
@@ -79,7 +80,8 @@ Continue monitoring the market for further adjustments."
 
 - **Historical Sales Analysis Reveals Top-Selling Products in France**
 - "A historical sales analysis has revealed the top-selling products in France over the past 12 months. 
-The top categories include fitness equipment, home appliances, and fashion accessories. It is recommended to focus marketing efforts on these categories to maximize sales."
+The top categories include fitness equipment, home appliances, and fashion accessories. 
+It is recommended to focus marketing efforts on these categories to maximize sales."
 - "**Top-Selling Products Alert:** Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales."
 
 **Format:**
