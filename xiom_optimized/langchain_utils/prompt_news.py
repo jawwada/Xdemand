@@ -19,19 +19,15 @@ How to Use Data:
 A product is a unique combination of `sku`, `warehouse_code` and 'level_1' product category.
 Merge data on [sku, warehouse_code] i.e. a product to analyse and combine different data sets for the same products
 Use meaningful names for data sets in reports (e.g., "running stock data," "sales data," "price recommendation data").
-Give Actionable Insights.
+Give diverse insights to cover different aspects.
 
 **Analysis Guidelines:**
-Get top 20 revenue products by aggregating revenue from df_agg_monthly_3years. Get top 5 categories.
-Generate actionable insights and news, alerts for them in the following areas:
-- Sales increasing, decreasing, biggest revenue generators, earners, groweres, winners and looser products?
-- Compare the optimal stock level to current stock in price recommendation , and recommend inventory adjustments using inventory_order.
-- How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary.
-- Share demand trend, seasonality for each product from df_running_stock. (yhat, is_understock, is_overstock)
-- Analyse the stock levels for each product and warehouse_code combination from price recommendation data. (mean_demand, current_stock, optimal_stock_level, understock_days, overstock_days)
-- Asses upcoming/next holiday season stock levels. Ans: look at df_running_stock, sum is_understock for each sku, warehouse_code combinations for upcoming October, November, December.
-- What is the optimal price for a product? Ans: look at df_price_rec_summary: price_new, price_old, price_elasticity.
-- Look at inventory_order for how much to order from price recommendation data inventory_orders gives inventory orders for next 4 month period. negative means excessive inventory orders.
+Generate actionable insights and news, alerts for top products (sku, warehouse_code) and categories (Level_1):
+- Sales increasing, decreasing, biggest revenue generators, earners, growth, winners and looser products?
+- Compare the opt_stock_level to current_stock in price recommendation , and recommend inventory adjustments using inventory_order.
+- How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary (price_new, price_old, revenue_before, revenue_after, price_elasticity).
+- Share demand trend, seasonality for each product from df_running_stock. (yhat, trend,yearly_seasonality)
+- Asses upcoming/next holiday season stock days. Ans: look at df_running_stock, sum is_understock/is_overstock for each sku, warehouse_code combinations for upcoming October, November, December.
 
 **Presentation:**
 Share insights in a news and alert style. 
@@ -39,7 +35,7 @@ Provide actionable insights with actual numbers from data and recommendations.
 Provide Context:  Include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
 provide diverse news and headlines, content to cover all aspects of the data.
 
-**News Format:**
+**News Format:** Every News item has 3 sections:
 - **Headline:** A concise and attention-grabbing title summarizing the key insight.
 - **Body:** A clear and informative explanation of the insight, including relevant facts, trends, and recommendations.
 - **Alert:** If there are critical issues or opportunities, highlight them with a clear alert.
@@ -85,8 +81,8 @@ It is recommended to focus marketing efforts on these categories to maximize sal
 - **Top-Selling Products Alert:** Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales.
 
 **Format:**
-Use markdown with beautiful formatting and descriptive catchy style. Use colored names, bold, relevant icons for news and alerts where appropriate. 
-Instead of using the word Headline , use appropriate formatting e.g. bold for headlines with appropriate icon, icons for alerts.
+Use markdown magic in catchy style. Use colored names, relevant icons for news and alerts where appropriate. 
+Instead of using the word Headline , use appropriate formatting e.g. bold for headlines with appropriate icon.
 
 
 *Let's get started:*

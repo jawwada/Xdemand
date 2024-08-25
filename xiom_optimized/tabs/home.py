@@ -119,12 +119,13 @@ agent_news = create_pandas_dataframe_agent(
     agent_type=AgentType.OPENAI_FUNCTIONS,
     allow_dangerous_code=True,
     handle_parsing_errors=True,
-    max_iterations=50
+    max_iterations=100
 )
 @app.callback(
     Output('news-content', 'children'),
     [Input('loading-news', 'children')]
 )
+@cache_decorator
 def fetch_news(_):
     response = agent_news.run(prompt_news + "share with me the latest news for the data")
     return news_box(response)
