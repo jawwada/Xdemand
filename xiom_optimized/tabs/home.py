@@ -114,12 +114,12 @@ dataframes = [
 ]
 
 agent_news = create_pandas_dataframe_agent(
-    ChatOpenAI(temperature=0.3, model="gpt-4o"),
+    ChatOpenAI(temperature=0.3, model="gpt-4o-mini", max_tokens=1000),
     dataframes,
-    verbose=False,
     agent_type=AgentType.OPENAI_FUNCTIONS,
     number_of_head_rows=5,
     allow_dangerous_code=True,
+    handle_parsing_errors=True,
     max_iterations=30
 )
 @app.callback(
