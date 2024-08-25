@@ -1,9 +1,11 @@
 import dash_bootstrap_components as dbc
 from dash import dcc
 from dash import html
+from dash import State
 
 from xiom_optimized.langchain_utils.agents import agent_running_stock
 from xiom_optimized.langchain_utils.prompts import prompt_ds
+from xiom_optimized.dash_callbacks.ask_ai_callbacks import textbox
 
 layout = html.Div(
     [
@@ -54,12 +56,15 @@ layout = html.Div(
                 ),
                 html.H3("News"),
                 html.Hr(),
-                html.Div(id='news-output'),
+                html.Div(
+                    id='news-output',
+                ),
             ],
             className="content",
         ),
     ]
 )
+
 from dash import Input
 from dash import Output
 from dash import dcc
@@ -71,9 +76,10 @@ from xiom_optimized.langchain_utils.prompts import prompt_ds
 
 @app.callback(
     Output('news-output', 'children'),
-    Input('news-text', 'value')
+    [Input('url', 'pathname')]
 )
-def update_news_output(question):
-    question = "What is the latest news on data?"
-    response = agent_running_stock.run(prompt_ds + question)
-    return html.Div(response)
+def update_news_output(pathname):
+    if pathname == "/":
+        response = agent_running_stock.run(prompt_ds + "share with me the latest news over the data")
+        return textbox(response, box="AI")
+    return ""
