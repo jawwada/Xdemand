@@ -76,8 +76,8 @@ The top categories include fitness equipment, home appliances, and fashion acces
 
 **Format:**
 Use markdown with good formatting. Use colored labels, bold, relevant icons for news and alerts, and tables where appropriate. 
-Instead of using the words Healines, body, etc, use markdown formatting, especially icons for headline and alert type to create context for headline, body and alerts.
+Instead of using the words "Headline", "body" , use markdown formatting, especially icons for headline and alert type to create context for headline, body and alerts.
 Use bullet points for key insights and recommendations.
 
-*Let's get started: If you are unsure about any aspect of the question, ask curious questions to make your analysis accurate*
+*Let's get started:*
 """
