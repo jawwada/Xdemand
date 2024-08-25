@@ -21,6 +21,7 @@ import plotly.graph_objects as go  # Ensure this is imported
 import time  # Ensure this is imported
 from xiom_optimized.utils.utils import encode_image  # Ensure this is imported
 from plotly.subplots import make_subplots  # Import make_subplots
+from dash import clientside_callback
 
 @cache_decorator
 @app.callback(
@@ -162,24 +163,63 @@ def update_demand_analysis_graph(quantity_sales_radio, time_window, graph_data_t
 
 
 @app.callback(
-    Output('explanation-output', 'data'),
+    Output('temp-image-store', 'data'),
     Input('explain-ai-analysis', 'n_clicks'),
-    [State('fig-store', 'data')],  # Use the figure from the previous callback
     prevent_initial_call=True
 )
-def explain_ai_analysis(n_clicks, fig):
-    # Create a figure object from the incoming figure
+def explain_ai_analysis(n_clicks):
     if n_clicks is None:
         return dash.no_update
-    fig_object = go.Figure(fig)
+    
+    # Create a hidden div to store the base64 image
+    return html.Div([
+        html.Div(id='image-store', style={'display': 'none'}),
+        dcc.Loading(
+            id="loading-icon",
+            children=[html.Div(id='ai-explanation')],
+            type="default",
+        )
+    ])
 
-    # Write the image to a file
-    image_path = f"images/fig{n_clicks}.png"
-    fig_object.write_image(image_path)
-    time.sleep(1)  # Optional: wait for the image to be written
+# Add this clientside callback
+app.clientside_callback(
+    """
+    function(n_clicks) {
+        return new Promise((resolve, reject) => {
+            if (n_clicks === null) {
+                resolve(dash_clientside.no_update);
+            }
+            
+            const graphElement = document.querySelector('.js-plotly-plot');
+            
+            if (!graphElement) {
+                reject('Graph element not found');
+                return;
+            }
 
-    # Encode the image for the agent
-    base64_image = encode_image(image_path)
+            html2canvas(graphElement).then(canvas => {
+                const base64Image = canvas.toDataURL('image/png');
+                resolve(base64Image);
+            }).catch(error => {
+                reject('Failed to capture image: ' + error);
+            });
+        });
+    }
+    """,
+    Output('image-store', 'children'),
+    Input('temp-image-store', 'children'),
+    prevent_initial_call=True
+)
+
+# Add another callback to process the captured image
+@app.callback(
+    Output('explanation-output', 'children'),
+    Input('image-store', 'children'),
+    prevent_initial_call=True
+)
+def process_captured_image(base64_image):
+    if base64_image is None:
+        return dash.no_update
 
     # Call the agent to explain the image
     result = agent_explain_page.invoke(
@@ -190,7 +230,7 @@ def explain_ai_analysis(n_clicks, fig):
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": f"data:image/jpeg;base64,{base64_image}",
+                            "url": base64_image,
                             "detail": "auto",
                         },
                     },
@@ -198,5 +238,4 @@ def explain_ai_analysis(n_clicks, fig):
             )
         ]
     )
-    print(result["text"])
-    return result["text"]  # Return the result to update the content
+    return result["text"]
