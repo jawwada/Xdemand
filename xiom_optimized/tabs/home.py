@@ -85,7 +85,6 @@ from xiom_optimized.langchain_utils.prompts import prompt_ds
 def update_news_output(pathname):
     if pathname == "/":
         return html.Div([
-            html.P("Loading news...", id="loading-news"),
             dcc.Loading(
                 id="loading-news-spinner",
                 children=[html.Div(id="news-content")],
