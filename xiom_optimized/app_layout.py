@@ -82,6 +82,7 @@ layout = html.Div(id='page_container',
                                               style={'float': 'left', 'width': '100%'},
                                               # Set "Demand Forecasting" as the default tab
                                               children=[
+                                                  dcc.Tab(label=" Home ", value="/"),
                                                   dcc.Tab(label=" Demand Analysis ", value="/demand-analysis"),
                                                   dcc.Tab(label=" Demand Forecasting ", value="/demand-forecasting"),
                                                   dcc.Tab(label=" Price Sensing ", value="/price-sensing"),

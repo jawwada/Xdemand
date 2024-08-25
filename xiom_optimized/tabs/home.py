@@ -71,19 +71,34 @@ from dash import Input
 from dash import Output
 from dash import dcc
 from dash import html
+from dash.exceptions import PreventUpdate
 
 from xiom_optimized.app_config_initial import app
 from xiom_optimized.langchain_utils.agents import agent_running_stock
 from xiom_optimized.langchain_utils.prompts import prompt_ds
 
 
-@cache_decorator
 @app.callback(
     Output('news-output', 'children'),
     [Input('url', 'pathname')]
 )
 def update_news_output(pathname):
     if pathname == "/":
-        response = agent_running_stock.run(prompt_ds + "share with me the latest news for the data")
-        return textbox(response, box="AI")
-    return ""
+        return html.Div([
+            html.P("Loading news...", id="loading-news"),
+            dcc.Loading(
+                id="loading-news-spinner",
+                children=[html.Div(id="news-content")],
+                type="circle",
+            )
+        ])
+    raise PreventUpdate
+
+@app.callback(
+    Output('news-content', 'children'),
+    [Input('loading-news', 'children')]
+)
+@cache_decorator
+def fetch_news(_):
+    response = agent_running_stock.run(prompt_ds + "share with me the latest news for the data")
+    return textbox(response, box="AI")
