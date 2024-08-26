@@ -2,9 +2,10 @@ import logging
 
 import chromadb
 import pandas as pd
+from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_openai import ChatOpenAI
-from langchain_openai import OpenAIEmbeddings
+from langchain.chains import RetrievalQA
 
 from xiom_optimized.utils.cache_manager import CacheManager
 

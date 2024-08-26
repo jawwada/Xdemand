@@ -1,8 +1,6 @@
 from dash import Input, Output, State
 from dash.exceptions import PreventUpdate
-from langchain_community.vectorstores import Chroma
-from langchain_openai import ChatOpenAI
-from langchain.chains import RetrievalQA
+
 from xiom_optimized.app_config_initial import app
 from xiom_optimized.utils.data_fetcher import chroma_client
 from xiom_optimized.utils.data_fetcher import chroma_collection
