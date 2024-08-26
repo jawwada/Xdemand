@@ -81,7 +81,7 @@ It is recommended to focus marketing efforts on these categories to maximize sal
 **Presentation:**
 Provide report in news, and alert, descriptive and informative style with actionable insights from data and recommendations.
 Provide Context:  Include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
-Use markdown with creative formatting. Use colored names, bold text, relevant icons for headlines and alerts. 
+Use markdown with beautiful formatting. Use colored names, bold text, relevant icons for headlines and alerts. 
 Instead of using the word Headline, or body use appropriate formatting e.g. bold for headlines. 
 
 *Let's get started:*
