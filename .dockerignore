@@ -67,3 +67,4 @@ amazon_reviews/
 !xiom_optimized/assets/
 !common.cache_manager.py
 !xdemand/utils/cache_manager.py
+!amazon_reviews/chroma.sqlite3

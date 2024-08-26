@@ -1,6 +1,5 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
-from xiom_optimized.utils.utils import get_unique_values
 from xiom_optimized.dash_callbacks.product_research_callbacks import *
 
 layout = html.Div([

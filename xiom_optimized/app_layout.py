@@ -27,7 +27,7 @@ page_layouts = {
     "/ask-ai": ask_ai_layout,
     "/profile": profile_layout,
     "/data-upload": data_upload_layout,
-    "product-research": product_research_layout,
+    "/product-research": product_research_layout,
     "/": home_layout,
 }
 

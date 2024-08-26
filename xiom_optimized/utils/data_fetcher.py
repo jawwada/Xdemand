@@ -126,7 +126,7 @@ df_running_stock = fetch_running_stock(df_price_reference, ph_data)
 df_agg_monthly_3years = fetch_monthly_sales(ph_data)
 chroma_client = chromadb.PersistentClient(path="amazon_reviews")
 chroma_collection = chroma_client.get_or_create_collection("amazon_reviews")
-embeddings = OpenAIEmbeddings()
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 vectorstore = Chroma(
     client=chroma_client,
     collection_name="amazon_reviews",
