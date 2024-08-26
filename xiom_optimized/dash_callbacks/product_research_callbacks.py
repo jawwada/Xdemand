@@ -2,6 +2,7 @@ from dash import Input, Output, State
 from dash.exceptions import PreventUpdate
 from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
+from dash import html
 
 from xiom_optimized.app_config_initial import app
 from xiom_optimized.utils.data_fetcher import chroma_collection, vectorstore
@@ -27,7 +28,7 @@ def search_reviews(n_clicks, sku, warehouse, query):
     retriever = vectorstore.as_retriever(
         search_kwargs={
             "filter": {"$and": [{"sku": {"$eq": sku}}, {"warehouse_code": {"$eq": warehouse}}]},
-            "k": 5  # Retrieve top 5 most relevant reviews
+            "k": 10  # Retrieve top 10 most relevant reviews
         }
     )
     
@@ -47,14 +48,41 @@ def search_reviews(n_clicks, sku, warehouse, query):
     # Run the query
     result = qa_chain.run(query)
     
-    # Format the reviews and their metadata
-    reviews_output = ""
-    for doc in relevant_docs:
-        reviews_output += f"Review: {doc.page_content}\n"
-        reviews_output += f"Metadata: {doc.metadata}\n\n"
+    # Create table header
+    table_header = [
+        html.Tr([
+            html.Th("Date"),
+            html.Th("Rating"),
+            html.Th("SKU"),
+            html.Th("Warehouse"),
+            html.Th("Title"),
+            html.Th("Review"),
+        ])
+    ]
     
-    # Combine AI answer and reviews
-    final_output = f"AI Answer:\n{result}\n\nRelevant Reviews:\n{reviews_output}"
+    # Create table rows
+    table_rows = []
+    for doc in relevant_docs:
+        metadata = doc.metadata
+        table_rows.append(html.Tr([
+            html.Td(metadata['date']),
+            html.Td(metadata['rating']),
+            html.Td(metadata['sku']),
+            html.Td(metadata['warehouse_code']),
+            html.Td(metadata['title']),
+            html.Td(doc.page_content),
+        ]))
+    
+    # Create the table
+    review_table = html.Table(table_header + table_rows)
+    
+    # Combine AI answer and review table
+    final_output = html.Div([
+        html.H3("AI Answer:"),
+        html.P(result),
+        html.H3("Relevant Reviews:"),
+        review_table
+    ])
     
     return final_output
 
