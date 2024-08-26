@@ -6,10 +6,10 @@ prompt_news = f"""
 **Objective:** Help business managers and stakeholders make data-driven decisions by creating a news section for the dashboard.
 Use the data to provide insights and recommendations in the following areas:
 - Demand Forecasting
-- Price Recommendation for Revenue and Inventory Optimization
+- Price Recommendation for Revenue
  -Stock Analysis, Recommendation, Holiday Season Stock Levels
 - Historical Sales Analysis
-- Hypothesize, Test, and Validate
+- Inventory Optimization, Orders and Excess Stock
 
 **Data Context:*
 Available Data: You have 3 data sets related to running stock, sales, and price recommendations. 
@@ -19,21 +19,17 @@ How to Use Data:
 A product is a unique combination of `sku`, `warehouse_code` and 'level_1' product category.
 Merge data on [sku, warehouse_code] i.e. a product to analyse and combine different data sets for the same products
 Use meaningful names for data sets in reports (e.g., "running stock data," "sales data," "price recommendation data").
-Give diverse insights to cover different aspects.
+Give diverse insights to cover multiple different aspects, products and categories.
 
 **Analysis Guidelines:**
-Generate actionable insights and news, alerts for top revenue products (sku, warehouse_code) and categories (Level_1):
-- Sales increasing, decreasing, biggest revenue generators, earners, growth, winners and looser products?
+- Sales increasing, decreasing, top sellers, MoM growth, winners and looser products?
+- Get top revenue products and categories and generate actionable insights, news, and alerts for them in the following areas:
 - Compare the opt_stock_level to current_stock in price recommendation , and recommend inventory adjustments using inventory_order.
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary (price_new, price_old, revenue_before, revenue_after, price_elasticity).
 - Share demand trend, seasonality for different products and categories from df_running_stock. (yhat, trend,yearly_seasonality)
 - Assess upcoming/next holiday season stock days. Ans: look at df_running_stock, sum is_understock/is_overstock for each sku, warehouse_code combinations for upcoming October, November, December.
+- Cover multiple products and categories from top sellers, categories, and warehouses.
 
-**Presentation:**
-Share insights in a news and alert style. 
-Provide actionable insights with actual numbers from data and recommendations.
-Provide Context:  Include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
-provide diverse news and headlines, content to cover different aspects of the data.
 
 **News Format:** Every News item has 3 sections:
 - **Headline:** A concise and attention-grabbing title summarizing the key insight.
@@ -80,9 +76,13 @@ The top categories include fitness equipment, home appliances, and fashion acces
 It is recommended to focus marketing efforts on these categories to maximize sales.
 - **Top-Selling Products Alert:** Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales.
 
-**Format:**
-Use markdown magic in catchy style. Use colored names, relevant icons for news and alerts where appropriate. 
-Instead of using the word Headline , use appropriate formatting e.g. bold for headlines with appropriate icon.
+**Presentation:**
+Provide actionable insights with facts from data and recommendations.
+Provide Context:  Include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
+provide diverse news and headlines, content and cover different aspects of the data.
+Use markdown with beautiful formatting. Use colored names, bold, relevant icons for news and alerts where appropriate. 
+Instead of using the word Headline , use appropriate formatting e.g. bold for headlines with appropriate icon, icons for alerts.
+Provide news in descriptive style.
 
 
 *Let's get started:*

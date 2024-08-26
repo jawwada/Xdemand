@@ -114,7 +114,7 @@ dataframes = [
 ]
 
 agent_news = create_pandas_dataframe_agent(
-    ChatOpenAI(temperature=0.2, model="gpt-4o-mini"),
+    ChatOpenAI(temperature=0.3, model="gpt-4o-mini"),
     dataframes,
     agent_type=AgentType.OPENAI_FUNCTIONS,
     allow_dangerous_code=True,
@@ -125,7 +125,6 @@ agent_news = create_pandas_dataframe_agent(
     Output('news-content', 'children'),
     [Input('loading-news', 'children')]
 )
-@cache_decorator
 def fetch_news(_):
     response = agent_news.run(prompt_news + "share with me the latest news for the data")
     return news_box(response)
