@@ -1,36 +1,19 @@
 from dash import Input, Output, State
 from dash.exceptions import PreventUpdate
-import chromadb
 from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.chains import RetrievalQA
 from xiom_optimized.app_config_initial import app
-from xiom_optimized.utils.utils import get_unique_values
+from xiom_optimized.utils.data_fetcher import chroma_client
+from xiom_optimized.utils.data_fetcher import chroma_collection
+from xiom_optimized.utils.data_fetcher import embeddings
 
-# Initialize Chroma client
-chroma_client = chromadb.PersistentClient(path="amazon_reviews")
-chroma_collection = chroma_client.get_or_create_collection("amazon_reviews")
-
-# Initialize LangChain components
-embeddings = OpenAIEmbeddings()
-vectorstore = Chroma(
-    client=chroma_client,
-    collection_name="amazon_reviews",
-    embedding_function=embeddings
-)
-
-# Create RetrievalQA chain
-qa_chain = RetrievalQA.from_chain_type(
-    llm=ChatOpenAI(temperature=0.1),
-    chain_type="stuff",
-    retriever=vectorstore.as_retriever()
-)
 
 @app.callback(
     Output("search-results", "children"),
     Input("search-button", "n_clicks"),
     State("sku-dropdown", "value"),
-    State("warehouse-dropdown", "value"),
+    State("warehouse-code-dropdown", "value"),
     State("search-input", "value"),
     prevent_initial_call=True
 )

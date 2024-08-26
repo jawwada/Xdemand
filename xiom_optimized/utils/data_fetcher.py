@@ -1,6 +1,10 @@
 import logging
 
+import chromadb
 import pandas as pd
+from langchain_community.vectorstores import Chroma
+from langchain_openai import ChatOpenAI
+from langchain_openai import OpenAIEmbeddings
 
 from xiom_optimized.utils.cache_manager import CacheManager
 
@@ -119,3 +123,16 @@ df_running_stock = fetch_running_stock(df_price_reference, ph_data)
 # fetch aggregated data
 
 df_agg_monthly_3years = fetch_monthly_sales(ph_data)
+chroma_client = chromadb.PersistentClient(path="amazon_reviews")
+chroma_collection = chroma_client.get_or_create_collection("amazon_reviews")
+embeddings = OpenAIEmbeddings()
+vectorstore = Chroma(
+    client=chroma_client,
+    collection_name="amazon_reviews",
+    embedding_function=embeddings
+)
+qa_chain = RetrievalQA.from_chain_type(
+    llm=ChatOpenAI(temperature=0.1),
+    chain_type="stuff",
+    retriever=vectorstore.as_retriever()
+)
