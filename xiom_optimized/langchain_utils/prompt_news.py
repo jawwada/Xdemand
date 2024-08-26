@@ -39,43 +39,43 @@ Randomly select products and categories from these top sellers and categories an
 - **Alert:** If there are critical issues or opportunities, highlight them with a clear alert.
 
 **Example News:**
-- **Category Boxing Gloves Sales Surge in UK, Demand Forecast Shows Continued Growth with expected 15% increase**
+- **Category Boxing Gloves Sales Surge in UK, Demand Forecast Shows Continued Growth with expected 15% increase** \n
 - "Sales of boxing gloves in the UK have increased significantly over the past 12 months, with a projected 15% growth in demand over the next 6 months. 
 This trend is driven by increased interest in fitness and boxing, particularly among younger demographics.  
 The current stock level 2300 Units is sufficient to meet the projected demand, 
-but it's recommended to monitor the situation closely and adjust inventory levels as needed."
+but it's recommended to monitor the situation closely and adjust inventory levels as needed." \n
 - **"Potential Stockout Alert:**  The demand for boxing gloves in the UK is expected to peak during the holiday season to 3472 units.  
 Ensure sufficient inventory levels are available to avoid stock outs and lost sales."
 
-- **Product BGR-F6MB-12OZ See a Decline in Sales in US, Inventory Levels High**
-- "Sales of BGR-F6MB-12OZ in the US have dropped by 10% to 175K over the past 12 months. 
+- **Product BGR-F6MB-12OZ See a Decline in Sales in US, Inventory Levels High** \n
+- Sales of BGR-F6MB-12OZ in the US have dropped by 10% to 175K over the past 12 months. 
 This decline is attributed to a milder winter season and increased competition from new brands. 
-Current inventory levels 254 are high, and it is recommended to consider promotional discounts to clear out excess stock of 90 days"
-- "**Overstock Alert:** High inventory levels of "BGR-F6MB-12OZ" in the US. Consider promotional discounts to clear out excess stock."
+Current inventory levels 254 are high, and it is recommended to consider promotional discounts to clear out excess stock of 90 days \n
+- **Overstock Alert:** High inventory levels of "BGR-F6MB-12OZ" in the US. Consider promotional discounts to clear out excess stock.
 
-- **"Demand for Yoga Mats Category in Germany Peaks, Inventory Running Low"**
+- **"Demand for Yoga Mats Category in Germany Peaks, Inventory Running Low"** \n
 - The demand for yoga mats in Germany has surged by 20% over the past 6 months, driven by a growing interest in home fitness.
- Current inventory levels are running low, and it is recommended to increase stock levels to meet the rising demand.
+ Current inventory levels are running low, and it is recommended to increase stock levels to meet the rising demand. \n
 - **Stockout Alert**: Low inventory levels of yoga mats in Germany. Increase stock levels to meet rising demand.
 
--  "**Price Adjustment for Product Running Shoes in Canada Boosts Revenue**"
-- A recent price adjustment for product running shoes in Canada has resulted in a 12% increase in revenue. 
+-  "**Price Adjustment for Product Running Shoes in Canada Boosts Revenue**" \n
+- A recent price adjustment for product running shoes in Canada has resulted in a 12% increase in revenue.  
 The new pricing strategy has been well-received by customers, leading to higher sales volumes. 
-It is recommended to continue monitoring the market and adjust prices as needed to maintain this positive trend.
+It is recommended to continue monitoring the market and adjust prices as needed to maintain this positive trend. \n
 -  **Revenue Boost Alert:** Price adjustment for running shoes in Canada has led to a significant increase in revenue. 
 Continue monitoring the market for further adjustments.
 
--  **Holiday Season Stock Levels for Category Belts in UK Optimized**
+-  **Holiday Season Stock Levels for Category Belts in UK Optimized** \n
 -  Stock levels for Belts in the UK have been optimized for the upcoming holiday season.
  Based on historical sales data, inventory levels have been adjusted to ensure sufficient stock of 400 during peak demand periods. 
- It is recommended to closely monitor sales and adjust inventory levels as needed.
+ It is recommended to closely monitor sales and adjust inventory levels as needed. \n
 - **Holiday Season Preparedness:** Belts stock levels in the UK have been optimized for the holiday season.
  Monitor sales closely and adjust inventory levels as needed.
 
-- **Historical Sales Analysis Reveals Top-Selling Products in France**
+- **Historical Sales Analysis Reveals Top-Selling Products in France** \n
 - A historical sales analysis has revealed the top-selling products in France over the past 12 months. 
 The top categories include fitness equipment, home appliances, and fashion accessories. 
-It is recommended to focus marketing efforts on these categories to maximize sales.
+It is recommended to focus marketing efforts on these categories to maximize sales. \n
 - **Top-Selling Products Alert:** Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales.
 
 **Presentation:**
