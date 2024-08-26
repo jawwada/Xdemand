@@ -35,6 +35,9 @@ RUN poetry install --only main
 # Install additional dependencies
 RUN poetry run pip3 install python-dotenv==1.0.1
 
+# add sqlite3 sqlite3 >= 3.35.0., how to check sqlite3 version: sqlite3 --version
+RUN poetry run pip3 install pysqlite3-binary
+
 # Set the working directory and copy the rest of the application code
 WORKDIR /app
 COPY . /app

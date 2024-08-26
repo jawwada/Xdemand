@@ -1,3 +1,9 @@
+import platform
+if platform.system() != "Darwin":
+    __import__('pysqlite3')
+    import sys
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 import logging
 
 import chromadb
