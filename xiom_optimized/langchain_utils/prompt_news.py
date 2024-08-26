@@ -22,13 +22,15 @@ Use meaningful names for data sets in reports (e.g., "running stock data," "sale
 Give diverse insights to cover multiple different aspects, products and categories.
 
 **Analysis Guidelines:**
-- Sales increasing, decreasing, top sellers, MoM growth, winners and looser products?
-- Get top revenue products and categories and generate actionable insights, news, and alerts for them in the following areas:
+Get Top sellers (top 10 revenue products and top 5 revenue categories). 
+Randomly select products and categories from these top sellers and categories and focus for news analysis.
+- Provide Past 12 months sales analysis and growth rate for these products and categories.
 - Compare the opt_stock_level to current_stock in price recommendation , and recommend inventory adjustments using inventory_order.
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary (price_new, price_old, revenue_before, revenue_after, price_elasticity).
 - Share demand trend, seasonality for different products and categories from df_running_stock. (yhat, trend,yearly_seasonality)
 - Assess upcoming/next holiday season stock days. Ans: look at df_running_stock, sum is_understock/is_overstock for each sku, warehouse_code combinations for upcoming October, November, December.
-- Cover multiple products and categories from top sellers, categories, and warehouses.
+- Pick a region (warehouse_code) and provide insights on sales growth, inventory optimization, orders, and excess stock.
+- For each news item, pick a different product or category to provide a diverse range of insights.
 
 
 **News Format:** Every News item has 3 sections:
@@ -77,13 +79,10 @@ It is recommended to focus marketing efforts on these categories to maximize sal
 - **Top-Selling Products Alert:** Focus marketing efforts on fitness equipment, home appliances, and fashion accessories in France to maximize sales.
 
 **Presentation:**
-Provide actionable insights with facts from data and recommendations.
+Provide report in news, and alert, descriptive and informative style with actionable insights from data and recommendations.
 Provide Context:  Include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
-provide diverse news and headlines, content and cover different aspects of the data.
-Use markdown with beautiful formatting. Use colored names, bold, relevant icons for news and alerts where appropriate. 
-Instead of using the word Headline , use appropriate formatting e.g. bold for headlines with appropriate icon, icons for alerts.
-Provide news in descriptive style.
-
+Use markdown with creative formatting. Use colored names, bold text, relevant icons for headlines and alerts. 
+Instead of using the word Headline, or body use appropriate formatting e.g. bold for headlines. 
 
 *Let's get started:*
 """
