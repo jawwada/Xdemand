@@ -23,28 +23,39 @@ def search_reviews(n_clicks, sku, warehouse, query):
     if warehouse is None:
         warehouse = "UK"
     
-    # Filter the collection based on SKU and warehouse_code
-    filtered_docs = chroma_collection.get(
-        where={"$and": [{"sku": {"$eq": sku}}, {"warehouse_code": {"$eq": warehouse}}]}
+    # Create a retriever from the vectorstore
+    retriever = vectorstore.as_retriever(
+        search_kwargs={
+            "filter": {"$and": [{"sku": {"$eq": sku}}, {"warehouse_code": {"$eq": warehouse}}]},
+            "k": 5  # Retrieve top 5 most relevant reviews
+        }
     )
     
-    if not filtered_docs['ids']:
-        return "No reviews found for the selected SKU and warehouse_code."
+    # Retrieve relevant documents
+    relevant_docs = retriever.get_relevant_documents(query)
     
-    # Create a QA chain using the existing vectorstore
+    if not relevant_docs:
+        return "No relevant reviews found for the given query, SKU, and warehouse_code."
+    
+    # Create a QA chain
     qa_chain = RetrievalQA.from_chain_type(
         llm=ChatOpenAI(temperature=0),
         chain_type="stuff",
-        retriever=vectorstore.as_retriever(
-            search_kwargs={
-                "filter": {"$and": [{"sku": {"$eq": sku}}, {"warehouse_code": {"$eq": warehouse}}]}
-            }
-        )
+        retriever=retriever
     )
     
     # Run the query
     result = qa_chain.run(query)
     
-    return result
+    # Format the reviews and their metadata
+    reviews_output = ""
+    for doc in relevant_docs:
+        reviews_output += f"Review: {doc.page_content}\n"
+        reviews_output += f"Metadata: {doc.metadata}\n\n"
+    
+    # Combine AI answer and reviews
+    final_output = f"AI Answer:\n{result}\n\nRelevant Reviews:\n{reviews_output}"
+    
+    return final_output
 
 # Add any other necessary callbacks for product research page
