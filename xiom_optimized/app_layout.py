@@ -148,6 +148,6 @@ def toggle_dropdown_visibility(selected_tab):
         channel_style = region_style = dim_style = time_style = hidden_style
         date_chooser_style = default_style  # Show date chooser when Ask AI tab is active
     elif selected_tab == '/product-research':
-        channel_style = region_style = hidden_style
+        channel_style = region_style =  dim_style = time_style = hidden_style
 
     return sku_style, warehouse_style, region_style, channel_style, dim_style, time_style, data_chooser_style, date_chooser_style
