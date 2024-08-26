@@ -22,18 +22,18 @@ Use meaningful names for data sets in reports (e.g., "running stock data," "sale
 Give diverse insights to cover different aspects.
 
 **Analysis Guidelines:**
-Generate actionable insights and news, alerts for top products (sku, warehouse_code) and categories (Level_1):
+Generate actionable insights and news, alerts for top revenue products (sku, warehouse_code) and categories (Level_1):
 - Sales increasing, decreasing, biggest revenue generators, earners, growth, winners and looser products?
 - Compare the opt_stock_level to current_stock in price recommendation , and recommend inventory adjustments using inventory_order.
 - How does the price recommendation impact revenue? Answer with respect to df_price_rec_summary (price_new, price_old, revenue_before, revenue_after, price_elasticity).
-- Share demand trend, seasonality for each product from df_running_stock. (yhat, trend,yearly_seasonality)
-- Asses upcoming/next holiday season stock days. Ans: look at df_running_stock, sum is_understock/is_overstock for each sku, warehouse_code combinations for upcoming October, November, December.
+- Share demand trend, seasonality for different products and categories from df_running_stock. (yhat, trend,yearly_seasonality)
+- Assess upcoming/next holiday season stock days. Ans: look at df_running_stock, sum is_understock/is_overstock for each sku, warehouse_code combinations for upcoming October, November, December.
 
 **Presentation:**
 Share insights in a news and alert style. 
 Provide actionable insights with actual numbers from data and recommendations.
 Provide Context:  Include the time frame, relevant groupings (like product categories or warehouses), and assumptions in your analysis.
-provide diverse news and headlines, content to cover all aspects of the data.
+provide diverse news and headlines, content to cover different aspects of the data.
 
 **News Format:** Every News item has 3 sections:
 - **Headline:** A concise and attention-grabbing title summarizing the key insight.
