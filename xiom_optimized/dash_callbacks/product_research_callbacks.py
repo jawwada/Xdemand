@@ -3,6 +3,7 @@ from dash.exceptions import PreventUpdate
 from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
 from dash import html
+from datetime import datetime
 
 from xiom_optimized.app_config_initial import app
 from xiom_optimized.utils.data_fetcher import chroma_collection, vectorstore
@@ -28,7 +29,7 @@ def search_reviews(n_clicks, sku, warehouse, query):
     retriever = vectorstore.as_retriever(
         search_kwargs={
             "filter": {"$and": [{"sku": {"$eq": sku}}, {"warehouse_code": {"$eq": warehouse}}]},
-            "k": 10  # Retrieve top 10 most relevant reviews
+            "k": 50  # Retrieve top 50 most relevant reviews
         }
     )
     
@@ -37,6 +38,12 @@ def search_reviews(n_clicks, sku, warehouse, query):
     
     if not relevant_docs:
         return "No relevant reviews found for the given query, SKU, and warehouse_code."
+    
+    # Sort relevant_docs by date in descending order
+    sorted_docs = sorted(relevant_docs, key=lambda x: datetime.strptime(x.metadata['date'], '%Y-%m-%d'), reverse=True)
+    
+    # Take only the top 10 reviews
+    top_10_docs = sorted_docs[:10]
     
     # Create a QA chain
     qa_chain = RetrievalQA.from_chain_type(
@@ -62,7 +69,7 @@ def search_reviews(n_clicks, sku, warehouse, query):
     
     # Create table rows
     table_rows = []
-    for doc in relevant_docs:
+    for doc in top_10_docs:
         metadata = doc.metadata
         table_rows.append(html.Tr([
             html.Td(metadata['date']),
@@ -80,7 +87,7 @@ def search_reviews(n_clicks, sku, warehouse, query):
     final_output = html.Div([
         html.H3("AI Answer:"),
         html.P(result),
-        html.H3("Relevant Reviews:"),
+        html.H3("Top 10 Most Recent Relevant Reviews:"),
         review_table
     ])
     
