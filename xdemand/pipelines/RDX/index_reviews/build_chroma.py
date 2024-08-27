@@ -26,6 +26,8 @@ logger.setLevel(logging.INFO)
 # Initialize OpenAI client
 def get_embedding(text, model="text-embedding-3-small"):
     open_ai_client = OpenAI()
+    # change text to string first
+    text = str(text)
     text = text.replace("\n", " ")
     response = open_ai_client.embeddings.create(input=[text], model=model)
     return response.data[0].embedding
