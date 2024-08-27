@@ -29,7 +29,7 @@ def search_reviews(n_clicks, sku, warehouse, query):
     retriever = vectorstore.as_retriever(
         search_kwargs={
             "filter": {"$and": [{"sku": {"$eq": sku}}, {"warehouse_code": {"$eq": warehouse}}]},
-            "k": 50  # Retrieve top 50 most relevant reviews
+            "k": 10  # Retrieve top 50 most relevant reviews
         }
     )
     
