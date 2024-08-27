@@ -82,7 +82,7 @@ def create_amazon_reviews_store():
         """, engine)
     # Save Chroma DB to SQLite file
     db_path = "amazon_reviews"
-    shutil.rmtree(db_path, ignore_errors=True)  # Remove the directory if it exists
+    shutil.rmtree(db_path)  # Remove the directory if it exists
     # Initialize Chroma DB client
     client = chromadb.PersistentClient(path=db_path)  # Initialize the client with settings
 
