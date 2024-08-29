@@ -219,7 +219,7 @@ def update_trend_seasonality_graph(time_window, selected_sku, selected_warehouse
         fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['q_yearly'], name='Yearly'), row=3, col=1)
 
         # Update layout
-        fig.update_layout(title=f'RDX Demand Forecast: sku = {selected_sku}', height=600)
+        #fig.update_layout(title=f'RDX Demand Forecast: sku = {selected_sku}', height=600)
         fig.update_yaxes(title_text="Value", row=1, col=1)
         fig.update_yaxes(title_text="Trend Value", row=2, col=1)
         fig.update_yaxes(title_text="Seasonality Value", row=3, col=1)
