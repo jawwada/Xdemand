@@ -165,8 +165,8 @@ def update_sku_price_relationship_graph(selected_sku=None, filter_data=None):
 
 @app.callback(
     Output('price-adjustment-graph', 'children'),
-    Input('sku-dropdown', 'value'),
-    Input('warehouse-code-dropdown', 'value'),
+    [Input('sku-dropdown', 'value'),
+    Input('warehouse-code-dropdown', 'value')]
 )
 def update_price_adjustment_graph(selected_sku, selected_warehouse):
     if selected_sku is None or selected_warehouse is None:
@@ -182,17 +182,14 @@ def update_price_adjustment_graph(selected_sku, selected_warehouse):
     return dcc.Graph(figure=price_fig)
 
 @app.callback(
-    Output('trend-seasonality-graph', 'figure'),
+    Output('trend-seasonality-graph', 'children'),
     [Input('sample-rate-slider', 'value'),
     Input('sku-dropdown', 'value'),
-    Input('warehouse-code-dropdown', 'value')],
-    prevent_initial_call = True
+    Input('warehouse-code-dropdown', 'value')]
 )
-def update_trend_seasonality_graph(time_window,
-                                 selected_sku,selected_warehouse):
+def update_trend_seasonality_graph(time_window, selected_sku, selected_warehouse):
     if isinstance(selected_sku, str) and isinstance(selected_warehouse, str):
         today = pd.to_datetime("today")
-
         # Calculate the date range (today ± 6 months)
         six_months_later = today + pd.DateOffset(months=6)
         df_fc_qp_filtered = df_fc_qp[(df_fc_qp['ds'] <= six_months_later)]
@@ -222,12 +219,12 @@ def update_trend_seasonality_graph(time_window,
         fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['q_yearly'], name='Yearly'), row=3, col=1)
 
         # Update layout
-        fig.update_layout(title=f'RDX Demand Forecast: sku = {selected_sku}', height=400)
+        fig.update_layout(title=f'RDX Demand Forecast: sku = {selected_sku}', height=600)
         fig.update_yaxes(title_text="Value", row=1, col=1)
         fig.update_yaxes(title_text="Trend Value", row=2, col=1)
         fig.update_yaxes(title_text="Seasonality Value", row=3, col=1)
         fig.update_xaxes(title_text="Date", row=3, col=1)
 
-        return html.Div([
-            dcc.Graph(id='trend-seasonality-graph', figure=fig)
-        ])
+        return dcc.Graph(id='trend-seasonality-graph', figure=fig)
+    else:
+        return None

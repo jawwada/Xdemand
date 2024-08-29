@@ -21,9 +21,9 @@ layout = html.Div([
         html.Div(className='col', children=[
             html.Div(id='price-adjustment-graph'),  # Right top graph
         ]),
-        html.Div(className='row', children=[
-            html.Div(id='trend-seasonality-graph')  # Below the slider
-        ])
+    ]),
+    html.Div(className='row', children=[
+        html.Div(id='trend-seasonality-graph')  # Bottom graph
     ]),
     html.Hr(),
     html.Div([
