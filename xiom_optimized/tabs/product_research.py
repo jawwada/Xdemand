@@ -1,29 +1,11 @@
-from dash import dcc, html
 import dash_bootstrap_components as dbc
-from xiom_optimized.dash_callbacks.product_research_callbacks import *
+from dash import  html
+from xiom_optimized.dash_callbacks.product_research_callbacks import search_reviews, update_merged_graph
 
 layout = html.Div([
-    dcc.RadioItems(
-        id='seasonality-mode-pr-radio',
-        options=[
-            {'label': 'Multiplicative', 'value': 'multiplicative'},
-            {'label': 'Additive', 'value': 'additive'}
-        ],
-        value='additive',  # Default value set to 'multiplicative'
-        labelStyle={'display': 'inline-block'}
-    ),
-    # New section for SKU and Warehouse graphs
+    # New section for merged graph
     html.Div(className='row', children=[
-        html.Div(className='col', children=[
-            html.Div(id='weekly-sales-graph', className='mb-3'),  # Top left graph
-            # The graphs for promotional rebates and OOS days will be rendered here
-        ]),
-        html.Div(className='col', children=[
-            html.Div(id='price-adjustment-graph'),  # Right top graph
-        ]),
-    ]),
-    html.Div(className='row', children=[
-        html.Div(id='trend-seasonality-graph')  # Bottom graph
+        html.Div(id='merged-graph', className='col')
     ]),
     html.Hr(),
     html.Div([
@@ -32,5 +14,5 @@ layout = html.Div([
         dbc.Button("Search", id="search-button", color="primary", className="mr-2"),
         html.Div(id="search-results", className="mt-3")
     ], className='row'),
-
 ])
+
