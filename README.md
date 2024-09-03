@@ -1,91 +1,98 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+Sure, here's a LinkedIn post about your experience and the solution you developed:
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+---
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+🔍 **Exploring Optimization in Inventory Management**
 
-for website
-```bash
-docker-compose -f docker_files/docker-compose-xiom.yml build
-docker-compose -f docker_files/docker-compose-xiom.yml up
-docker push xiomacr.azurecr.io/dash-azure:dc-3.0 
+Last year, while working for an online retailer, I encountered an intriguing problem related to inventory management and demand forecasting. The goal was to maximize revenues over a 90-day period by adjusting prices and quantities, all while considering constraints on stock levels and incorporating incoming shipments. 📦💼
+
+Today, I had the opportunity to sit down with a couple of friends to discuss this challenge. Their insightful observations and collaborative spirit helped refine our approach, and we now have a well-behaved solution that tackles this complex problem. 🤝💡
+
+Here's a glimpse into our approach:
+
+**Context:**  
+The objective is to maximize the sum of revenues over 90 days by adjusting prices and quantities. We need to account for constraints related to stock levels and manage shipments arriving on specific days.
+
+**Formulation:**  
+We defined our variables, constraints, and objective function:
+- **Objective:** Maximize the sum of daily revenues.
+- **Constraints:** Maintain stock levels, and ensure prices remain within a reasonable range.
+
+**Mathematical Nature:**  
+This problem is a quadratic programming problem due to the quadratic term in the objective function.
+
+**Solution:**  
+Using Python's SciPy library, we implemented an optimization solver that accounts for all the constraints and finds the optimal prices and quantities for each day.
+
+Here's the key snippet of our Python code:
+
+```python
+import numpy as np
+from scipy.optimize import minimize
+
+# Parameters
+Q_0 = 100  # Initial forecasted quantity sold per day
+P_0 = 10   # Initial price
+alpha = 0.5  # Correlation of price to quantity sold change
+S_0 = 1000  # Initial stock
+S_min = 100  # Minimum stock required
+T = 90  # Number of days
+k = 0.2  # Allowed percentage change in price
+
+# Shipments arriving on specific days
+shipments = [(10, 200), (30, 300), (60, 150)]
+shipment_days = [shipment[0] for shipment in shipments]
+shipment_quantities = [shipment[1] for shipment in shipments]
+
+# Bounds for P_t
+P_min = P_0 * (1 - k)
+P_max = P_0 * (1 + k)
+bounds = [(P_min, P_max) for _ in range(T)]
+
+# Objective function to maximize (negative of sum of revenues)
+def objective(P):
+    Q = Q_0 - alpha * (P - P_0)
+    revenue = np.sum(Q * P)
+    return -revenue  # Negative for minimization
+
+# Constraint: stock level on each day should be >= minimum stock
+def stock_constraint(P):
+    S_t = S_0
+    for t in range(T):
+        Q_t = Q_0 - alpha * (P[t] - P_0)
+        if t + 1 in shipment_days:
+            S_t += shipment_quantities[shipment_days.index(t + 1)]
+        S_t -= Q_t
+        if S_t < S_min:
+            return S_t - S_min
+    return 0
+
+# Constraints dictionary
+constraints = {'type': 'ineq', 'fun': stock_constraint}
+
+# Initial guess for P_t
+P_initial = np.full(T, P_0)
+
+# Solve the optimization problem
+result = minimize(objective, P_initial, bounds=bounds, constraints=constraints)
+
+# Check if the optimization was successful
+if result.success:
+    optimal_P = result.x
+    optimal_Q = Q_0 - alpha * (optimal_P - P_0)
+    total_revenue = np.sum(optimal_Q * optimal_P)
+    print(f"Optimal Prices: {optimal_P}")
+    print(f"Total Revenue: {total_revenue}")
+else:
+    print("Optimization failed:", result.message)
 ```
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+This project was a fantastic opportunity to dive deep into the world of optimization, blending theoretical knowledge with practical applications. A big thanks to my friends for their valuable input and collaboration! 🌟
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+If you're interested in discussing more about inventory management, demand forecasting, or optimization techniques, feel free to reach out. Let's connect and exchange ideas! 💬🔗
 
-# Optimization and Reinforcement Learning for Pricing and Inventory Management
+#InventoryManagement #Optimization #DemandForecasting #Python #Collaboration #SupplyChain
 
-This document outlines two approaches to solving a pricing and inventory management problem: an optimization framework and a reinforcement learning framework.
+---
 
-## Optimization Approach
-
-### Problem Formulation
-
-Given a reference price \( p_0 \), forecasted quantities \( q_i \) for the next \( n \) days, and a regression coefficient \( r \), the goal is to maximize total revenue \( V \) subject to certain constraints.
-
-**Variables and Constants:**
-
-- \( p_i \): Price on day \( i \).
-- \( p_0 \): Reference price at time \( t_0 \).
-- \( q_i \): Forecasted quantity for day \( i \) based on \( p_0 \).
-- \( q'_i \): Adjusted forecasted quantity for day \( i \).
-- \( r \): Regression coefficient for % rebate to quantity.
-- \( s_i \): Stock level at the end of day \( i \).
-- \( a_i \): Stock arriving on day \( i \).
-- \( c \): Minimum stock constant.
-
-**Objective:**
-
-Maximize total revenue:
-
-\[ \text{Maximize } V = \sum_{i=1}^{n} q'_i p_i \]
-
-**Constraints:**
-
-1. Price constraints: \( 0.8p_0 \leq p_i \leq 1.2p_0 \) for all \( i \).
-2. Stock constraints: \( s_i \geq c \) for all \( i \).
-
-### Model Equations
-
-1. Adjusted forecasted quantity:
-
-\[ q'_i = q_i + r \left( \frac{p_i - p_0}{p_0} \right) \]
-
-2. Stock level update:
-
-\[ s_i = s_{i-1} - q'_i + a_i \]
-
-## Reinforcement Learning Approach
-
-### Framework
-
-Reinforcement learning (RL) can be applied to this problem, with the following components:
-
-- **Environment**: Market dynamics.
-- **Agent**: System deciding daily prices.
-- **Actions**: Set of possible prices for each day.
-- **State**: Information like stock levels, historical prices, and demand forecasts.
-- **Rewards**: Daily revenue or a function considering revenue and stock levels.
-- **Policy**: Strategy for setting prices based on the current state.
-
-### Learning Process
-
-The agent learns optimal pricing strategies through trial and error, balancing exploration (trying new strategies) and exploitation (using known successful strategies).
-
-### Considerations
-
-RL requires a well-designed environment model, suitable reward structure, and often substantial data for training. It is powerful for handling uncertainties and changing market conditions.
-
+Feel free to adjust the content to better fit your personal style and professional experience!
